@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Auther: joliu &amp;#108;&amp;#106;&amp;#111;&amp;#x30;&amp;#52;&amp;#49;&amp;#50;&amp;#64;&amp;#108;&amp;#x69;&amp;#x76;&amp;#101;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;  OpenFlow basic knowlege   OVS command how to add flow table to open vSwitch how to bind docke">
+<meta name="keywords" content="openvswitch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker+openvswitch网络手动配置教程">
+<meta property="og:url" content="http://yoursite.com/2018/09/14/docker-openvswitch网络手动配置教程/index.html">
+<meta property="og:site_name" content="NinWoo">
+<meta property="og:description" content="Auther: joliu &amp;#108;&amp;#106;&amp;#111;&amp;#x30;&amp;#52;&amp;#49;&amp;#50;&amp;#64;&amp;#108;&amp;#x69;&amp;#x76;&amp;#101;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;  OpenFlow basic knowlege   OVS command how to add flow table to open vSwitch how to bind docke">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-14T10:57:59.150Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker+openvswitch网络手动配置教程">
+<meta name="twitter:description" content="Auther: joliu &amp;#108;&amp;#106;&amp;#111;&amp;#x30;&amp;#52;&amp;#49;&amp;#50;&amp;#64;&amp;#108;&amp;#x69;&amp;#x76;&amp;#101;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;  OpenFlow basic knowlege   OVS command how to add flow table to open vSwitch how to bind docke">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/14/docker-openvswitch网络手动配置教程/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>docker+openvswitch网络手动配置教程 | NinWoo</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bedd7f369d664ca2485e7fe79869f316";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NinWoo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">日常学习笔记</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/docker-openvswitch网络手动配置教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">docker+openvswitch网络手动配置教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-14 18:57:19 / 修改时间：18:57:59" itemprop="dateCreated datePublished" datetime="2018-09-14T18:57:19+08:00">2018-09-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/14/docker-openvswitch网络手动配置教程/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/14/docker-openvswitch网络手动配置教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/14/docker-openvswitch网络手动配置教程/" class="leancloud_visitors" data-flag-title="docker+openvswitch网络手动配置教程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Auther: joliu <a href="mailto:&#108;&#106;&#111;&#x30;&#52;&#49;&#50;&#64;&#108;&#x69;&#x76;&#101;&#46;&#x63;&#x6f;&#109;" target="_blank" rel="noopener">&#108;&#106;&#111;&#x30;&#52;&#49;&#50;&#64;&#108;&#x69;&#x76;&#101;&#46;&#x63;&#x6f;&#109;</a></p>
+<ul>
+<li>OpenFlow<ul>
+<li>basic knowlege</li>
+</ul>
+</li>
+<li>OVS command<ul>
+<li>how to add flow table to open vSwitch</li>
+<li>how to bind dockers to vSwitch</li>
+</ul>
+</li>
+</ul>
+<h2 id="Install-ovs-and-mininet"><a href="#Install-ovs-and-mininet" class="headerlink" title="Install ovs and mininet"></a>Install ovs and mininet</h2><p><a href="http://lukehinds.com/2016/04/21/building-openvswitch-2-50-on-centos7.html" target="_blank" rel="noopener">learn details about this</a></p>
+<h2 id="Install-Docker"><a href="#Install-Docker" class="headerlink" title="Install Docker"></a>Install Docker</h2><p>Use DaoCloud accelerator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure></p>
+<p>Change Docker registry to Aliyun</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://i0ewwmct.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h2 id="Get-Basic-Docker-Image"><a href="#Get-Basic-Docker-Image" class="headerlink" title="Get Basic Docker Image"></a>Get Basic Docker Image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull alpine</span><br></pre></td></tr></table></figure>
+<h2 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h2><p>Create Three Container</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -i --name RouterA --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterB --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterC --net=none --privileged alpine sh</span><br></pre></td></tr></table></figure>
+<p>Check Containers’ Status</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES</span><br><span class="line">37b9ca888f03        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterC</span><br><span class="line">f1604beb380f        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterB</span><br><span class="line">3b3c52c5a582        alpine              &quot;sh&quot;                3 minutes ago        Up 3 minutes</span><br></pre></td></tr></table></figure>
+<p>Create Virtual Network Bridge</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl add-br vnbr</span><br></pre></td></tr></table></figure>
+<p>Set Protocols</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl set bridge br0 protocols=OpenFlow13</span><br></pre></td></tr></table></figure>
+<p>Check the brige is added</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Add Network Port</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-docker add-port vnbr eth0 RouterA --ipaddress=&quot;10.0.1.1/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterB --ipaddress=&quot;10.0.1.2/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterC --ipaddress=&quot;10.0.3.1&quot;</span><br></pre></td></tr></table></figure>
+<p>Check The Status of vnbr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Set OpenFlow Port ID</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set interface facad1a218c64_l ofport_request=100</span><br><span class="line">sudo ovs-vsctl set interface d48d429fe1894_l ofport_request=200</span><br><span class="line">sudo ovs-vsctl set interface 12437ccb4eab4_l ofport_request=300</span><br></pre></td></tr></table></figure>
+<p>Connect to ODL Controller</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set-controller vnbr tcp:127.0.0.1:6633</span><br></pre></td></tr></table></figure>
+<p>Check the Connections with Controller</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Controller &quot;tcp:127.0.0.1:6633&quot;</span><br><span class="line">            is_connected: true</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Test the connection between the two host By PING</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
+<p>Generally, they cannot connect with the other.</p>
+<p>Add Flows</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=1 idle_timeout=0,in_port=1,actions=output:2&quot;</span><br><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=2 idle_timeout=0,in_port=1,actions=output:1&quot;</span><br></pre></td></tr></table></figure>
+<p>Get the Flows from vSwitch</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-ofctl -O OpenFlow13 dump-flows vnbr</span><br></pre></td></tr></table></figure>
+<p>Test Again.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
+<p>Example of the successful result.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[master@MiWiFi-R3-srv ~]$ sudo docker exec -it RouterA ping -c 4 10.0.1.2</span><br><span class="line">PING 10.0.1.2 (10.0.1.2): 56 data bytes</span><br><span class="line">64 bytes from 10.0.1.2: seq=0 ttl=64 time=0.062 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=1 ttl=64 time=0.061 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=2 ttl=64 time=0.086 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=3 ttl=64 time=0.078 ms</span><br><span class="line"></span><br><span class="line">--- 10.0.1.2 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max = 0.061/0.071/0.086 ms</span><br></pre></td></tr></table></figure>
+<p>Start karaf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feature:install odl-restconf odl-l2switch-switch odl-mdsal-apidocs odl-dlux-all</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/1.jpg" alt="Joliu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描二维码添加我的微信好友</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openvswitch/" rel="tag"># openvswitch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/13/test/" rel="next" title="test">
+                <i class="fa fa-chevron-left"></i> test
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Joliu</p>
+              <p class="site-description motion-element" itemprop="description">研究生不研究“生”，开始研究代码了！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Ninwoo" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:ljo0412@live.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+		  	<br>
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=433103172&auto=1&height=66"></iframe>
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-ovs-and-mininet"><span class="nav-number">1.</span> <span class="nav-text">Install ovs and mininet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Docker"><span class="nav-number">2.</span> <span class="nav-text">Install Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-Basic-Docker-Image"><span class="nav-number">3.</span> <span class="nav-text">Get Basic Docker Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exercise-1"><span class="nav-number">4.</span> <span class="nav-text">Exercise 1</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joliu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz',
+        appKey: 'Fl29iwRhiNINjJwOHA613D9d',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        meta:guest,
+        pageSize:'10' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz",
+                'X-LC-Key': "Fl29iwRhiNINjJwOHA613D9d",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
