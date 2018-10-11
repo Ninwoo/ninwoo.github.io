@@ -294,6 +294,293 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/11/kclient源码解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/11/kclient源码解读/" itemprop="url">
+                  kclient源码解读
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-11 23:27:55 / 修改时间：23:28:30" itemprop="dateCreated datePublished" datetime="2018-10-11T23:27:55+08:00">2018-10-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/11/kclient源码解读/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/11/kclient源码解读/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/11/kclient源码解读/" class="leancloud_visitors" data-flag-title="kclient源码解读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="kclient消息中间件"><a href="#kclient消息中间件" class="headerlink" title="kclient消息中间件"></a>kclient消息中间件</h1><p>从使用角度上开始入手学习</p>
+<h2 id="kclient-processor"><a href="#kclient-processor" class="headerlink" title="kclient-processor"></a>kclient-processor</h2><p>该项目使用springboot调用kclient库，程序目录如下:</p>
+<ul>
+<li>domain<ul>
+<li>Cat ： 定义了一个cat对象</li>
+<li>Dog ： 定义了一个Dog对象</li>
+</ul>
+</li>
+<li>handler ： 消息处理器<ul>
+<li>AnimalsHandler ： 定义了Cat和Dog的具体行为</li>
+</ul>
+</li>
+<li>KClientApplication.java ： Spring boot的主函数——程序执行入口</li>
+<li>KClientController.java : Controller 文件</li>
+</ul>
+<h3 id="top-ninwoo-kclient-app-KClientApplication"><a href="#top-ninwoo-kclient-app-KClientApplication" class="headerlink" title="top.ninwoo.kclient.app.KClientApplication"></a>top.ninwoo.kclient.app.KClientApplication</h3><p>1.启动Spring Boot</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext ctxBackend = SpringApplication.run(</span><br><span class="line">                KClientApplication.class, args);</span><br></pre></td></tr></table></figure>
+<p>2.启动程序后将自动加载KClientController(@RestController)</p>
+<h3 id="top-ninwoo-kclient-app-KClientController"><a href="#top-ninwoo-kclient-app-KClientController" class="headerlink" title="top.ninwoo.kclient.app.KClientController"></a>top.ninwoo.kclient.app.KClientController</h3><p>1.通过@RestController，使@SpringBootApplication,可以自动加载该Controller</p>
+<p>2.通过<code>kafka-application.xml</code>加载Beans</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">private ApplicationContext ctxKafkaProcessor =</span><br><span class="line">            new ClassPathXmlApplicationContext(&quot;kafka-application.xml&quot;);</span><br></pre></td></tr></table></figure>
+<p><code>kafka-application.xml</code>声明了一个kclient bean，并设置其初始化执行<code>init</code>方法，具体实现见下章具体实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name=&quot;kClientBoot&quot; class=&quot;top.ninwoo.kafka.kclient.boot.KClientBoot&quot; init-method=&quot;init&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>另外声明了一个扫描消息处理器的bean</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;context:component-scan base-package=&quot;top.ninwoo.kclient.app.handler&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>具体内容在下一节介绍</p>
+<ol start="3">
+<li>使用<code>@RequestMapping</code>定义<code>/</code>,<code>/status</code>,<code>/stop</code>,<code>/restart</code>定义了不同的接口</li>
+</ol>
+<p>这些接口实现比较简单，需要注意的是他们调用的<code>getKClientBoot()</code>函数。</p>
+<p>上文，我们已经通过xml中，添加了两个Bean，调用Bean的具体实现方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private KClientBoot getKClientBoot() &#123;</span><br><span class="line">       return (KClientBoot) ctxKafkaProcessor.getBean(&quot;kClientBoot&quot;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>通过Bean获取到KClient获取到了KClientBoot对象，便可以调用其具体方法。</p>
+<h3 id="top-ninwoo-kclient-app-handler-AnimalsHandler"><a href="#top-ninwoo-kclient-app-handler-AnimalsHandler" class="headerlink" title="top.ninwoo.kclient.app.handler.AnimalsHandler"></a>top.ninwoo.kclient.app.handler.AnimalsHandler</h3><p>消息处理函数</p>
+<p>1.使用<code>@KafkaHandlers</code>进行声明bean，关于其具体实现及介绍在具体实现中进行介绍</p>
+<p>2.定义了三个处理函数</p>
+<ul>
+<li>dogHandler</li>
+<li>catHandler</li>
+<li>ioExceptionHandler</li>
+</ul>
+<p><strong>dogHandler</strong></p>
+<p>具体处理很简单，主要分析@InputConsumer和@Consumer的作用，具体实现将在后续进行介绍。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@InputConsumer(propertiesFile = &quot;kafka-consumer.properties&quot;, topic = &quot;test&quot;, streamNum = 1)</span><br><span class="line">   @OutputProducer(propertiesFile = &quot;kafka-producer.properties&quot;, defaultTopic = &quot;test1&quot;)</span><br><span class="line">   public Cat dogHandler(Dog dog) &#123;</span><br><span class="line">       System.out.println(&quot;Annotated dogHandler handles: &quot; + dog);</span><br><span class="line"></span><br><span class="line">       return new Cat(dog);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@InputConsumer</code>根据输入参数定义了一个Consumer，通过该Consumer传递具体值给dog，作为该处理函数的<br>输入。</li>
+<li><code>@OutputProducer</code>根据输入参数定义一个Producer，而该处理函数最后返回的Cat对象，将通过该Producer最终传递到Kafka中</li>
+</ul>
+<p>以下的功能与上述相同，唯一需要注意的是 <code>@InputConsumer</code>和<code>@OutputProducer</code>可以单独存在。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@InputConsumer(propertiesFile = &quot;kafka-consumer.properties&quot;, topic = &quot;test1&quot;, streamNum = 1)</span><br><span class="line">    public void catHandler(Cat cat) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;Annotated catHandler handles: &quot; + cat);</span><br><span class="line"></span><br><span class="line">        throw new IOException(&quot;Man made exception.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @ErrorHandler(exception = IOException.class, topic = &quot;test1&quot;)</span><br><span class="line">    public void ioExceptionHandler(IOException e, String message) &#123;</span><br><span class="line">        System.out.println(&quot;Annotated excepHandler handles: &quot; + e);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="top-ninwoo-kclient-app-domain"><a href="#top-ninwoo-kclient-app-domain" class="headerlink" title="top.ninwoo.kclient.app.domain"></a>top.ninwoo.kclient.app.domain</h3><p>只是定义了Cat和Dog对象，不做赘述。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，总结下我们都实现了哪些功能？</p>
+<ol>
+<li>程序启动</li>
+<li>调用KClientBoot.init()方法</li>
+<li>AnimalsHandler定义了消费者和生产者的具体方法。</li>
+</ol>
+<h2 id="kclient-core"><a href="#kclient-core" class="headerlink" title="kclient-core"></a>kclient-core</h2><p>kclient消息中间件的主体部分，该部分将会涉及</p>
+<ul>
+<li>kafka基本操作</li>
+<li>反射</li>
+</ul>
+<p>项目结构如下:</p>
+<ul>
+<li>boot <ul>
+<li>ErrorHandler </li>
+<li>InputConsumer</li>
+<li>OutputProducer</li>
+<li>KafkaHandlers</li>
+<li>KClientBoot</li>
+<li>KafkaHandler</li>
+<li>KafkaHandlerMeta</li>
+</ul>
+</li>
+<li>core<ul>
+<li>KafkaConsumer</li>
+<li>KafkaProducer</li>
+</ul>
+</li>
+<li>excephandler<ul>
+<li>DefaultExceptionHandler</li>
+<li>ExceptionHandler</li>
+</ul>
+</li>
+<li>handlers<ul>
+<li>BeanMessageHandler</li>
+<li>BeansMessageHandler</li>
+<li>DocumentMessageHandler</li>
+<li>ObjectMessageHandler</li>
+<li>ObjectsMessageHandler</li>
+<li>MessageHandler</li>
+<li>SafelyMessageHandler</li>
+</ul>
+</li>
+<li>reflection.util<ul>
+<li>AnnotationHandler</li>
+<li>AnnotationTranversor</li>
+<li>TranversorContext</li>
+</ul>
+</li>
+</ul>
+<p>在接下来的源码阅读中，我将按照程序执行的顺序进行解读。如果其中涉及到没有讨论过的模块，读者可以向下翻阅。这么<br>做的唯一原因，为了保证思维的连续性，尽可能不被繁杂的程序打乱。</p>
+<h3 id="top-ninwoo-kafka-kclient-boot-KClientBoot"><a href="#top-ninwoo-kafka-kclient-boot-KClientBoot" class="headerlink" title="top.ninwoo.kafka.kclient.boot.KClientBoot"></a>top.ninwoo.kafka.kclient.boot.KClientBoot</h3><p>如果读者刚刚阅读上一章节，那么可能记得，我们注册了一个kClientBoot的bean，并设置了初始化函数init(),所以，在kclient源码的阅读中<br>，我们将从该文件入手，开始解读。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public void init() &#123;</span><br><span class="line">       meta = getKafkaHandlerMeta();</span><br><span class="line"></span><br><span class="line">       if (meta.size() == 0)</span><br><span class="line">           throw new IllegalArgumentException(</span><br><span class="line">                   &quot;No handler method is declared in this spring context.&quot;);</span><br><span class="line"></span><br><span class="line">       for (final KafkaHandlerMeta kafkaHandlerMeta : meta) &#123;</span><br><span class="line">           createKafkaHandler(kafkaHandlerMeta);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>1.该函数，首先获取了一个HandlerMeta，我们可以简单理解，在这个数据元中，存储了全部的Handler信息，这个Handler信息指的是上一章节中通过<code>@KafkaHandlers</code>定义的处理函数，<br>具体实现见<code>top.ninwoo.kafka.kclient.boot.KafkaHandlerMeta</code>。</p>
+<p>2.获取数据元之后，通过循环，创建对应的处理函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (final KafkaHandlerMeta kafkaHandlerMeta : meta) &#123;</span><br><span class="line">           createKafkaHandler(kafkaHandlerMeta);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>3.getKafkaHandlerMeta函数的具体实现</p>
+<p>a.通过applicationContext获取包含kafkaHandlers注解的Bean名称。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String[] kafkaHandlerBeanNames = applicationContext</span><br><span class="line">    .getBeanNamesForAnnotation(KafkaHandlers.class);</span><br></pre></td></tr></table></figure>
+<p>b.通过BeanName获取到Bean对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object kafkaHandlerBean = applicationContext</span><br><span class="line">       .getBean(kafkaHandlerBeanName);</span><br><span class="line">   Class&lt;? extends Object&gt; kafkaHandlerBeanClazz = kafkaHandlerBean</span><br><span class="line">       .getClass();</span><br></pre></td></tr></table></figure>
+<p>c.构建mapData数据结构,具体构建见<code>top.ninwoo.kafka.kclient.reflection.util.AnnotationTranversor</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Class&lt;? extends Annotation&gt;, Map&lt;Method, Annotation&gt;&gt; mapData = extractAnnotationMaps(kafkaHandlerBeanClazz);</span><br></pre></td></tr></table></figure>
+<p>d.map转数据元并添加到数据元meta list中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meta.addAll(convertAnnotationMaps2Meta(mapData, kafkaHandlerBean));</span><br></pre></td></tr></table></figure>
+<p>4.循环遍历创建kafkaHandler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (final KafkaHandlerMeta kafkaHandlerMeta : meta) &#123;</span><br><span class="line">           createKafkaHandler(kafkaHandlerMeta);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>createKafkaHandler()函数的具体实现：</p>
+<p>a.通过meta获取clazz中的参数类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;? extends Object&gt; paramClazz = kafkaHandlerMeta</span><br><span class="line">    .getParameterType()</span><br></pre></td></tr></table></figure>
+<p>b.创建kafkaProducer<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KafkaProducer kafkaProducer = createProducer(kafkaHandlerMeta);</span><br></pre></td></tr></table></figure></p>
+<p>c.创建ExceptionHandler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ExceptionHandler&gt; excepHandlers = createExceptionHandlers(kafkaHandlerMeta);</span><br></pre></td></tr></table></figure>
+<p>d.根据clazz的参数类型，选择消息转换函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">MessageHandler beanMessageHandler = null;</span><br><span class="line">       if (paramClazz.isAssignableFrom(JSONObject.class)) &#123;</span><br><span class="line">           beanMessageHandler = createObjectHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (paramClazz.isAssignableFrom(JSONArray.class)) &#123;</span><br><span class="line">           beanMessageHandler = createObjectsHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (List.class.isAssignableFrom(Document.class)) &#123;</span><br><span class="line">           beanMessageHandler = createDocumentHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (List.class.isAssignableFrom(paramClazz)) &#123;</span><br><span class="line">           beanMessageHandler = createBeansHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           beanMessageHandler = createBeanHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">protected void createKafkaHandler(final KafkaHandlerMeta kafkaHandlerMeta) &#123;</span><br><span class="line">       Class&lt;? extends Object&gt; paramClazz = kafkaHandlerMeta</span><br><span class="line">               .getParameterType();</span><br><span class="line"></span><br><span class="line">       KafkaProducer kafkaProducer = createProducer(kafkaHandlerMeta);</span><br><span class="line">       List&lt;ExceptionHandler&gt; excepHandlers = createExceptionHandlers(kafkaHandlerMeta);</span><br><span class="line"></span><br><span class="line">       MessageHandler beanMessageHandler = null;</span><br><span class="line">       if (paramClazz.isAssignableFrom(JSONObject.class)) &#123;</span><br><span class="line">           beanMessageHandler = createObjectHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (paramClazz.isAssignableFrom(JSONArray.class)) &#123;</span><br><span class="line">           beanMessageHandler = createObjectsHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (List.class.isAssignableFrom(Document.class)) &#123;</span><br><span class="line">           beanMessageHandler = createDocumentHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else if (List.class.isAssignableFrom(paramClazz)) &#123;</span><br><span class="line">           beanMessageHandler = createBeansHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           beanMessageHandler = createBeanHandler(kafkaHandlerMeta,</span><br><span class="line">                   kafkaProducer, excepHandlers);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       KafkaConsumer kafkaConsumer = createConsumer(kafkaHandlerMeta,</span><br><span class="line">               beanMessageHandler);</span><br><span class="line">       kafkaConsumer.startup();</span><br><span class="line"></span><br><span class="line">       KafkaHandler kafkaHandler = new KafkaHandler(kafkaConsumer,</span><br><span class="line">               kafkaProducer, excepHandlers, kafkaHandlerMeta);</span><br><span class="line"></span><br><span class="line">       kafkaHandlers.add(kafkaHandler);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/11/Spring学习文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -340,7 +627,7 @@
                 
               
 
-              <time title="创建时间：2018-10-11 23:16:58 / 修改时间：23:18:11" itemprop="dateCreated datePublished" datetime="2018-10-11T23:16:58+08:00">2018-10-11</time>
+              <time title="创建时间：2018-10-11 23:16:58 / 修改时间：23:27:14" itemprop="dateCreated datePublished" datetime="2018-10-11T23:16:58+08:00">2018-10-11</time>
             
 
             
@@ -401,7 +688,7 @@
       
         
           
-            <p>[TOC]<br>该篇随笔，主要用于记录Spring Framework 基础知识。由于笔者是初学者，见识与能力有限，难免出现错误，如果发现错误，望不吝赐教。</p>
+            <p>该篇随笔，主要用于记录Spring Framework 基础知识。由于笔者是初学者，见识与能力有限，难免出现错误，如果发现错误，望不吝赐教。</p>
 <h2 id="Spring好处"><a href="#Spring好处" class="headerlink" title="Spring好处"></a>Spring好处</h2><p>以下列出了使用Spring Framework的一些巨大好处 -</p>
 <ul>
 <li><p>Spring使开发人员能够使用POJO开发企业级应用程序。仅使用POJO的好处是您不需要EJB容器产品（如应用程序服务器），但您可以选择仅使用强大的servlet容器（如Tomcat）或某些商业产品。</p>
@@ -1075,7 +1362,7 @@
       
         
           
-            <p>Auther: joliu <a href="mailto:&#x6c;&#106;&#111;&#x30;&#x34;&#49;&#x32;&#x40;&#x6c;&#105;&#118;&#x65;&#46;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x6c;&#106;&#111;&#x30;&#x34;&#49;&#x32;&#x40;&#x6c;&#105;&#118;&#x65;&#46;&#99;&#x6f;&#x6d;</a></p>
+            <p>Auther: joliu <a href="mailto:&#x6c;&#106;&#111;&#48;&#x34;&#49;&#x32;&#64;&#108;&#105;&#x76;&#x65;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#x6c;&#106;&#111;&#48;&#x34;&#49;&#x32;&#64;&#108;&#105;&#x76;&#x65;&#x2e;&#x63;&#111;&#x6d;</a></p>
 <ul>
 <li>OpenFlow<ul>
 <li>basic knowlege</li>
@@ -1718,7 +2005,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
