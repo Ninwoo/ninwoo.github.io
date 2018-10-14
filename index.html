@@ -294,6 +294,204 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/Springr学习笔记3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/14/Springr学习笔记3/" itemprop="url">
+                  Springr学习笔记3
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-14 22:04:37 / 修改时间：22:05:53" itemprop="dateCreated datePublished" datetime="2018-10-14T22:04:37+08:00">2018-10-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/14/Springr学习笔记3/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/14/Springr学习笔记3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/14/Springr学习笔记3/" class="leancloud_visitors" data-flag-title="Springr学习笔记3">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>[TOC]</p>
+<h2 id="Spring中的事件处理"><a href="#Spring中的事件处理" class="headerlink" title="Spring中的事件处理"></a>Spring中的事件处理</h2><p><strong>ApplicationContext</strong> 是Spring的核心模块，管理着Beans完整的生命周期。当加载Bean时，ApplicationContext会发布特定类型的事件。<br>eg:当Context启动时ContextStartEvent被发布，当关闭时，ContextStoppedEvent被发布。</p>
+<p>ApplicationContext事件处理被ApplicationEvent类和ApplicationListener接口提供。因此，实现了ApplicationListener的bean，每次ApplicationContext发布ApplicationEvent时，Bean将会被通知。</p>
+<h3 id="Spring内建事件"><a href="#Spring内建事件" class="headerlink" title="Spring内建事件"></a>Spring内建事件</h3><ul>
+<li><strong>ContextRefreshedEvent</strong> : 当ApplicationContext被初始化或者刷新时被发布。也可以通过调用ConfigurableApplicationContext接口的refresh()函数发起。</li>
+<li><strong>ContextStartedEvent</strong> : 当Application使用ConfigurableApplicationContext的start()方法启动时被发布。您可以轮询您的数据库，也可以在收到此事件后重新启动任何已停止的应用程序。</li>
+<li><strong>ContextStoppedEvent</strong> : 当ApplicationContext在ConfigurableApplicationContext接口上使用stop()方法停止时，就会发布这个事件。你可以在收到这个活动后做家务。</li>
+<li><strong>ContextClosedEvent</strong> : 当使用ConfigurableApplicationContext接口上的close()方法关闭ApplicationContext时，将发布此事件。一个封闭的环境到达了生命的终点;不能刷新或重新启动。</li>
+<li><strong>RequestHandledEvent</strong> : 这是一个特定于web的事件，它告诉所有bean HTTP请求已经得到了服务。</li>
+</ul>
+<p>Spring的事件处理是单线程的，因此如果发布了一个事件，直到并且除非所有接收者都得到消息，否则进程将被阻塞，线程将不会继续。因此，如果要使用事件处理，那么在设计应用程序时应该小心。</p>
+<h3 id="监听Context事件"><a href="#监听Context事件" class="headerlink" title="监听Context事件"></a>监听Context事件</h3><p>要想监听一个context事件，bean需要实现仅有一个方法onApplicationEvent()的ApplicationListener接口</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>HelloWorld.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class HelloWorld &#123;</span><br><span class="line">   private String message;</span><br><span class="line"></span><br><span class="line">   public void setMessage(String message)&#123;</span><br><span class="line">      this.message  = message;</span><br><span class="line">   &#125;</span><br><span class="line">   public void getMessage()&#123;</span><br><span class="line">      System.out.println(&quot;Your Message : &quot; + message);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CStartEventHandler.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class CStartEventHandler </span><br><span class="line">   implements ApplicationListener&lt;ContextStartedEvent&gt;&#123;</span><br><span class="line"></span><br><span class="line">   public void onApplicationEvent(ContextStartedEvent event) &#123;</span><br><span class="line">      System.out.println(&quot;ContextStartedEvent Received&quot;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CStopEventHandler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class CStopEventHandler </span><br><span class="line">   implements ApplicationListener&lt;ContextStoppedEvent&gt;&#123;</span><br><span class="line"></span><br><span class="line">   public void onApplicationEvent(ContextStoppedEvent event) &#123;</span><br><span class="line">      System.out.println(&quot;ContextStoppedEvent Received&quot;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MainApp.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class MainApp &#123;</span><br><span class="line">   public static void main(String[] args) &#123;</span><br><span class="line">      ConfigurableApplicationContext context = </span><br><span class="line">         new ClassPathXmlApplicationContext(&quot;Beans.xml&quot;);</span><br><span class="line"></span><br><span class="line">      // Let us raise a start event.</span><br><span class="line">      context.start();</span><br><span class="line">	  </span><br><span class="line">      HelloWorld obj = (HelloWorld) context.getBean(&quot;helloWorld&quot;);</span><br><span class="line">      obj.getMessage();</span><br><span class="line"></span><br><span class="line">      // Let us raise a stop event.</span><br><span class="line">      context.stop();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Beans</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;beans xmlns = &quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">   xmlns:xsi = &quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">   xsi:schemaLocation = &quot;http://www.springframework.org/schema/beans</span><br><span class="line">   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">   &lt;bean id = &quot;helloWorld&quot; class = &quot;com.tutorialspoint.HelloWorld&quot;&gt;</span><br><span class="line">      &lt;property name = &quot;message&quot; value = &quot;Hello World!&quot;/&gt;</span><br><span class="line">   &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">   &lt;bean id = &quot;cStartEventHandler&quot; class = &quot;com.tutorialspoint.CStartEventHandler&quot;/&gt;</span><br><span class="line">   &lt;bean id = &quot;cStopEventHandler&quot; class = &quot;com.tutorialspoint.CStopEventHandler&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ContextStartedEvent Received</span><br><span class="line">Your Message : Hello World!</span><br><span class="line">ContextStoppedEvent Received</span><br></pre></td></tr></table></figure>
+<h2 id="自定义Spring事件"><a href="#自定义Spring事件" class="headerlink" title="自定义Spring事件"></a>自定义Spring事件</h2><p>下边的案例将讲述如何编写和发布你自己的自定义事件</p>
+<p>添加自定义事件<code>CustomEvent.java</code>,继承ApplicationEvent类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class CustomEvent extends ApplicationEvent&#123;</span><br><span class="line">   public CustomEvent(Object source) &#123;</span><br><span class="line">      super(source);</span><br><span class="line">   &#125;</span><br><span class="line">   public String toString()&#123;</span><br><span class="line">      return &quot;My Custom Event&quot;;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加自定义事件发布类<code>CustomEventPublisher.java</code>，实现ApplicationEventPublisherAware接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class CustomEventPublisher implements ApplicationEventPublisherAware &#123;</span><br><span class="line">   private ApplicationEventPublisher publisher;</span><br><span class="line">   </span><br><span class="line">   public void setApplicationEventPublisher (ApplicationEventPublisher publisher) &#123;</span><br><span class="line">      this.publisher = publisher;</span><br><span class="line">   &#125;</span><br><span class="line">   public void publish() &#123;</span><br><span class="line">      CustomEvent ce = new CustomEvent(this);</span><br><span class="line">      publisher.publishEvent(ce);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自定义事件监听处理类，实现ApplicationListener<customevent></customevent></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class CustomEventHandler implements ApplicationListener&lt;CustomEvent&gt; &#123;</span><br><span class="line">   public void onApplicationEvent(CustomEvent event) &#123;</span><br><span class="line">      System.out.println(event.toString());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MainApp.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class MainApp &#123;</span><br><span class="line">   public static void main(String[] args) &#123;</span><br><span class="line">      ConfigurableApplicationContext context = </span><br><span class="line">         new ClassPathXmlApplicationContext(&quot;Beans.xml&quot;);</span><br><span class="line">	  </span><br><span class="line">      CustomEventPublisher cvp = </span><br><span class="line">         (CustomEventPublisher) context.getBean(&quot;customEventPublisher&quot;);</span><br><span class="line">      </span><br><span class="line">      cvp.publish();  </span><br><span class="line">      cvp.publish();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Beans.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns = &quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">   xmlns:xsi = &quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">   xsi:schemaLocation = &quot;http://www.springframework.org/schema/beans</span><br><span class="line">   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">   &lt;bean id = &quot;customEventHandler&quot; class = &quot;com.tutorialspoint.CustomEventHandler&quot;/&gt;</span><br><span class="line">   &lt;bean id = &quot;customEventPublisher&quot; class = &quot;com.tutorialspoint.CustomEventPublisher&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>注意不要忘记添加customEventHandler,虽然在主函数中没有直接使用，但是context需要检查实现了ApplicationListener的<br>bean,所以需要在xml文件中，添加该bean。</p>
+<p>输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">my Custom Event</span><br><span class="line">my Custom Event</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/13/Spring入门学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -536,12 +734,24 @@
                 
               
 
-              <time title="创建时间：2018-10-12 01:41:09 / 修改时间：02:37:01" itemprop="dateCreated datePublished" datetime="2018-10-12T01:41:09+08:00">2018-10-12</time>
+              <time title="创建时间：2018-10-12 01:41:09" itemprop="dateCreated datePublished" datetime="2018-10-12T01:41:09+08:00">2018-10-12</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 22:07:38" itemprop="dateModified" datetime="2018-10-14T22:07:38+08:00">2018-10-14</time>
               
             
           </span>
@@ -731,7 +941,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-12 08:04:08" itemprop="dateModified" datetime="2018-10-12T08:04:08+08:00">2018-10-12</time>
+                <time title="修改时间：2018-10-14 22:08:01" itemprop="dateModified" datetime="2018-10-14T22:08:01+08:00">2018-10-14</time>
               
             
           </span>
@@ -1083,7 +1293,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-13 22:42:13" itemprop="dateModified" datetime="2018-10-13T22:42:13+08:00">2018-10-13</time>
+                <time title="修改时间：2018-10-14 22:06:59" itemprop="dateModified" datetime="2018-10-14T22:06:59+08:00">2018-10-14</time>
               
             
           </span>
@@ -1892,7 +2102,7 @@
       
         
           
-            <p>Auther: joliu <a href="mailto:&#x6c;&#106;&#x6f;&#48;&#x34;&#49;&#x32;&#64;&#108;&#x69;&#118;&#101;&#x2e;&#99;&#111;&#109;" target="_blank" rel="noopener">&#x6c;&#106;&#x6f;&#48;&#x34;&#49;&#x32;&#64;&#108;&#x69;&#118;&#101;&#x2e;&#99;&#111;&#109;</a></p>
+            <p>Auther: joliu <a href="mailto:&#108;&#106;&#111;&#x30;&#52;&#x31;&#50;&#x40;&#108;&#x69;&#118;&#101;&#x2e;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#108;&#106;&#111;&#x30;&#52;&#x31;&#50;&#x40;&#108;&#x69;&#118;&#101;&#x2e;&#x63;&#111;&#109;</a></p>
 <ul>
 <li>OpenFlow<ul>
 <li>basic knowlege</li>
@@ -2040,12 +2250,24 @@
                 
               
 
-              <time title="创建时间：2018-09-12 22:24:38 / 修改时间：22:25:16" itemprop="dateCreated datePublished" datetime="2018-09-12T22:24:38+08:00">2018-09-12</time>
+              <time title="创建时间：2018-09-12 22:24:38" itemprop="dateCreated datePublished" datetime="2018-09-12T22:24:38+08:00">2018-09-12</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 22:07:48" itemprop="dateModified" datetime="2018-10-14T22:07:48+08:00">2018-10-14</time>
               
             
           </span>
@@ -2258,12 +2480,24 @@
                 
               
 
-              <time title="创建时间：2018-09-12 20:18:57 / 修改时间：20:19:49" itemprop="dateCreated datePublished" datetime="2018-09-12T20:18:57+08:00">2018-09-12</time>
+              <time title="创建时间：2018-09-12 20:18:57" itemprop="dateCreated datePublished" datetime="2018-09-12T20:18:57+08:00">2018-09-12</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 22:06:16" itemprop="dateModified" datetime="2018-10-14T22:06:16+08:00">2018-10-14</time>
               
             
           </span>
@@ -2535,7 +2769,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2552,7 +2786,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
