@@ -294,6 +294,1007 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Spring_Reference(1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Spring_Reference(1)/" itemprop="url">
+                  Introduction to the Spring IoC Container and Beans
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-25 23:27:55 / 修改时间：09:43:35" itemprop="dateCreated datePublished" datetime="2018-10-25T23:27:55+08:00">2018-10-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Spring_Reference(1)/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Spring_Reference(1)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Spring_Reference(1)/" class="leancloud_visitors" data-flag-title="Introduction to the Spring IoC Container and Beans">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Introduction-to-the-Spring-IoC-Container-and-Beans"><a href="#Introduction-to-the-Spring-IoC-Container-and-Beans" class="headerlink" title="Introduction to the Spring IoC Container and Beans"></a>Introduction to the Spring IoC Container and Beans</h1><p>本章介绍了基于控制反转(IoC)原理的Spring框架实现。IoC也称为依赖注入(dependency injection, DI)。在这个过程中，对象只通过构造函数参数、工厂方法的参数或对象实例在构造或从工厂方法返回后设置的属性来定义它们的依赖关系(也就是说，它们使用的其他对象)。然后容器在创建bean时注入这些依赖项。这个过程从根本上说是bean本身的翻转(因此称为控制反转)，它通过使用类或服务定位器模式等机制的直接构造来控制依赖项的实例化或位置。</p>
+<blockquote>
+<p>这里补充IoC的理解框图</p>
+<p><img src="https://images0.cnblogs.com/blog/289233/201501/261421378318292.jpg" alt="传统应用程序示意图"></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/znZFD3q.jpg" alt=""></p>
+</blockquote>
+<blockquote>
+<p>从这里我们就可以看出，为什么叫做翻转。因为本来客户端负责创建用户类，而现在只需要获取用户类。</p>
+</blockquote>
+<p><code>org.spring.framework.beans</code>和<code>org.springframework.context</code>是Spring Framework IoC容器的基础。<code>BeanFactory</code>接口提供了一种高级配置机制，能够管理任何类型的对象。<code>ApplicationContext</code>是<code>BeanFactory</code>的子接口。它增加了：</p>
+<ul>
+<li>更容易与Spring的AOP特性集成</li>
+<li>消息资源处理</li>
+<li>事件发布</li>
+<li>应用程序层特定的context，例如用于web应用程序的WebApplicationContext。</li>
+</ul>
+<p>简而言之，BeanFactory提供了配置框架和基本功能，而ApplicationContext添加了更多企业特定的功能。ApplicationContext是BeanFactory的一个完整超集，在本章中专门用于描述Spring的IoC容器。有关使用BeanFactory而不是ApplicationContext的更多信息，请参阅BeanFactory。</p>
+<p>在Spring中，构成应用程序主干并由Spring IoC容器管理的对象称为bean。bean是由Spring IoC容器实例化、组装和以其他方式管理的对象。另外，bean只是应用程序中的众多对象之一。bean及其之间的依赖关系反映在容器使用的配置元数据中。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Spring_Reference(4)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Spring_Reference(4)/" itemprop="url">
+                  Dependencies
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-25 19:00:19 / 修改时间：09:45:42" itemprop="dateCreated datePublished" datetime="2018-10-25T19:00:19+08:00">2018-10-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Spring_Reference(4)/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Spring_Reference(4)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Spring_Reference(4)/" class="leancloud_visitors" data-flag-title="Dependencies">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h1><p>一个典型的企业应用程序不包含单个对象(或Spring术语中的bean)。即使是最简单的应用程序，也有一些对象一起工作，以显示最终用户所看到的一致的应用程序。<br>下一节将解释如何从定义独立的许多bean定义过渡到一个完全实现的应用程序，在这个应用程序中，对象协作以实现目标。</p>
+<h2 id="Dependency-Injection"><a href="#Dependency-Injection" class="headerlink" title="Dependency Injection"></a>Dependency Injection</h2><p>依赖注入(Dependency injection)是一个过程，在这个过程中，对象只通过构造函数参数、工厂方法的参数或从工厂方法构造或返回的对象实例上设置的属性来定义它们的依赖关系(也就是说，它们工作的其他对象)。然后容器在创建bean时注入这些依赖项。这个过程本质上是bean本身的翻转(因此称为控制翻转)，它通过使用类或服务定位器模式的直接构造来控制其依赖项的实例化或位置。</p>
+<p>使用DI原则，代码更简洁，当对象具有依赖关系时，解耦更有效。对象不查找依赖项，也不知道依赖项的位置或类。因此，您的类变得更容易测试，特别是当依赖关系是在接口或抽象基类上时，这允许存根或模拟实现在单元测试中使用。</p>
+<p>DI存在于两种主要变体中:基于构造函数的依赖项注入和基于Setter的依赖项注入。</p>
+<h3 id="Constructor-based-Dependency-Injection"><a href="#Constructor-based-Dependency-Injection" class="headerlink" title="Constructor-based Dependency Injection"></a>Constructor-based Dependency Injection</h3><p>基于构造函数的DI由容器调用构造函数来完成，该构造函数有许多参数，每个参数都表示依赖关系。调用带有特定参数的静态工厂方法来构造bean几乎是等价的，本文将把参数类似地处理给构造函数和静态工厂方法。下面的例子展示了一个只能通过构造函数注入依赖注入的类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class SimpleMovieLister &#123;</span><br><span class="line"></span><br><span class="line">    // the SimpleMovieLister has a dependency on a MovieFinder</span><br><span class="line">    private MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    // a constructor so that the Spring container can inject a MovieFinder</span><br><span class="line">    public SimpleMovieLister(MovieFinder movieFinder) &#123;</span><br><span class="line">        this.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // business logic that actually uses the injected MovieFinder is omitted...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，这个类没有什么特别之处。它是一个POJO，不依赖于容器特定的接口、基类或注释。</p>
+<h3 id="Constructor-Argument-Resolution"><a href="#Constructor-Argument-Resolution" class="headerlink" title="Constructor Argument Resolution"></a>Constructor Argument Resolution</h3><p>构造函数参数解析匹配通过使用参数的<strong>类型</strong>来实现。如果bean定义的构造函数参数中不存在潜在的歧义，那么在bean定义中定义构造函数参数的顺序就是在实例化bean时将这些参数提供给适当的构造函数的顺序。考虑以下类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package x.y;</span><br><span class="line"></span><br><span class="line">public class ThingOne &#123;</span><br><span class="line"></span><br><span class="line">    public ThingOne(ThingTwo thingTwo, ThingThree thingThree) &#123;</span><br><span class="line">        // ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设ThingTwo和ThingThree类不通过继承关联，则不存在潜在的歧义。因此，下面的配置可以很好地工作，您不需要在元素<code>&lt;constructor-arg/&gt;</code>中显式指定构造函数参数索引或类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;</span><br><span class="line">    &lt;bean id=&quot;thingOne&quot; class=&quot;x.y.ThingOne&quot;&gt;</span><br><span class="line">        &lt;constructor-arg ref=&quot;thingTwo&quot;/&gt;</span><br><span class="line">        &lt;constructor-arg ref=&quot;thingThree&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;thingTwo&quot; class=&quot;x.y.ThingTwo&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;thingThree&quot; class=&quot;x.y.ThingThree&quot;/&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>当引用另一个bean时，类型是已知的，并且可以进行匹配(就像前面的例子那样)。当使用简单类型(如<value>true</value>)时，Spring无法确定值的类型，因此在没有帮助的情况下无法按类型匹配。考虑以下类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package examples;</span><br><span class="line"></span><br><span class="line">public class ExampleBean &#123;</span><br><span class="line"></span><br><span class="line">    // Number of years to calculate the Ultimate Answer</span><br><span class="line">    private int years;</span><br><span class="line"></span><br><span class="line">    // The Answer to Life, the Universe, and Everything</span><br><span class="line">    private String ultimateAnswer;</span><br><span class="line"></span><br><span class="line">    public ExampleBean(int years, String ultimateAnswer) &#123;</span><br><span class="line">        this.years = years;</span><br><span class="line">        this.ultimateAnswer = ultimateAnswer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Constructor argument type matching</strong></p>
+<p>在前面的场景中，如果使用type属性显式地指定构造函数参数的类型，容器可以使用与简单类型匹配的类型。如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;&gt;</span><br><span class="line">    &lt;constructor-arg type=&quot;int&quot; value=&quot;7500000&quot;/&gt;</span><br><span class="line">    &lt;constructor-arg type=&quot;java.lang.String&quot; value=&quot;42&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>Constructor argument index</strong></p>
+<p>可以使用index属性显式地指定构造函数参数的索引，如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;&gt;</span><br><span class="line">    &lt;constructor-arg index=&quot;0&quot; value=&quot;7500000&quot;/&gt;</span><br><span class="line">    &lt;constructor-arg index=&quot;1&quot; value=&quot;42&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>除了解决多个简单值的模糊性之外，指定索引还可以解决构造函数具有相同类型的两个参数的模糊性问题。</p>
+<blockquote>
+<p>基于0的指数</p>
+</blockquote>
+<p><strong>Constructor argument name</strong></p>
+<p>您还可以使用构造函数参数名来消除值歧义，如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;&gt;</span><br><span class="line">    &lt;constructor-arg name=&quot;years&quot; value=&quot;7500000&quot;/&gt;</span><br><span class="line">    &lt;constructor-arg name=&quot;ultimateAnswer&quot; value=&quot;42&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>请记住，要使这一工作开箱即用，您的代码必须在启用调试标志的情况下进行编译，以便Spring可以从构造函数查找参数名。如果不能或不想使用调试标志编译代码，可以使用@ConstructorProperties JDK注释显式地为构造函数参数命名。然后示例类必须如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package examples;</span><br><span class="line"></span><br><span class="line">public class ExampleBean &#123;</span><br><span class="line"></span><br><span class="line">    // Fields omitted</span><br><span class="line"></span><br><span class="line">    @ConstructorProperties(&#123;&quot;years&quot;, &quot;ultimateAnswer&quot;&#125;)</span><br><span class="line">    public ExampleBean(int years, String ultimateAnswer) &#123;</span><br><span class="line">        this.years = years;</span><br><span class="line">        this.ultimateAnswer = ultimateAnswer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Setter-based-Dependency-Injection"><a href="#Setter-based-Dependency-Injection" class="headerlink" title="Setter-based Dependency Injection"></a>Setter-based Dependency Injection</h3><p>在调用无参数构造函数或无参数静态工厂方法实例化bean之后，容器调用bean上的setter方法就可以实现基于setter的DI。</p>
+<p>下面的示例显示了一个只能通过使用纯setter注入进行依赖注入的类。这个类是常规Java。它是一个POJO，不依赖于容器特定的接口、基类或注释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class SimpleMovieLister &#123;</span><br><span class="line"></span><br><span class="line">    // the SimpleMovieLister has a dependency on the MovieFinder</span><br><span class="line">    private MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    // a setter method so that the Spring container can inject a MovieFinder</span><br><span class="line">    public void setMovieFinder(MovieFinder movieFinder) &#123;</span><br><span class="line">        this.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // business logic that actually uses the injected MovieFinder is omitted...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ApplicationContext为其管理的bean支持基于构造函数和基于setter的DI。在通过构造函数方法注入一些依赖项之后，它还支持基于setter的DI。<br>您可以以BeanDefinition的形式配置依赖关系，并将其与PropertyEditor实例一起使用，以将属性从一种格式转换为另一种格式。然而，大多数Spring用户并不直接使用这些类(即通过编程方式)，而是使用XML bean定义、带注释的组件(即用@Component、@Controller等注释的类)或基于java的@Configuration类中的@Bean方法。然后，这些源在内部转换为BeanDefinition实例，并用于加载整个Spring IoC容器实例。</p>
+<blockquote>
+<h1 id="Constructor-based-or-setter-based-DI"><a href="#Constructor-based-or-setter-based-DI" class="headerlink" title="Constructor-based or setter-based DI?"></a>Constructor-based or setter-based DI?</h1><p>由于可以混合使用基于构造函数和基于setter的DI，因此使用构造函数<strong>处理强制依赖关系</strong>和setter方法或配置方法处理<strong>可选依赖关系</strong>是一个很好的经验法则。注意，在setter方法上使用@Required注释可以使属性成为必需的依赖项。</p>
+</blockquote>
+<blockquote>
+<p>Spring团队通常提倡构造函数注入，因为它允许您将应用程序组件实现为不可变对象，并确保所需的依赖项不为空。此外，构造注入的组件总是以完全初始化的状态返回给客户端(调用)代码。作为补充说明，大量的构造函数参数是一种糟糕的代码味道，这意味着类可能有太多的职责，应该重构，以便更好地处理关注点的适当分离。</p>
+</blockquote>
+<blockquote>
+<p>Setter注入主要应该只用于可选的依赖项，这些依赖项可以在类中分配合理的默认值。否则，在代码使用依赖项的任何地方都必须执行非空检查。setter注入的一个好处是，setter方法使该类的对象可以稍后重新配置或重新注入。因此，通过JMX MBean进行管理是setter注入的一个引人注目的用例。</p>
+</blockquote>
+<blockquote>
+<p>用对特定类最有意义的DI样式。有时候，在处理没有源代码的第三方类时，会为您做出选择。例如，如果第三方类不公开任何setter方法，那么构造函数注入可能是惟一可用的DI形式。</p>
+</blockquote>
+<h3 id="Dependency-Resolution-Process"><a href="#Dependency-Resolution-Process" class="headerlink" title="Dependency Resolution Process"></a>Dependency Resolution Process</h3><p>容器执行以下bean依赖项解析:</p>
+<ul>
+<li>使用描述所有bean的配置元数据创建和初始化ApplicationContext。配置元数据可以由XML、Java代码或注释指定。</li>
+<li>对于每个bean，其依赖关系以属性、构造函数参数或静态工厂方法参数的形式表示(如果使用静态工厂方法而不是普通构造函数)。这些依赖项在bean实际创建时提供给bean。</li>
+<li>每个属性或构造函数参数都是要设置的值的实际定义，或者是对容器中另一个bean的引用。</li>
+<li>值的每个属性或构造函数参数都从其指定格式转换为该属性或构造函数参数的实际类型。默认情况下，Spring可以将字符串格式提供的值转换为所有内置类型，如int、long、string、boolean等。</li>
+</ul>
+<p>在创建容器时，Spring容器验证每个bean的配置。然而，直到真正创建bean时，才会设置bean属性本身。当创建容器时，将<strong>创建单实例作用域</strong>并设置为预实例化的bean(<strong>默认</strong>)。作用域在Bean作用域中定义。否则，只有在请求bean时才会创建它。创建bean可能会导致创建bean的图，因为创建和分配了bean的依赖项及其依赖项(等等)。请注意，这些依赖项之间的解析不匹配可能出现得较晚——即在第一次创建受影响的bean时。</p>
+<p>如果使用主构造函数注入，则可以创建不可解析的循环依赖场景。</p>
+<blockquote>
+<h1 id="Circular-dependencies"><a href="#Circular-dependencies" class="headerlink" title="Circular dependencies"></a>Circular dependencies</h1><p>例如:类A需要通过构造函数注入的类B实例，类B需要通过构造函数注入的类A实例。如果将类A和类B配置为相互注入的bean，那么Spring IoC容器将在运行时检测到此循环引用，并抛出BeanCurrentlyInCreationException。</p>
+</blockquote>
+<blockquote>
+<p>一种可能的解决方案是编辑由setter而不是构造器配置的一些类的源代码。或者，避免构造函数注入，只使用setter注入。换句话说，尽管不建议使用setter注入配置循环依赖项。</p>
+</blockquote>
+<blockquote>
+<p>与典型的情况(没有循环依赖项)不同的是，Bean A和bean B之间的循环依赖项强制在完全初始化自身之前将一个bean注入另一个bean(典型的鸡和蛋的场景)。</p>
+</blockquote>
+<p>您通常可以相信Spring会做正确的事情。它在容器装载时检测配置问题，例如对不存在的bean和循环依赖项的引用。在实际创建bean时，Spring尽可能晚地设置属性并解析依赖关系。这意味着，如果在创建该对象或其依赖项时出现问题，那么在以后请求对象时，正确加载的Spring容器可以生成异常——例如，bean由于丢失或无效属性而抛出异常。<strong>某些配置问题可能会延迟可见性</strong>，这就是为什么ApplicationContext实现在默认情况下预实例化单例bean。<br>在实际需要这些bean之前先花一些时间和内存来创建它们，在创建ApplicationContext时(而不是稍后)，您会发现配置问题。您仍然可以覆盖这个默认行为，以便单例bean能够惰性地初始化，而不是被预先实例化。[问题][1]</p>
+<p>如果不存在循环依赖项，当一个或多个协作bean被注入到依赖bean中时，每个协作bean在被注入到依赖bean之前都被完全配置好了。这意味着，如果bean A依赖于Bean B，那么在调用bean A上的setter方法之前，Spring IoC容器已经完全配置了Bean B。换句话说，bean被实例化(如果它不是一个预先实例化的单例对象)，它的依赖关系被设置，相关的生命周期方法(例如配置的init方法或InitializingBean回调方法)被调用。</p>
+<h3 id="Examples-of-Dependency-Injection"><a href="#Examples-of-Dependency-Injection" class="headerlink" title="Examples of Dependency Injection"></a>Examples of Dependency Injection</h3><p>下面的示例将基于xml的配置元数据用于基于setter的DI。Spring XML配置文件的一小部分指定了一些bean定义，如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;&gt;</span><br><span class="line">    &lt;!-- setter injection using the nested ref element --&gt;</span><br><span class="line">    &lt;property name=&quot;beanOne&quot;&gt;</span><br><span class="line">        &lt;ref bean=&quot;anotherExampleBean&quot;/&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- setter injection using the neater ref attribute --&gt;</span><br><span class="line">    &lt;property name=&quot;beanTwo&quot; ref=&quot;yetAnotherBean&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;integerProperty&quot; value=&quot;1&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;anotherExampleBean&quot; class=&quot;examples.AnotherBean&quot;/&gt;</span><br><span class="line">&lt;bean id=&quot;yetAnotherBean&quot; class=&quot;examples.YetAnotherBean&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的例子显示了相应的ExampleBean类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class ExampleBean &#123;</span><br><span class="line"></span><br><span class="line">    private AnotherBean beanOne;</span><br><span class="line"></span><br><span class="line">    private YetAnotherBean beanTwo;</span><br><span class="line"></span><br><span class="line">    private int i;</span><br><span class="line"></span><br><span class="line">    public void setBeanOne(AnotherBean beanOne) &#123;</span><br><span class="line">        this.beanOne = beanOne;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setBeanTwo(YetAnotherBean beanTwo) &#123;</span><br><span class="line">        this.beanTwo = beanTwo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setIntegerProperty(int i) &#123;</span><br><span class="line">        this.i = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在前面的示例中，声明setter以匹配XML文件中指定的属性。下面的示例使用基于构造函数的DI:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;&gt;</span><br><span class="line">    &lt;!-- constructor injection using the nested ref element --&gt;</span><br><span class="line">    &lt;constructor-arg&gt;</span><br><span class="line">        &lt;ref bean=&quot;anotherExampleBean&quot;/&gt;</span><br><span class="line">    &lt;/constructor-arg&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- constructor injection using the neater ref attribute --&gt;</span><br><span class="line">    &lt;constructor-arg ref=&quot;yetAnotherBean&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;constructor-arg type=&quot;int&quot; value=&quot;1&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;anotherExampleBean&quot; class=&quot;examples.AnotherBean&quot;/&gt;</span><br><span class="line">&lt;bean id=&quot;yetAnotherBean&quot; class=&quot;examples.YetAnotherBean&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的例子显示了相应的ExampleBean类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class ExampleBean &#123;</span><br><span class="line"></span><br><span class="line">    private AnotherBean beanOne;</span><br><span class="line"></span><br><span class="line">    private YetAnotherBean beanTwo;</span><br><span class="line"></span><br><span class="line">    private int i;</span><br><span class="line"></span><br><span class="line">    public ExampleBean(</span><br><span class="line">        AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) &#123;</span><br><span class="line">        this.beanOne = anotherBean;</span><br><span class="line">        this.beanTwo = yetAnotherBean;</span><br><span class="line">        this.i = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>bean定义中指定的构造函数参数用作ExampleBean的构造函数的参数。</p>
+<p>现在考虑这个例子的一个变体，在这个例子中，Spring不是使用构造函数，而是调用静态工厂方法来返回对象的实例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot; factory-method=&quot;createInstance&quot;&gt;</span><br><span class="line">    &lt;constructor-arg ref=&quot;anotherExampleBean&quot;/&gt;</span><br><span class="line">    &lt;constructor-arg ref=&quot;yetAnotherBean&quot;/&gt;</span><br><span class="line">    &lt;constructor-arg value=&quot;1&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;anotherExampleBean&quot; class=&quot;examples.AnotherBean&quot;/&gt;</span><br><span class="line">&lt;bean id=&quot;yetAnotherBean&quot; class=&quot;examples.YetAnotherBean&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的例子显示了相应的ExampleBean类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class ExampleBean &#123;</span><br><span class="line"></span><br><span class="line">    // a private constructor</span><br><span class="line">    private ExampleBean(...) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // a static factory method; the arguments to this method can be</span><br><span class="line">    // considered the dependencies of the bean that is returned,</span><br><span class="line">    // regardless of how those arguments are actually used.</span><br><span class="line">    public static ExampleBean createInstance (</span><br><span class="line">        AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) &#123;</span><br><span class="line"></span><br><span class="line">        ExampleBean eb = new ExampleBean (...);</span><br><span class="line">        // some other operations...</span><br><span class="line">        return eb;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>静态工厂方法的参数由元素提供，与实际使用的构造函数完全相同。工厂方法返回的类的类型不必与包含静态工厂方法的类的类型相同(尽管在本例中是这样)。实例(非静态)工厂方法可以以一种基本相同的方式使用(除了使用factory-bean属性而不是类属性之外)，因此我们在这里不讨论这些细节。</p>
+<blockquote>
+<p>在静态工厂类中的静态方法返回的类可以时任意类型的。</p>
+</blockquote>
+<h2 id="Dependencies-and-Configuration-in-Detail"><a href="#Dependencies-and-Configuration-in-Detail" class="headerlink" title="Dependencies and Configuration in Detail"></a>Dependencies and Configuration in Detail</h2><p>如前一节所述，可以将bean属性和构造函数参数定义为对其他托管bean(协作者)的引用或内联定义的值。为此,Spring基于xml的配置元数据支持其<property>和<construct-arg>元素中的子元素类型。</construct-arg></property></p>
+<h3 id="Straight-Values-Primitives-Strings-and-so-on"><a href="#Straight-Values-Primitives-Strings-and-so-on" class="headerlink" title="Straight Values (Primitives, Strings, and so on)"></a>Straight Values (Primitives, Strings, and so on)</h3><p>元素的value属性将属性或构造函数参数指定为人类可读的字符串表示形式。Spring的转换服务用于将这些值从字符串转换为属性或参数的实际类型。下面的例子显示了正在设置的各种值:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;myDataSource&quot; class=&quot;org.apache.commons.dbcp.BasicDataSource&quot; destroy-method=&quot;close&quot;&gt;</span><br><span class="line">    &lt;!-- results in a setDriverClassName(String) call --&gt;</span><br><span class="line">    &lt;property name=&quot;driverClassName&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mydb&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;password&quot; value=&quot;masterkaoli&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的示例使用p-namespace来实现更简洁的XML配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">    http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;myDataSource&quot; class=&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span><br><span class="line">        destroy-method=&quot;close&quot;</span><br><span class="line">        p:driverClassName=&quot;com.mysql.jdbc.Driver&quot;</span><br><span class="line">        p:url=&quot;jdbc:mysql://localhost:3306/mydb&quot;</span><br><span class="line">        p:username=&quot;root&quot;</span><br><span class="line">        p:password=&quot;masterkaoli&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>前面的XML更简洁。但是，在运行时而不是在设计时发现拼写错误，除非使用支持在创建bean定义时自动完成属性的IDE(如IntelliJ IDEA或Spring工具套件)。强烈建议提供这种IDE援助。</p>
+<p>您还可以配置java.util.Properties实例如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;mappings&quot;</span><br><span class="line">    class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- typed as a java.util.Properties --&gt;</span><br><span class="line">    &lt;property name=&quot;properties&quot;&gt;</span><br><span class="line">        &lt;value&gt;</span><br><span class="line">            jdbc.driver.className=com.mysql.jdbc.Driver</span><br><span class="line">            jdbc.url=jdbc:mysql://localhost:3306/mydb</span><br><span class="line">        &lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>Spring容器通过使用JavaBeans<code>PropertyEditor</code>机制将<value>元素转化为<code>java.util.Properties</code>实例。这是一个很好的快捷方式，也是Spring团队支持使用嵌套元素而不是value属性样式的少数几个地方之一。</value></p>
+<h4 id="The-idref-element"><a href="#The-idref-element" class="headerlink" title="The idref element"></a>The idref element</h4><p>idref元素只是将容器中另一个bean的id(字符串值，而不是引用)传递给&lt;构造函数-arg/&gt;或<property>元素的一种防错方法。</property></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;theTargetBean&quot; class=&quot;...&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;theClientBean&quot; class=&quot;...&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;targetName&quot;&gt;</span><br><span class="line">        &lt;idref bean=&quot;theTargetBean&quot;/&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>前面的bean定义片段与下面的片段完全等价(在运行时):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;theTargetBean&quot; class=&quot;...&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;client&quot; class=&quot;...&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;targetName&quot; value=&quot;theTargetBean&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>第一种形式比第二种更可取，因为使用idref标记可以让容器在部署时验证所引用的命名bean实际存在。在第二个变体中，对传递给客户机bean的targetName属性的值不执行验证。只有当客户机bean实际实例化时，才会发现输入错误(最有可能导致致命的结果)。如果客户机bean是多例，那么这种类型和由此产生的异常可能在部署容器很久之后才会被发现。</p>
+<blockquote>
+<p>4.0 bean XSD不再支持idref元素上的local属性，因为它不再为常规bean引用提供值。升级到4.0架构时，将现有的idref local引用更改为idref bean。</p>
+</blockquote>
+<p>元素带来价值的一个常见地方(至少在Spring 2.0之前的版本中)是ProxyFactoryBean定义中的AOP拦截器配置。在指定拦截器名称时使用元素可以防止对拦截器ID的拼写错误。</p>
+<h3 id="References-to-Other-Beans-Collaborators"><a href="#References-to-Other-Beans-Collaborators" class="headerlink" title="References to Other Beans (Collaborators)"></a>References to Other Beans (Collaborators)</h3><p>ref元素是<construct -arg="">或<property>定义元素中的最后一个元素。在这里，您将bean的指定属性值设置为对容器管理的另一个bean(合作者)的引用。引用的bean是要设置其属性的bean的依赖项，并且在设置属性之前根据需要对其进行初始化(如果合作者是单例bean，则容器可能已经对其进行了初始化)。所有引用最终都是对另一个对象的引用。作用域和验证取决于是否通过bean、本地属性或父属性指定其他对象的ID或名称。</property></construct></p>
+<p>通过<ref>标记的bean属性指定目标bean是最通用的形式，允许创建对相同容器或父容器中的任何bean的引用，而不管它是否在相同的XML文件中。bean属性的值可能与目标bean的id属性相同，也可能与目标bean的name属性中的值相同。下面的例子展示了如何使用ref元素:</ref></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ref bean=&quot;someBean&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>通过父属性指定目标bean将创建对当前容器的父容器中的bean的引用。父属性的值可能与目标bean的id属性或目标bean的name属性中的一个值相同。目标bean必须位于当前bean的父容器中。当您有一个容器层次结构，并且希望使用与父bean同名的代理将现有bean包装在父容器中时，您应该主要使用这个bean引用变体。下面展示如何使用<code>parent</code>属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- in the parent context --&gt;</span><br><span class="line">&lt;bean id=&quot;accountService&quot; class=&quot;com.something.SimpleAccountService&quot;&gt;</span><br><span class="line">    &lt;!-- insert dependencies as required as here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- in the child (descendant) context --&gt;</span><br><span class="line">&lt;bean id=&quot;accountService&quot; &lt;!-- bean name is the same as the parent bean --&gt;</span><br><span class="line">    class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;target&quot;&gt;</span><br><span class="line">        &lt;ref parent=&quot;accountService&quot;/&gt; &lt;!-- notice how we refer to the parent bean --&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- insert other configuration and dependencies as required here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>我们要注意如何引用的parent。</p>
+<h3 id="Inner-Beans"><a href="#Inner-Beans" class="headerlink" title="Inner Beans"></a>Inner Beans</h3><p><bean>元素在<property>或<constructor-arg>元素中定义了一个内部bean，如下例所示:</constructor-arg></property></bean></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;outer&quot; class=&quot;...&quot;&gt;</span><br><span class="line">    &lt;!-- instead of using a reference to a target bean, simply define the target bean inline --&gt;</span><br><span class="line">    &lt;property name=&quot;target&quot;&gt;</span><br><span class="line">        &lt;bean class=&quot;com.example.Person&quot;&gt; &lt;!-- this is the inner bean --&gt;</span><br><span class="line">            &lt;property name=&quot;name&quot; value=&quot;Fiona Apple&quot;/&gt;</span><br><span class="line">            &lt;property name=&quot;age&quot; value=&quot;25&quot;/&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>内部bean定义不需要定义ID或名称。如果指定，容器不会使用这样的值作为标识符。容器在创建时也会忽略范围标志，因为内部bean总是匿名的，并且总是与外部bean一起创建的。不可能独立访问内部bean，也不可能将它们注入协作bean(而不是封闭bean)中。</p>
+<p>一种特例，可以从自定义作用域接收销毁回调——例如，对于单例bean中包含的请求作用域的内部bean。内部bean实例的创建与其包含的bean绑定在一起，但是销毁回调允许它参与请求范围的生命周期。这不是一个常见的场景。内部bean通常只是共享其包含bean的作用域。</p>
+<h3 id="Collections"><a href="#Collections" class="headerlink" title="Collections"></a>Collections</h3><p><list>、<set>、<map>和<props>元素分别设置Java集合类型列表、集合、映射和属性的属性和参数。下面的例子展示了如何使用它们:</props></map></set></list></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;moreComplexObject&quot; class=&quot;example.ComplexObject&quot;&gt;</span><br><span class="line">    &lt;!-- results in a setAdminEmails(java.util.Properties) call --&gt;</span><br><span class="line">    &lt;property name=&quot;adminEmails&quot;&gt;</span><br><span class="line">        &lt;props&gt;</span><br><span class="line">            &lt;prop key=&quot;administrator&quot;&gt;administrator@example.org&lt;/prop&gt;</span><br><span class="line">            &lt;prop key=&quot;support&quot;&gt;support@example.org&lt;/prop&gt;</span><br><span class="line">            &lt;prop key=&quot;development&quot;&gt;development@example.org&lt;/prop&gt;</span><br><span class="line">        &lt;/props&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- results in a setSomeList(java.util.List) call --&gt;</span><br><span class="line">    &lt;property name=&quot;someList&quot;&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">            &lt;value&gt;a list element followed by a reference&lt;/value&gt;</span><br><span class="line">            &lt;ref bean=&quot;myDataSource&quot; /&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- results in a setSomeMap(java.util.Map) call --&gt;</span><br><span class="line">    &lt;property name=&quot;someMap&quot;&gt;</span><br><span class="line">        &lt;map&gt;</span><br><span class="line">            &lt;entry key=&quot;an entry&quot; value=&quot;just some string&quot;/&gt;</span><br><span class="line">            &lt;entry key =&quot;a ref&quot; value-ref=&quot;myDataSource&quot;/&gt;</span><br><span class="line">        &lt;/map&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- results in a setSomeSet(java.util.Set) call --&gt;</span><br><span class="line">    &lt;property name=&quot;someSet&quot;&gt;</span><br><span class="line">        &lt;set&gt;</span><br><span class="line">            &lt;value&gt;just some string&lt;/value&gt;</span><br><span class="line">            &lt;ref bean=&quot;myDataSource&quot; /&gt;</span><br><span class="line">        &lt;/set&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>映射键或值或集值的值也可以是以下任何元素:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bean | ref | idref | list | set | map | props | value | null</span><br></pre></td></tr></table></figure>
+<h4 id="Collection-Merging"><a href="#Collection-Merging" class="headerlink" title="Collection Merging"></a>Collection Merging</h4><p>Spring容器还支持合并集合。应用程序开发人员可以定义父元素<list>、<map>、<set>或<props>元素，并具有子元素<list>、<map>、<set>或<props>元素从父集合继承和覆盖值。也就是说，子集合的值是合并父集合和子集合的元素的结果，子集合元素覆盖父集合中指定的值。</props></set></map></list></props></set></map></list></p>
+<p>Spring容器还支持合并集合。应用程序开发人员可以定义父元素<list>、<map>、<set>或<props>元素，并具有子元素<list>、<map>、<set>或<props>元素从父集合继承和覆盖值。也就是说，子集合的值是合并父集合和子集合的元素的结果，子集合元素覆盖父集合中指定的值。</props></set></map></list></props></set></map></list></p>
+<p>下面的例子演示了集合合并:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;</span><br><span class="line">    &lt;bean id=&quot;parent&quot; abstract=&quot;true&quot; class=&quot;example.ComplexObject&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;adminEmails&quot;&gt;</span><br><span class="line">            &lt;props&gt;</span><br><span class="line">                &lt;prop key=&quot;administrator&quot;&gt;administrator@example.com&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;support&quot;&gt;support@example.com&lt;/prop&gt;</span><br><span class="line">            &lt;/props&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;child&quot; parent=&quot;parent&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;adminEmails&quot;&gt;</span><br><span class="line">            &lt;!-- the merge is specified on the child collection definition --&gt;</span><br><span class="line">            &lt;props merge=&quot;true&quot;&gt;</span><br><span class="line">                &lt;prop key=&quot;sales&quot;&gt;sales@example.com&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;support&quot;&gt;support@example.co.uk&lt;/prop&gt;</span><br><span class="line">            &lt;/props&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;beans&gt;</span><br></pre></td></tr></table></figure>
+<p>注意，在子bean定义的adminemail属性的元素上使用<strong>merge=true</strong>属性。当容器解析并实例化子bean时，生成的实例具有adminEmail属性集合，其中包含将子bean的adminemail集合与父组件的adminemail集合合并的结果。下面的清单显示了结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">administrator=administrator@example.com</span><br><span class="line">sales=sales@example.com</span><br><span class="line">support=support@example.co.uk</span><br></pre></td></tr></table></figure>
+<p>子属性集合的值集继承了来自父元素<props>的所有属性元素，而子元素的支持值覆盖了父集合中的值。<br>这种合并行为同样适用于<list>、<map>和<set>集合类型。在<list>元素的特定情况下，将维护与列表集合类型(即有序值集合的概念)关联的语义。父列表的值在所有子列表的值之前.对于映射、集合和属性集合类型，不存在排序。因此，对于位于容器内部使用的关联映射、集合和属性实现类型之下的集合类型，没有任何排序语义。</list></set></map></list></props></p>
+<h4 id="Limitations-of-Collection-Merging"><a href="#Limitations-of-Collection-Merging" class="headerlink" title="Limitations of Collection Merging"></a>Limitations of Collection Merging</h4><p>不能合并不同的集合类型(例如映射和列表)。如果您确实试图这样做，则会抛出一个适当的异常。merge属性必须在较低的继承子定义上指定。在父集合定义上指定merge属性是多余的，不会导致所需的合并。</p>
+<h4 id="Strongly-typed-collection"><a href="#Strongly-typed-collection" class="headerlink" title="Strongly-typed collection"></a>Strongly-typed collection</h4><p>随着Java 5中泛型类型的引入，您可以使用强类型集合。也就是说，可以声明一个集合类型，使其只能包含(例如)字符串元素。如果使用Spring依赖于将强类型集合注入bean，则可以利用Spring的类型转换支持，以便在添加到集合之前将强类型集合实例的元素转换为适当的类型。下面的Java类和bean定义说明了如何做到这一点:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class SomeClass &#123;</span><br><span class="line"></span><br><span class="line">    private Map&lt;String, Float&gt; accounts;</span><br><span class="line"></span><br><span class="line">    public void setAccounts(Map&lt;String, Float&gt; accounts) &#123;</span><br><span class="line">        this.accounts = accounts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;</span><br><span class="line">    &lt;bean id=&quot;something&quot; class=&quot;x.y.SomeClass&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;accounts&quot;&gt;</span><br><span class="line">            &lt;map&gt;</span><br><span class="line">                &lt;entry key=&quot;one&quot; value=&quot;9.99&quot;/&gt;</span><br><span class="line">                &lt;entry key=&quot;two&quot; value=&quot;2.75&quot;/&gt;</span><br><span class="line">                &lt;entry key=&quot;six&quot; value=&quot;3.99&quot;/&gt;</span><br><span class="line">            &lt;/map&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>当为注入准备好某某bean的accounts属性时，强类型映射的元素类型的泛型信息可以通过反射得到。因此，Spring的类型转换基础结构将各种值元素识别为浮点类型，并将字符串值(9.99、2.75和3.99)转换为实际的浮点类型。</p>
+<h3 id="Null-and-Empty-String-Values"><a href="#Null-and-Empty-String-Values" class="headerlink" title="Null and Empty String Values"></a>Null and Empty String Values</h3><p>Spring将属性等的空参数视为空字符串。以下基于xml的配置元数据片段将email属性设置为空字符串值(“”)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean class=&quot;ExampleBean&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;email&quot; value=&quot;&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>上述示例相当于以下Java代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exampleBean.setEmail(&quot;&quot;);</span><br></pre></td></tr></table></figure>
+<p>元素<null>处理空值。下面的清单显示了一个示例:</null></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean class=&quot;ExampleBean&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;email&quot;&gt;</span><br><span class="line">        &lt;null/&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>上述示例相当于以下Java代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exampleBean.setEmail(null);</span><br></pre></td></tr></table></figure>
+<h3 id="使用p-namespace的XML快捷方式"><a href="#使用p-namespace的XML快捷方式" class="headerlink" title="使用p-namespace的XML快捷方式"></a>使用p-namespace的XML快捷方式</h3><p>p-namespace允许您使用bean元素的属性(而不是嵌套的<property>元素)来描述您的属性值协作bean，或者两者都使用。</property></p>
+<p>Spring支持具有名称空间的可扩展配置格式，名称空间基于XML模式定义。本章讨论的bean配置格式在XML模式文档中被定义。但是，p-namespace不在XSD文件中定义，只存在于Spring的核心中。</p>
+<p>下面的示例显示了两个解析为相同结果的XML片段(第一个使用标准XML格式，第二个使用p-namespace):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean name=&quot;classic&quot; class=&quot;com.example.ExampleBean&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;email&quot; value=&quot;someone@somewhere.com&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean name=&quot;p-namespace&quot; class=&quot;com.example.ExampleBean&quot;</span><br><span class="line">        p:email=&quot;someone@somewhere.com&quot;/&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>这个例子显示了bean定义中称为email的p命名空间中的一个属性。这告诉Spring包含属性声明。如前所述，p-namespace没有模式定义，因此可以将属性名(attribute)设置为成员变量名。</p>
+<p>下一个示例包含另外两个bean定义，它们都引用另一个bean:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean name=&quot;john-classic&quot; class=&quot;com.example.Person&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;John Doe&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;spouse&quot; ref=&quot;jane&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean name=&quot;john-modern&quot;</span><br><span class="line">        class=&quot;com.example.Person&quot;</span><br><span class="line">        p:name=&quot;John Doe&quot;</span><br><span class="line">        p:spouse-ref=&quot;jane&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean name=&quot;jane&quot; class=&quot;com.example.Person&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;name&quot; value=&quot;Jane Doe&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>这个示例不仅包含使用p-namespace的属性值，还使用特殊格式声明属性引用。第一个bean定义使用<property name="spouse" ref="jane">来创建bean john到bean jane的引用，而第二个bean定义使用p:spouse-ref=”jane”作为属性来做同样的事情。在本例中，<code>spouse</code>是属性名，而<code>-ref</code>部分指示这不是一个直接值，而是对另一个bean的引用。</property></p>
+<blockquote>
+<p>p-namespace不像标准XML格式那样灵活。例如，声明属性引用的格式与以Ref结尾的属性冲突，而标准XML格式则不同。我们建议您仔细选择您的方法，并与您的团队成员进行沟通，以避免生成同时使用这三种方法的XML文档。</p>
+</blockquote>
+<h3 id="XML-Shortcut-with-the-c-namespace"><a href="#XML-Shortcut-with-the-c-namespace" class="headerlink" title="XML Shortcut with the c-namespace"></a>XML Shortcut with the c-namespace</h3><p>与使用p-namespace的XML快捷方式类似，Spring 3.1中引入的c-namespace允许内联属性配置构造函数参数，而不是嵌套构造函数-arg元素。</p>
+<p>下面的示例使用<code>c:</code>命名空间来做与基于构造函数的依赖注入相同的事情:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xmlns:c=&quot;http://www.springframework.org/schema/c&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;thingOne&quot; class=&quot;x.y.ThingTwo&quot;/&gt;</span><br><span class="line">    &lt;bean id=&quot;thingTwo&quot; class=&quot;x.y.ThingThree&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- traditional declaration --&gt;</span><br><span class="line">    &lt;bean id=&quot;thingOne&quot; class=&quot;x.y.ThingOne&quot;&gt;</span><br><span class="line">        &lt;constructor-arg ref=&quot;thingTwo&quot;/&gt;</span><br><span class="line">        &lt;constructor-arg ref=&quot;thingThree&quot;/&gt;</span><br><span class="line">        &lt;constructor-arg value=&quot;something@somewhere.com&quot;/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- c-namespace declaration --&gt;</span><br><span class="line">    &lt;bean id=&quot;thingOne&quot; class=&quot;x.y.ThingOne&quot; c:thingTwo-ref=&quot;thingTwo&quot; c:thingThree-ref=&quot;thingThree&quot; c:email=&quot;something@somewhere.com&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>命名空间使用与p: one (bean引用的结尾-ref)相同的约定来设置构造函数参数的名称。同样，需要声明它，即使它没有在XSD模式中定义(它存在于Spring核心中)。</p>
+<p>对于很少出现的构造函数参数名不可用的情况(通常是在编译字节码时没有调试信息的情况下)，您可以使用回退参数索引，如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- c-namespace index declaration --&gt;</span><br><span class="line">&lt;bean id=&quot;thingOne&quot; class=&quot;x.y.ThingOne&quot; c:_0-ref=&quot;thingTwo&quot; c:_1-ref=&quot;thingThree&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>于XML语法的原因，索引符号需要有前导_，因为XML属性名不能以数字开头(尽管某些ide允许这样做)。</p>
+</blockquote>
+<h3 id="Compound-Property-Names"><a href="#Compound-Property-Names" class="headerlink" title="Compound Property Names"></a>Compound Property Names</h3><p>在设置bean属性时，可以使用复合属性名或嵌套属性名，只要路径中除最终属性名之外的所有组件不为空。考虑下面的bean定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;something&quot; class=&quot;things.ThingOne&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;fred.bob.sammy&quot; value=&quot;123&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>something bean有一个fred属性，bob属性，sammy属性，最后的sammy属性被设置为123。为了使其工作，在构建bean之后，fred属性和bob属性必须不为空。否则，将抛出NullPointerException。</p>
+<h2 id="Using-depends-on"><a href="#Using-depends-on" class="headerlink" title="Using depends-on"></a>Using depends-on</h2><p>译文：如果一个bean是另一个bean的依赖关系，这通常意味着一个bean被设置为另一个bean的属性。通常，您可以使用基于xml的配置元数据中的元素来完成此任务。然而，有时候bean之间的依赖关系不那么直接。例如，类中的静态初始化器需要触发，例如数据库驱动程序注册。<strong>依赖属性可以显式地强制在初始化使用此元素的bean之前初始化一个或多个bean</strong>。下面的示例使用depends-on属性来表示对单个属性的依赖性:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;beanOne&quot; class=&quot;ExampleBean&quot; depends-on=&quot;manager&quot;/&gt;</span><br><span class="line">&lt;bean id=&quot;manager&quot; class=&quot;ManagerBean&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>了表示对多个bean的依赖关系，提供一个bean名称列表作为依赖关系属性的值(逗号、空格和分号是有效的分隔符):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;beanOne&quot; class=&quot;ExampleBean&quot; depends-on=&quot;manager,accountDao&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;manager&quot; ref=&quot;manager&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;manager&quot; class=&quot;ManagerBean&quot; /&gt;</span><br><span class="line">&lt;bean id=&quot;accountDao&quot; class=&quot;x.y.jdbc.JdbcAccountDao&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>注意:bean定义中的depends-on属性既可以指定initialization-time关系，也可以指定仅在单例bean中对应的destroy-time依赖关系。定义与给定bean之间依赖关系的依赖bean首先被销毁，然后再销毁给定bean本身。因此，依赖也可以控制关机顺序。</p>
+<blockquote>
+<p>简单说就是调用别的先销毁，然后被调用的在销毁。</p>
+</blockquote>
+<h2 id="Lazy-initialized-Beans"><a href="#Lazy-initialized-Beans" class="headerlink" title="Lazy-initialized Beans"></a>Lazy-initialized Beans</h2><p><strong>默认情况下，ApplicationContext实现在初始化过程中急切地创建和配置所有单例bean。</strong>通常，这种预实例化是可取的，因为配置或周围环境中的错误会立即被发现，而不是几个小时甚至几天之后。</p>
+<p>[1]: 为什么要选择用单例： <a href="https://docs.spring.io/spring/docs/5.1.1.RELEASE/spring-framework-reference/core.html#beans-dependency-resolution" target="_blank" rel="noopener">https://docs.spring.io/spring/docs/5.1.1.RELEASE/spring-framework-reference/core.html#beans-dependency-resolution</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Spring_Reference(2)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Spring_Reference(2)/" itemprop="url">
+                  Container Overview
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-25 18:59:19 / 修改时间：09:44:36" itemprop="dateCreated datePublished" datetime="2018-10-25T18:59:19+08:00">2018-10-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Spring_Reference(2)/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Spring_Reference(2)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Spring_Reference(2)/" class="leancloud_visitors" data-flag-title="Container Overview">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Container-Overview"><a href="#Container-Overview" class="headerlink" title="Container Overview"></a>Container Overview</h1><p><code>org.springframework.context.ApplicationContext</code>接口代表Spring IoC容器，并负责实例化、配置和组装bean。容器通过读取配置元数据获得关于实例化、配置和组装对象的指令。配置元数据用XML、Java注释或Java代码表示。它允许您表达组成应用程序的对象以及这些对象之间的丰富相互依赖关系。</p>
+<p>Spring提供了ApplicationContext接口的几个实现。在独立应用程序中，通常创建<code>ClassPathXmlApplicationContext</code>或<code>FileSystemXmlApplicationContext</code>实例。虽然XML一直是定义配置元数据的传统格式，但您可以通过提供少量XML配置来声明支持这些额外的元数据格式，指示容器使用Java注释或代码作为元数据格式。</p>
+<p>在大多数应用程序场景中，不需要显式用户代码来实例化Spring IoC容器的一个或多个实例。例如，在web应用程序场景中，应用程序的web.xml文件中的8行(或大约8行)样板web描述符XML通常就足够了.</p>
+<p>如果您使用Spring工具套件(一个eclipse驱动的开发环境)，您可以很容易地通过单击鼠标或击键创建这个样板配置。</p>
+<p>下图显示了Spring工作原理的高级视图。您的应用程序类与配置元数据相结合，这样在创建和初始化ApplicationContext之后，您就有了一个完整配置的可执行系统或应用程序。</p>
+<p><img src="https://docs.spring.io/spring/docs/5.1.1.RELEASE/spring-framework-reference/images/container-magic.png" alt="The Spring IoC container"></p>
+<h2 id="Configuration-Metadata"><a href="#Configuration-Metadata" class="headerlink" title="Configuration Metadata"></a>Configuration Metadata</h2><p>如上面的图表所示，Spring IoC容器使用了一种配置元数据的形式。这个配置元数据表示您作为应用程序开发人员如何告诉Spring容器实例化、配置和组装应用程序中的对象。</p>
+<p>配置元数据传统上以简单直观的XML格式提供，这是本章的主要内容，用于传递Spring IoC容器的关键概念和特性。</p>
+<blockquote>
+<p>基于xml的元数据不是配置元数据的唯一允许形式。Spring IoC容器本身与实际编写配置元数据的格式完全分离。现在，许多开发人员为他们的Spring应用程序选择基于java的配置。</p>
+</blockquote>
+<p>有关使用Spring容器的其他元数据形式的信息，请参阅:</p>
+<ul>
+<li>Annotation-based configuration: Spring 2.5引入了对基于注释的配置元数据的支持。</li>
+<li>Java-based configuration: 从Spring 3.0开始，Spring JavaConfig项目提供的许多特性成为核心Spring框架的一部分。因此，您可以通过使用Java而不是XML文件来定义应用程序类外部的bean。要使用这些新特性，请参阅@Configuration、@Bean、@Import和@DependsOn注释。</li>
+</ul>
+<p>Spring配置包含至少一个bean定义，通常是容器必须管理的多个bean定义。基于xml的配置元数据将这些bean配置为顶层元素中的元素。基于xml的配置元数据将这些bean配置为顶层<beans>元素中的<bean>元素。Java配置通常在@Configuration类中使用@ bean注释的方法。</bean></beans></p>
+<p>这些bean定义对应于组成应用程序的实际对象。通常，您可以定义服务层对象、数据访问对象(DAOs)、表示对象(如Struts动作实例)、基础设施对象(如Hibernate SessionFactories)、JMS队列等。通常，在容器中不配置细粒度的域对象，因为创建和加载域对象通常是dao和业务逻辑的责任。但是，您可以使用Spring与AspectJ的集成来配置在IoC容器控制之外创建的对象。</p>
+<p>下面的例子展示了基于xml的配置元数据的基本结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;...&quot; class=&quot;...&quot;&gt;</span><br><span class="line">        &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;...&quot; class=&quot;...&quot;&gt;</span><br><span class="line">        &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- more bean definitions go here --&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li>id:i是标识单个bean定义的字符串。</li>
+<li>class:定义bean的类型并使用完全限定的classname。</li>
+</ul>
+<p>id属性的值引用协作对象。本例中没有显示引用协作对象的XML。有关更多信息，请参见依赖关系。</p>
+<h2 id="Instantiating-a-Container"><a href="#Instantiating-a-Container" class="headerlink" title="Instantiating a Container"></a>Instantiating a Container</h2><p>提供给ApplicationContext构造函数的位置路径或路径是资源字符串，允许容器装载来自各种外部资源(如本地文件系统、Java类路径等)的配置元数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = new ClassPathXmlApplicationContext(&quot;services.xml&quot;, &quot;daos.xml&quot;);</span><br></pre></td></tr></table></figure>
+<p>注意:在了解了Spring的IoC容器之后，您可能想了解更多关于Spring的资源抽象(如参考资料中所述)的内容，它提供了从URI语法中定义的位置读取InputStream的方便机制。特别是，资源路径用于构造应用程序上下文，正如在应用程序上下文和资源路径中描述的那样。</p>
+<p>下面的示例显示了服务层对象(service .xml)配置文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- services --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;petStore&quot; class=&quot;org.springframework.samples.jpetstore.services.PetStoreServiceImpl&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;accountDao&quot; ref=&quot;accountDao&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;itemDao&quot; ref=&quot;itemDao&quot;/&gt;</span><br><span class="line">        &lt;!-- additional collaborators and configuration for this bean go here --&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- more bean definitions for services go here --&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的示例显示了数据访问对象daos.xml文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;accountDao&quot;</span><br><span class="line">        class=&quot;org.springframework.samples.jpetstore.dao.jpa.JpaAccountDao&quot;&gt;</span><br><span class="line">        &lt;!-- additional collaborators and configuration for this bean go here --&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;itemDao&quot; class=&quot;org.springframework.samples.jpetstore.dao.jpa.JpaItemDao&quot;&gt;</span><br><span class="line">        &lt;!-- additional collaborators and configuration for this bean go here --&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- more bean definitions for data access objects go here --&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>在前面的示例中，服务层包含PetStoreServiceImpl类和JpaAccountDao和JpaItemDao类型的两个数据访问对象(基于JPA对象关系映射标准)。</p>
+<p>属性名称元素引用JavaBean属性的名称，ref元素引用另一个bean定义的名称。id和ref元素之间的链接表示协作对象之间的依赖关系。有关配置对象依赖项的详细信息，请参阅依赖项。</p>
+<h3 id="Composing-XML-based-Configuration-Metadata"><a href="#Composing-XML-based-Configuration-Metadata" class="headerlink" title="Composing XML-based Configuration Metadata"></a>Composing XML-based Configuration Metadata</h3><p>让bean定义跨越多个XML文件可能很有用。通常，每个XML配置文件都代表体系结构中的逻辑层或模块。</p>
+<p>您可以使用Application context构造函数从所有这些XML片段加载bean定义。此构造函数接受多个资源位置，如前一节所示。或者，使用一个或多个元素来从另一个或多个文件加载bean定义。下面的例子展示了如何做到这一点:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;</span><br><span class="line">    &lt;import resource=&quot;services.xml&quot;/&gt;</span><br><span class="line">    &lt;import resource=&quot;resources/messageSource.xml&quot;/&gt;</span><br><span class="line">    &lt;import resource=&quot;/resources/themeSource.xml&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;bean1&quot; class=&quot;...&quot;/&gt;</span><br><span class="line">    &lt;bean id=&quot;bean2&quot; class=&quot;...&quot;/&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>在前面的示例中，外部bean定义从三个文件加载:service.xml,messageSource.xml和themeSource.xml。</p>
+<p>所有位置路径都相对于执行导入操作的定义文件，因此是service.xml必须与执行导入的文件位于相同的目录或classpath位置，而messageSource.xml和themeSource.xml必须位于导入文件位置下方的resources位置。如您所见，前导斜杠被忽略。但是，考虑到这些路径是相对的，最好不要使用斜杠。根据Spring模式，导入的文件的内容，包括顶层元素，必须是有效的XML bean定义。</p>
+<blockquote>
+<p>可以，但不推荐，引用文件在父目录使用一个相对”../”路径。这样做会对当前应用程序之外的文件创建依赖关系。特别是，不建议将此引用用于classpath: URLs(例如，classpath:../services.xml)，其中运行时解析过程选择“最近的”classpath根目录，然后查看它的父目录。类路径配置更改可能导致选择不同的、不正确的目录。</p>
+<p>您总是可以使用完全限定的资源位置而不是相对路径:例如，文件:C:/config/services。xml或者类路径:/配置/ services . xml。但是，请注意，您正在将应用程序的配置耦合到特定的绝对位置。对于这样的绝对位置，通常最好保持间接——例如，通过在运行时针对JVM系统属性解析的“${…}”占位符。</p>
+</blockquote>
+<p>命名空间本身支持import directive特性。在Spring提供的XML名称空间(例如context和util名称空间)中，除了普通bean定义之外，还有其他配置特性。</p>
+<h3 id="The-Groovy-Bean-Definition-DSL"><a href="#The-Groovy-Bean-Definition-DSL" class="headerlink" title="The Groovy Bean Definition DSL"></a>The Groovy Bean Definition DSL</h3><p>作为外部化配置元数据的进一步示例，bean定义也可以在Spring的Groovy bean定义DSL中表示，从Grails框架中可以知道这一点。通常，这样的配置位于”.groovy”中。结构如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">beans &#123;</span><br><span class="line">    dataSource(BasicDataSource) &#123;</span><br><span class="line">        driverClassName = &quot;org.hsqldb.jdbcDriver&quot;</span><br><span class="line">        url = &quot;jdbc:hsqldb:mem:grailsDB&quot;</span><br><span class="line">        username = &quot;sa&quot;</span><br><span class="line">        password = &quot;&quot;</span><br><span class="line">        settings = [mynew:&quot;setting&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    sessionFactory(SessionFactory) &#123;</span><br><span class="line">        dataSource = dataSource</span><br><span class="line">    &#125;</span><br><span class="line">    myService(MyService) &#123;</span><br><span class="line">        nestedBean = &#123; AnotherBean bean -&gt;</span><br><span class="line">            dataSource = dataSource</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种配置样式基本上与XML bean定义等价，甚至支持Spring的XML配置名称空间。它还允许通过importBeans指令导入XML bean定义文件。</p>
+<h3 id="Using-the-Container"><a href="#Using-the-Container" class="headerlink" title="Using the Container"></a>Using the Container</h3><p>ApplicationContext是一个高级工厂的接口，能够维护不同bean及其依赖项的注册表。通过使用方法T getBean(String name, Class<t> requiredType)，您可以获取bean的实例。</t></p>
+<p>ApplicationContext允许您读取bean定义并访问它们，如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// create and configure beans</span><br><span class="line">ApplicationContext context = new ClassPathXmlApplicationContext(&quot;services.xml&quot;, &quot;daos.xml&quot;);</span><br><span class="line"></span><br><span class="line">// retrieve configured instance</span><br><span class="line">PetStoreService service = context.getBean(&quot;petStore&quot;, PetStoreService.class);</span><br><span class="line"></span><br><span class="line">// use configured instance</span><br><span class="line">List&lt;String&gt; userList = service.getUsernameList();</span><br></pre></td></tr></table></figure>
+<p>使用Groovy配置，bootstrapping看起来非常相似。它有一个不同的context实现类，它支持groovy-aware(但也理解XML bean定义)。下面的示例展示了Groovy配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = new GenericGroovyApplicationContext(&quot;services.groovy&quot;, &quot;daos.groovy&quot;);</span><br></pre></td></tr></table></figure>
+<p>最灵活的变体是GenericApplicationContext和reader delegate相结合——例如，XmlBeanDefinitionReader用于XML文件，如下示例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GenericApplicationContext context = new GenericApplicationContext();</span><br><span class="line">new XmlBeanDefinitionReader(context).loadBeanDefinitions(&quot;services.xml&quot;, &quot;daos.xml&quot;);</span><br><span class="line">context.refresh();</span><br></pre></td></tr></table></figure>
+<p>您还可以为Groovy文件使用GroovyBeanDefinitionReader，如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GenericApplicationContext context = new GenericApplicationContext();</span><br><span class="line">new GroovyBeanDefinitionReader(context).loadBeanDefinitions(&quot;services.groovy&quot;, &quot;daos.groovy&quot;);</span><br><span class="line">context.refresh();</span><br></pre></td></tr></table></figure>
+<p>您可以在相同的ApplicationContext上混合并匹配这样的读取器委托，从不同的配置源读取bean定义。</p>
+<p>然后，可以使用getBean检索bean的实例。ApplicationContext接口有一些用于检索bean的其他方法，但理想情况下，应用程序代码不应该使用它们。实际上，您的应用程序代码根本不应该调用getBean()方法，因此根本不需要依赖Spring api。例如，Spring与web框架的集成为各种web框架组件(如控制器和jsf管理的bean)提供了依赖注入，允许您通过元数据(如自动连接注释)声明对特定bean的依赖</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Spring_Reference(3)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Spring_Reference(3)/" itemprop="url">
+                  Bean Overview
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-25 18:59:19 / 修改时间：09:45:06" itemprop="dateCreated datePublished" datetime="2018-10-25T18:59:19+08:00">2018-10-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/25/Spring_Reference(3)/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/25/Spring_Reference(3)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Spring_Reference(3)/" class="leancloud_visitors" data-flag-title="Bean Overview">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Bean-Overview"><a href="#Bean-Overview" class="headerlink" title="Bean Overview"></a>Bean Overview</h1><p>Spring IoC容器管理一个或多个bean。这些bean是使用提供给容器的配置元数据创建的(例如，XML 定义的形式)。</p>
+<p>在容器本身中，这些bean定义被表示为<code>BeanDefinition</code>对象，其中包含以下元数据(以及其他信息):</p>
+<ul>
+<li>包限定类名:通常是定义的bean的实际实现类。</li>
+<li>Bean行为配置元素，它说明Bean在容器中的行为(范围、生命周期回调等等)。</li>
+<li>对bean执行其工作所需的其他bean的引用。这些引用也称为协作者或依赖关系。</li>
+<li>在新创建的对象中要设置的其他配置设置——例如，池的大小限制或管理连接池的bean中要使用的连接数。</li>
+</ul>
+<p>此元数据转换为组成每个bean定义的一组属性。下表描述了这些属性:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Explained in…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Class</td>
+<td>实例化Bean</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>命名Beans</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Bean生成期</td>
+</tr>
+<tr>
+<td>Contructor arguments</td>
+<td>依赖注入</td>
+</tr>
+<tr>
+<td>Properties</td>
+<td>依赖注入</td>
+</tr>
+<tr>
+<td>Autowiring mode</td>
+<td>自动装配合作者</td>
+</tr>
+<tr>
+<td>Lazy initialization mdoe</td>
+<td>初始化回调</td>
+</tr>
+<tr>
+<td>Destruction method</td>
+<td>毁坏回调</td>
+</tr>
+</tbody>
+</table>
+<p>除了包含关于如何创建特定bean的信息的bean定义之外，ApplicationContext实现还允许注册容器之外创建的现有对象(由用户创建)。<br>通过getBeanFactory()方法访问ApplicationContext的BeanFactory，该方法返回BeanFactory DefaultListableBeanFactory实现。DefaultListableBeanFactory通过registerSingleton(..)和registerBeanDefinition(..)方法支持此注册。但是，典型的应用程序只使用通过元数据bean定义定义的bean。</p>
+<blockquote>
+<p>Bean元数据和手动提供的单例实例需要尽早注册，以便容器在自动连接和其他自省步骤期间正确地推断它们。虽然在一定程度上支持覆盖现有的元数据和现有的单例实例，但是在运行时注册新bean(与对工厂的实时访问同时进行)并没有得到正式支持，并且可能导致并发访问异常、bean容器中的不一致状态，或者两者都有。</p>
+</blockquote>
+<h2 id="Naming-Beans"><a href="#Naming-Beans" class="headerlink" title="Naming Beans"></a>Naming Beans</h2><p>每个bean都有一个或多个标识符。这些标识符在承载bean的容器中必须是唯一的。bean通常只有一个标识符。但是，如果需要一个以上的别名，则可以将额外的别名看作别名。</p>
+<p>在基于xml的配置元数据中，可以使用id属性、name属性或两者来指定bean标识符。id属性允许您指定一个id。按照惯例，这些名称是字母数字(“myBean”、“someService”等)，但它们也可以包含特殊字符。如果希望为bean引入其他别名，还可以在name属性中指定它们，用逗号(、)、分号(;)或空格分隔。作为历史记录，在Spring 3.1之前的版本中，id属性被定义为xsd: id类型，这限制了可能的字符。在3.1中，它被定义为xsd:string类型。请注意，bean id惟一性仍然由容器强制执行，但不再由XML解析器强制执行。</p>
+<p>您不需要为bean提供名称或id。如果没有显式地提供名称或id，容器将为该bean生成唯一的名称。但是，如果希望通过引用ref元素或服务定位器样式查找来引用bean的名称，则必须提供名称。<strong>不提供名称的动机与使用内部bean和自动连接合作者有关。</strong></p>
+<blockquote>
+<h1 id="Bean-命名约定"><a href="#Bean-命名约定" class="headerlink" title="Bean 命名约定"></a>Bean 命名约定</h1><p>约定是在命名bean时使用标准Java约定作为实例字段名。也就是说，bean名称以小写字母开头，然后以驼色大小写字母开头。这些名字的例子包括accountManager，accountService, userDao, loginController, 等等。</p>
+</blockquote>
+<blockquote>
+<p>一致地命名bean使您的配置更容易阅读和理解。另外，如果您使用Spring AOP，那么在向一组名称相关的bean应用建议时，它会有很大帮助。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>注：通过类路径中的组件扫描，Spring为未命名的组件生成bean名称，遵循前面描述的规则:本质上，使用简单的类名并将其初始字符转换为小写。然而，在(不寻常的)特殊情况下，当有一个以上的字符，并且第一和第二字符都是大写字母时，原始的大小写保留。这些规则与<br><code>java.beans.Introspector.decapitalize</code>(此处使用Spring)定义的规则相同。</p>
+</blockquote>
+<h3 id="Aliasing-a-Bean-outside-the-Bean-Definition"><a href="#Aliasing-a-Bean-outside-the-Bean-Definition" class="headerlink" title="Aliasing a Bean outside the Bean Definition"></a>Aliasing a Bean outside the Bean Definition</h3><p>在bean定义本身中，通过使用id属性指定的最多一个名称和name属性中任意数量的其他名称的组合，可以为bean提供多个名称。这些名称可以等效于同一bean的别名，并且在某些情况下非常有用，例如让应用程序中的每个组件通过使用特定于该组件本身的bean名称引用公共依赖项。</p>
+<p>然而，指定bean实际定义的所有别名并不总是足够的。<br>有时需要为其他地方定义的bean引入别名。在大型系统中，配置通常在每个子系统之间进行分配，每个子系统都有自己的一组对象定义。在基于xml的配置元数据中，可以使用元素来完成此任务。下面的例子展示了如何做到这一点:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;alias name=&quot;fromName&quot; alias=&quot;toName&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，命名为fromName的bean(在同一个容器中)也可以在使用这个别名定义之后称为toName。<br>例如，子系统A的配置元数据可以通过subsystemA-dataSource的名称引用数据源。子系统B的配置元数据可以通过subsystemB-dataSource的名称引用数据源。在组合使用这两个子系统的主应用程序时，主应用程序以myApp-dataSource的名称引用数据源。要使所有三个名称都指向同一个对象，可以向配置元数据添加以下别名定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;alias name=&quot;subsystemA-dataSource&quot; alias=&quot;subsystemB-dataSource&quot;/&gt;</span><br><span class="line">&lt;alias name=&quot;subsystemA-dataSource&quot; alias=&quot;myApp-dataSource&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>现在，每个组件和主应用程序都可以通过唯一的名称引用数据源，并且保证不会与任何其他定义冲突(有效地创建名称空间)，但是它们引用的是同一个bean。</p>
+<blockquote>
+<h1 id="Java-Configuration"><a href="#Java-Configuration" class="headerlink" title="Java-Configuration"></a>Java-Configuration</h1><p>如果使用Javaconfiguration，那么可以使用@Bean注释来提供别名。有关详细信息，请参阅使用@Bean注释。</p>
+</blockquote>
+<h3 id="Instantiating-Beans"><a href="#Instantiating-Beans" class="headerlink" title="Instantiating Beans"></a>Instantiating Beans</h3><p>bean定义本质上是创建一个或多个对象的配方。容器在请求时查看命名bean的配方，并使用该bean定义封装的配置元数据来创建(或获取)实际对象。</p>
+<p>如果使用基于xml的配置元数据，则指定要在元素<bean>的class属性中实例化的对象的类型(或类)。这个类属性(在内部是BeanDefinition实例上的类属性)通常是强制的。(对于异常，请参阅使用实例工厂方法和Bean定义继承进行实例化。)您可以通过以下两种方式之一来使用类属性:</bean></p>
+<ul>
+<li>通常，在容器本身通过反射性地调用其构造函数直接创建bean的情况下，指定要构造的bean类，这在某种程度上类似于使用new操作符的Java代码。</li>
+<li>在不太常见的情况下，在容器调用类上的静态工厂方法来创建bean时，指定包含用于创建对象的静态工厂方法的实际类。从静态工厂方法调用返回的对象类型可能完全是同一个类或另一个类。</li>
+</ul>
+<blockquote>
+<p>Inner class names<br>如果要为静态嵌套类配置bean定义，则必须使用嵌套类的二进制名称。</p>
+</blockquote>
+<blockquote>
+<p>例如，如果在com.example中有一个名为SomeThing的类。这个SomeThing类有一个名为OtherThing的静态嵌套类，bean定义上的class属性的值应该是com.example.SomeThing$OtherThing。</p>
+</blockquote>
+<blockquote>
+<p>注意，在名称中使用$字符将嵌套类名称与外部类名称分隔开来。</p>
+</blockquote>
+<h3 id="Instantiation-with-a-Constructor"><a href="#Instantiation-with-a-Constructor" class="headerlink" title="Instantiation with a Constructor"></a>Instantiation with a Constructor</h3><p>当您使用构造函数方法创建bean时，所有普通类都可以使用，并且与Spring兼容。也就是说，正在开发的类不需要实现任何特定的接口或以特定的方式进行编码。简单地<strong>指定</strong>bean类就足够了。然而，根据对特定bean使用的IoC类型的不同，您可能<strong>需要一个默认(空)构造函数</strong>。</p>
+<p>Spring IoC容器实际上<strong>可以管理您希望它管理的任何类</strong>。它不限于管理真正的JavaBeans。大多数Spring用户更喜欢实际的javaBeans，只有一个默认的(无参数的)构造函数，以及根据容器中的属性建模的适当的setter和getter。您还可以在容器中拥有更多具有外来的非bean风格的类。例如，如果您需要使用一个完全不遵守JavaBean规范的遗留连接池，Spring也可以对其进行管理。</p>
+<p>使用基于xml的配置元数据，您可以如下所示指定bean类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean name=&quot;anotherExample&quot; class=&quot;examples.ExampleBeanTwo&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>有关向构造函数提供参数(如果需要)和在构造对象之后设置对象实例属性的机制的详细信息，请参见注入依赖项。</p>
+<h3 id="Instantiation-with-a-Static-Factory-Method"><a href="#Instantiation-with-a-Static-Factory-Method" class="headerlink" title="Instantiation with a Static Factory Method"></a>Instantiation with a Static Factory Method</h3><p>在定义使用静态工厂方法创建的bean时，使用class属性指定包含静态工厂方法的类和名为factory-method的属性来指定工厂方法本身的名称。您应该能够调用这个方法(使用可选参数，稍后将进行描述)，并返回一个活动对象，该对象随后将被视为通过构造函数创建的对象。这种bean定义的一种用法是在遗留代码中调用静态工厂。</p>
+<p>下面的bean定义指定通过调用工厂方法创建bean。定义没有指定返回对象的类型(类)，只指定包含工厂方法的类。在本例中，createInstance()方法必须是一个静态方法。下面的例子展示了如何指定工厂方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;clientService&quot;</span><br><span class="line">    class=&quot;examples.ClientService&quot;</span><br><span class="line">    factory-method=&quot;createInstance&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的示例显示了一个将与前面的bean定义一起工作的类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class ClientService &#123;</span><br><span class="line">    private static ClientService clientService = new ClientService();</span><br><span class="line">    private ClientService() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    public static ClientService createInstance() &#123;</span><br><span class="line">        return clientService;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有关向工厂方法提供(可选的)参数以及在从工厂返回对象后设置对象实例属性的机制的详细信息，请参阅依赖项和配置的详细信息。</p>
+<h3 id="Instantiation-by-Using-an-Instance-Factory-Method"><a href="#Instantiation-by-Using-an-Instance-Factory-Method" class="headerlink" title="Instantiation by Using an Instance Factory Method"></a>Instantiation by Using an Instance Factory Method</h3><p>与通过静态工厂方法实例化类似，使用实例工厂方法实例化从容器调用现有bean的非静态方法来创建新的bean。要使用这种机制，请保持<strong>类属性为空</strong>，并在factory-bean属性中指定当前(或父或祖先)容器中的bean的名称，该容器包含要调用来创建对象的实例方法。使用工厂方法属性设置工厂方法本身的名称。下面的示例展示了如何配置这样的bean:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- the factory bean, which contains a method called createInstance() --&gt;</span><br><span class="line">&lt;bean id=&quot;serviceLocator&quot; class=&quot;examples.DefaultServiceLocator&quot;&gt;</span><br><span class="line">    &lt;!-- inject any dependencies required by this locator bean --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- the bean to be created via the factory bean --&gt;</span><br><span class="line">&lt;bean id=&quot;clientService&quot;</span><br><span class="line">    factory-bean=&quot;serviceLocator&quot;</span><br><span class="line">    factory-method=&quot;createClientServiceInstance&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的例子显示了相应的Java类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultServiceLocator &#123;</span><br><span class="line"></span><br><span class="line">    private static ClientService clientService = new ClientServiceImpl();</span><br><span class="line"></span><br><span class="line">    public ClientService createClientServiceInstance() &#123;</span><br><span class="line">        return clientService;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个工厂类也可以容纳多个工厂方法，如下例所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;serviceLocator&quot; class=&quot;examples.DefaultServiceLocator&quot;&gt;</span><br><span class="line">    &lt;!-- inject any dependencies required by this locator bean --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;clientService&quot;</span><br><span class="line">    factory-bean=&quot;serviceLocator&quot;</span><br><span class="line">    factory-method=&quot;createClientServiceInstance&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;accountService&quot;</span><br><span class="line">    factory-bean=&quot;serviceLocator&quot;</span><br><span class="line">    factory-method=&quot;createAccountServiceInstance&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>下面的例子显示了相应的Java类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultServiceLocator &#123;</span><br><span class="line"></span><br><span class="line">    private static ClientService clientService = new ClientServiceImpl();</span><br><span class="line"></span><br><span class="line">    private static AccountService accountService = new AccountServiceImpl();</span><br><span class="line"></span><br><span class="line">    public ClientService createClientServiceInstance() &#123;</span><br><span class="line">        return clientService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public AccountService createAccountServiceInstance() &#123;</span><br><span class="line">        return accountService;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法表明，可以通过依赖注入(dependency injection)对工厂bean本身进行管理和配置。请参阅详细的依赖关系和配置。</p>
+<blockquote>
+<p>在Spring文档中，”factory bean”指的是在Spring容器中配置并通过实例或静态工厂方法创建对象的bean。相比之下，FactoryBean(注意大写)指特定于spring的FactoryBean。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/Springr学习笔记3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1640,180 +2641,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/28/JavaApi学习记录——NIO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Joliu">
-      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="NinWoo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/28/JavaApi学习记录——NIO/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-28 17:45:41" itemprop="dateCreated datePublished" datetime="2018-09-28T17:45:41+08:00">2018-09-28</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-09-21 13:27:27" itemprop="dateModified" datetime="2018-09-21T13:27:27+08:00">2018-09-21</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/28/JavaApi学习记录——NIO/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/28/JavaApi学习记录——NIO/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/09/28/JavaApi学习记录——NIO/" class="leancloud_visitors" data-flag-title="">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Java1.4 NIO<br><a href="https://www.ibm.com/developerworks/cn/education/java/j-nio/j-nio.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/education/java/j-nio/j-nio.html</a></p>
-<p>Java8 流操作，数据迭代器<br><a href="https://www.jb51.net/article/138519.htm" target="_blank" rel="noopener">https://www.jb51.net/article/138519.htm</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/28/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1980,755 +2807,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/docker-openvswitch网络手动配置教程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Joliu">
-      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="NinWoo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/14/docker-openvswitch网络手动配置教程/" itemprop="url">
-                  docker+openvswitch网络手动配置教程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-14 18:57:19 / 修改时间：18:57:59" itemprop="dateCreated datePublished" datetime="2018-09-14T18:57:19+08:00">2018-09-14</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/14/docker-openvswitch网络手动配置教程/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/14/docker-openvswitch网络手动配置教程/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/09/14/docker-openvswitch网络手动配置教程/" class="leancloud_visitors" data-flag-title="docker+openvswitch网络手动配置教程">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Auther: joliu <a href="mailto:&#108;&#106;&#111;&#x30;&#52;&#x31;&#x32;&#64;&#x6c;&#x69;&#118;&#101;&#x2e;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#108;&#106;&#111;&#x30;&#52;&#x31;&#x32;&#64;&#x6c;&#x69;&#118;&#101;&#x2e;&#99;&#x6f;&#x6d;</a></p>
-<ul>
-<li>OpenFlow<ul>
-<li>basic knowlege</li>
-</ul>
-</li>
-<li>OVS command<ul>
-<li>how to add flow table to open vSwitch</li>
-<li>how to bind dockers to vSwitch</li>
-</ul>
-</li>
-</ul>
-<h2 id="Install-ovs-and-mininet"><a href="#Install-ovs-and-mininet" class="headerlink" title="Install ovs and mininet"></a>Install ovs and mininet</h2><p><a href="http://lukehinds.com/2016/04/21/building-openvswitch-2-50-on-centos7.html" target="_blank" rel="noopener">learn details about this</a></p>
-<h2 id="Install-Docker"><a href="#Install-Docker" class="headerlink" title="Install Docker"></a>Install Docker</h2><p>Use DaoCloud accelerator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure></p>
-<p>Change Docker registry to Aliyun</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://i0ewwmct.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<h2 id="Get-Basic-Docker-Image"><a href="#Get-Basic-Docker-Image" class="headerlink" title="Get Basic Docker Image"></a>Get Basic Docker Image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull alpine</span><br></pre></td></tr></table></figure>
-<h2 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h2><p>Create Three Container</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -i --name RouterA --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterB --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterC --net=none --privileged alpine sh</span><br></pre></td></tr></table></figure>
-<p>Check Containers’ Status</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES</span><br><span class="line">37b9ca888f03        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterC</span><br><span class="line">f1604beb380f        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterB</span><br><span class="line">3b3c52c5a582        alpine              &quot;sh&quot;                3 minutes ago        Up 3 minutes</span><br></pre></td></tr></table></figure>
-<p>Create Virtual Network Bridge</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl add-br vnbr</span><br></pre></td></tr></table></figure>
-<p>Set Protocols</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl set bridge br0 protocols=OpenFlow13</span><br></pre></td></tr></table></figure>
-<p>Check the brige is added</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
-<p>Add Network Port</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-docker add-port vnbr eth0 RouterA --ipaddress=&quot;10.0.1.1/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterB --ipaddress=&quot;10.0.1.2/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterC --ipaddress=&quot;10.0.3.1&quot;</span><br></pre></td></tr></table></figure>
-<p>Check The Status of vnbr</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
-<p>Set OpenFlow Port ID</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set interface facad1a218c64_l ofport_request=100</span><br><span class="line">sudo ovs-vsctl set interface d48d429fe1894_l ofport_request=200</span><br><span class="line">sudo ovs-vsctl set interface 12437ccb4eab4_l ofport_request=300</span><br></pre></td></tr></table></figure>
-<p>Connect to ODL Controller</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set-controller vnbr tcp:127.0.0.1:6633</span><br></pre></td></tr></table></figure>
-<p>Check the Connections with Controller</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Controller &quot;tcp:127.0.0.1:6633&quot;</span><br><span class="line">            is_connected: true</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
-<p>Test the connection between the two host By PING</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
-<p>Generally, they cannot connect with the other.</p>
-<p>Add Flows</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=1 idle_timeout=0,in_port=1,actions=output:2&quot;</span><br><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=2 idle_timeout=0,in_port=1,actions=output:1&quot;</span><br></pre></td></tr></table></figure>
-<p>Get the Flows from vSwitch</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-ofctl -O OpenFlow13 dump-flows vnbr</span><br></pre></td></tr></table></figure>
-<p>Test Again.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
-<p>Example of the successful result.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[master@MiWiFi-R3-srv ~]$ sudo docker exec -it RouterA ping -c 4 10.0.1.2</span><br><span class="line">PING 10.0.1.2 (10.0.1.2): 56 data bytes</span><br><span class="line">64 bytes from 10.0.1.2: seq=0 ttl=64 time=0.062 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=1 ttl=64 time=0.061 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=2 ttl=64 time=0.086 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=3 ttl=64 time=0.078 ms</span><br><span class="line"></span><br><span class="line">--- 10.0.1.2 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max = 0.061/0.071/0.086 ms</span><br></pre></td></tr></table></figure>
-<p>Start karaf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feature:install odl-restconf odl-l2switch-switch odl-mdsal-apidocs odl-dlux-all</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/使用Hexo搭建好看的博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Joliu">
-      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="NinWoo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/12/使用Hexo搭建好看的博客/" itemprop="url">
-                  使用Hexo搭建好看的博客
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-12 22:24:38" itemprop="dateCreated datePublished" datetime="2018-09-12T22:24:38+08:00">2018-09-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-14 22:07:48" itemprop="dateModified" datetime="2018-10-14T22:07:48+08:00">2018-10-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/12/使用Hexo搭建好看的博客/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/12/使用Hexo搭建好看的博客/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/09/12/使用Hexo搭建好看的博客/" class="leancloud_visitors" data-flag-title="使用Hexo搭建好看的博客">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><p>访问<a href="https://link.zhihu.com/?target=https%3A//nodejs.org/en/download/" target="_blank" rel="noopener">Node.js</a>官网下载安装包。</p>
-<p>下载完成后，点击安装。打开CMD查看是否安装成功。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\ljo04&gt;node -v</span><br><span class="line">v8.12.0</span><br><span class="line"></span><br><span class="line">C:\Users\ljo04&gt;npm -v</span><br><span class="line">6.4.1</span><br></pre></td></tr></table></figure>
-<p>如果上述命令均正常通过，则安装完成。</p>
-<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><ol>
-<li>创建一个新的文件夹作为Hexo的开发目录，这里我命名为Hexo_project</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project&gt;mkdir Hexo_project</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>使用npm安装Hexo</li>
-</ol>
-<p>为了提高安装速度，先配置淘宝npm镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<p>安装Hexo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>初始化hexo</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;hexo init blog</span><br><span class="line">INFO  Cloning hexo-starter to E:\project\Hexo_project\blog</span><br><span class="line">Cloning into &apos;E:\project\Hexo_project\blog&apos;...</span><br><span class="line">remote: Counting objects: 68, done.</span><br><span class="line">remote: Total 68 (delta 0), reused 0 (delta 0), pack-reused 67</span><br><span class="line">Unpacking objects: 100% (68/68), done.</span><br><span class="line">Submodule &apos;themes/landscape&apos; (https://github.com/hexojs/hexo-theme-landscape.git) registered for path &apos;themes/landscape&apos;</span><br><span class="line">Cloning into &apos;E:/project/Hexo_project/blog/themes/landscape&apos;...</span><br><span class="line">remote: Counting objects: 838, done.</span><br><span class="line">remote: Compressing objects: 100% (6/6), done.</span><br><span class="line">Receiving objects:  26% (222/838), 292.01 KiB | 88.00 KiB/s</span><br></pre></td></tr></table></figure>
-<p>这个过程可能需要等待一阵时间</p>
-<ol start="4">
-<li>测试站点是否创建成功</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 创建一篇博客test</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo n test</span><br><span class="line"></span><br><span class="line"># 生成博客</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line"></span><br><span class="line"># 启动服务器预览</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo s</span><br></pre></td></tr></table></figure>
-<p>这时，可以打开浏览器访问<a href="http://localhost:4000/，查看blog界面，发现已经创建好新的文章test。" target="_blank" rel="noopener">http://localhost:4000/，查看blog界面，发现已经创建好新的文章test。</a></p>
-<h2 id="推送至网站"><a href="#推送至网站" class="headerlink" title="推送至网站"></a>推送至网站</h2><ol>
-<li>修改blog配置文件<code>E:\project\Hexo_project\blog\_config.yml</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:Ninwoo/ninwoo.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<blockquote>
-</blockquote>
-<p>注意：这里repo要选择ssh的git库链接，否则会在部署的时候报错</p>
-<ol start="2">
-<li>安装Git部署插件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>部署博客</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;hexo clean</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo d</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>测试是否部署成功</li>
-</ol>
-<p>现在访问<a href="https://ninwoo.github.io/" target="_blank" rel="noopener">https://ninwoo.github.io/</a> ，如果出现blog界面这证明部署成功。</p>
-<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>如果觉得默认主题实在是太丑，可以更换其他<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>,下面的教程中，我选择Next主题。</p>
-<ol>
-<li>下载主题</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt; git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>打开配置文件<code>E:\project\Hexo_project\blog\_config.yml</code>更换主题</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br><span class="line">plugins: hexo-generate-feed</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>重新部署blog</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;hexo clean</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo d</span><br></pre></td></tr></table></figure>
-<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><p>到这里，高端大气上档次的Blog就创建完成了，读者可以开始编写自己的blog啦！</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/MySQL主从数据库-Atlas读写分离/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Joliu">
-      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="NinWoo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/12/MySQL主从数据库-Atlas读写分离/" itemprop="url">
-                  MySQL主从数据库+Atlas读写分离
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-12 20:18:57" itemprop="dateCreated datePublished" datetime="2018-09-12T20:18:57+08:00">2018-09-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-14 22:06:16" itemprop="dateModified" datetime="2018-10-14T22:06:16+08:00">2018-10-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/12/MySQL主从数据库-Atlas读写分离/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/12/MySQL主从数据库-Atlas读写分离/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/09/12/MySQL主从数据库-Atlas读写分离/" class="leancloud_visitors" data-flag-title="MySQL主从数据库+Atlas读写分离">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="mysql集群"><a href="#mysql集群" class="headerlink" title="mysql集群"></a>mysql集群</h1><p>最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。<br>所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。</p>
-<p>目标：实现mysql数据库集群，一个主节点负责写入数据，多个从节点负责读取数据</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>服务器：</p>
-<ol>
-<li>阿里云服务器：centos7（10.0.0.1）</li>
-<li>腾讯云服务器：ubuntu:16.04（10.0.0.2)</li>
-<li>京东云服务器：ubuntu:16.04 (10.0.0.3)</li>
-</ol>
-<p>mysql:5.7</p>
-<p>docker:18.03</p>
-<h2 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h2><p>mysql 主从数据库 + Atlas读写分离</p>
-<h2 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h2><h3 id="进入Master服务器进行配置"><a href="#进入Master服务器进行配置" class="headerlink" title="进入Master服务器进行配置"></a>进入Master服务器进行配置</h3><ol>
-<li>使用Docker，在服务器上创建MySQL服务</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 3306:3306 --name mysql3306 -v /opt/mysql/data/data3306:/var/lib/mysql  -v /opt/mysql/logs/logs3306:/logs -e MYSQL_ROOT_PASSWORD=hello -d mysql:5.7</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>进Master服务器的MySQL数据库中，创建用户”niwoo”设置密码为”hello”</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -uroot -phello</span><br><span class="line"></span><br><span class="line">mysql&gt; grant all on *.* to ninwoo@&apos;127.0.0.1&apos; identified by &quot;hello&quot;;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>修改niwoo的访问权限</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mysql</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; update user set host = &apos;%&apos; where user = &apos;ninwoo&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">Rows matched: 0  Changed: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>确认是否修改成功</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update user set host = &apos;%&apos; where user = &apos;ninwoo&apos;;</span><br><span class="line">Query OK, 1 row affected (0.02 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select user, host from user;</span><br><span class="line">+---------------+-----------+</span><br><span class="line">| user          | host      |</span><br><span class="line">+---------------+-----------+</span><br><span class="line">| ninwoo        | %         |</span><br><span class="line">| root          | %         |</span><br><span class="line">| mysql.session | localhost |</span><br><span class="line">| mysql.sys     | localhost |</span><br><span class="line">| root          | localhost |</span><br><span class="line">+---------------+-----------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>更新数据库,是配置生效</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>Master，Slave1的MySQL数据库上创建CampusHire数据库</p>
-<ol start="5">
-<li>进入Slave1执行相同1,2,3,4操作</li>
-</ol>
-<h3 id="配置主从数据库连接"><a href="#配置主从数据库连接" class="headerlink" title="配置主从数据库连接"></a>配置主从数据库连接</h3><p>进入Master服务器进行配置</p>
-<ol>
-<li>进入mysql容器内部，修改配置文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql3306 bash</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>默认没有vim，无法修改文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 更新软件源</span><br><span class="line">apt update</span><br><span class="line"># 安装vim</span><br><span class="line">apt install vim</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>修改mysql配置文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/mysql.conf.d/mysqld.cnf</span><br></pre></td></tr></table></figure>
-<p>添加如下配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#主从复制配置  </span><br><span class="line">innodb_flush_log_at_trx_commit=1  </span><br><span class="line">sync_binlog=1  </span><br><span class="line">#需要备份的数据库  </span><br><span class="line">binlog-do-db=test</span><br><span class="line">#不需要备份的数据库  </span><br><span class="line">binlog-ignore-db=mysql  </span><br><span class="line">  </span><br><span class="line">#启动二进制文件  </span><br><span class="line">log-bin=mysql-bin  </span><br><span class="line">  </span><br><span class="line">#服务器ID  </span><br><span class="line">server-id=1</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>退出容器，重启docker应用</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart mysql3306</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>进入数据库，配置主从复制的权限</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -uroot -phello</span><br><span class="line">mysql&gt; grant replication slave on *.* to &apos;ninwoo&apos;@&apos;127.0.0.1&apos; identified by &apos;hello&apos;;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.01 sec)</span><br></pre></td></tr></table></figure>
-<ol start="6">
-<li>锁定数据库</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush tables with read lock;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
-<ol start="7">
-<li>查看主数据库信息，记住下面的“File”与“Position”的信息</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+------------------+----------+--------------+------------------+-------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+------------------+----------+--------------+------------------+-------------------+</span><br><span class="line">| mysql-bin.000001 |      439 | CampusHire   | mysql            |                   |</span><br><span class="line">+------------------+----------+--------------+------------------+-------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<ol start="8">
-<li>进入slave服务器，进入mysql容器内部</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 更新软件源</span><br><span class="line">apt update</span><br><span class="line"># 安装vim</span><br><span class="line">apt install vim</span><br></pre></td></tr></table></figure>
-<ol start="9">
-<li>修改从数据库的配置文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/mysql.conf.d/mysqld.cnf</span><br></pre></td></tr></table></figure>
-<p>添加<code>server-id=2</code></p>
-<ol start="10">
-<li>重启Slave数据库</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart mysql3306</span><br></pre></td></tr></table></figure>
-<ol start="11">
-<li>进入数据库，输入刚刚记录下来的File和Position</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MySQL [(none)]&gt; change master to master_host=&apos;10.0.0.1&apos;,</span><br><span class="line">    -&gt;</span><br><span class="line">    -&gt; master_user=&apos;ninwoo&apos;,</span><br><span class="line">    -&gt; master_password=&apos;hello&apos;,</span><br><span class="line">    -&gt; master_port=3306,</span><br><span class="line">    -&gt; master_log_file=&apos;mysql-bin.000001&apos;,</span><br><span class="line">    -&gt; master_log_pos=439,</span><br><span class="line">    -&gt; master_connect_retry=10;</span><br></pre></td></tr></table></figure>
-<ol start="12">
-<li>启动Slave进程</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start slave;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
-<ol start="13">
-<li>查看复制状态</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show slave status \G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting for master to send event</span><br><span class="line">                  Master_Host: 139.199.194.49</span><br><span class="line">                  Master_User: ninwoo</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 10</span><br><span class="line">              Master_Log_File: mysql-bin.000001</span><br><span class="line">          Read_Master_Log_Pos: 439</span><br><span class="line">               Relay_Log_File: 2a8a4abdcf68-relay-bin.000002</span><br><span class="line">                Relay_Log_Pos: 320</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000001</span><br><span class="line">             Slave_IO_Running: Yes</span><br><span class="line">            Slave_SQL_Running: Yes</span><br><span class="line">              Replicate_Do_DB:</span><br><span class="line">          Replicate_Ignore_DB:</span><br><span class="line">           Replicate_Do_Table:</span><br><span class="line">       Replicate_Ignore_Table:</span><br><span class="line">      Replicate_Wild_Do_Table:</span><br><span class="line">  Replicate_Wild_Ignore_Table:</span><br><span class="line">                   Last_Errno: 0</span><br><span class="line">                   Last_Error:</span><br><span class="line">                 Skip_Counter: 0</span><br><span class="line">          Exec_Master_Log_Pos: 439</span><br><span class="line">              Relay_Log_Space: 534</span><br><span class="line">              Until_Condition: None</span><br><span class="line">               Until_Log_File:</span><br><span class="line">                Until_Log_Pos: 0</span><br><span class="line">           Master_SSL_Allowed: No</span><br><span class="line">           Master_SSL_CA_File:</span><br><span class="line">           Master_SSL_CA_Path:</span><br><span class="line">              Master_SSL_Cert:</span><br><span class="line">            Master_SSL_Cipher:</span><br><span class="line">               Master_SSL_Key:</span><br><span class="line">        Seconds_Behind_Master: 0</span><br><span class="line">Master_SSL_Verify_Server_Cert: No</span><br><span class="line">                Last_IO_Errno: 0</span><br><span class="line">                Last_IO_Error:</span><br><span class="line">               Last_SQL_Errno: 0</span><br><span class="line">               Last_SQL_Error:</span><br><span class="line">  Replicate_Ignore_Server_Ids:</span><br><span class="line">             Master_Server_Id: 1</span><br><span class="line">                  Master_UUID: 4a0187fa-b0a5-11e8-a7e7-0242ac110003</span><br><span class="line">             Master_Info_File: /var/lib/mysql/master.info</span><br><span class="line">                    SQL_Delay: 0</span><br><span class="line">          SQL_Remaining_Delay: NULL</span><br><span class="line">      Slave_SQL_Running_State: Slave has read all relay log; waiting for more up                                                                                                                                                                                               dates</span><br><span class="line">           Master_Retry_Count: 86400</span><br><span class="line">                  Master_Bind:</span><br><span class="line">      Last_IO_Error_Timestamp:</span><br><span class="line">     Last_SQL_Error_Timestamp:</span><br><span class="line">               Master_SSL_Crl:</span><br><span class="line">           Master_SSL_Crlpath:</span><br><span class="line">           Retrieved_Gtid_Set:</span><br><span class="line">            Executed_Gtid_Set:</span><br><span class="line">                Auto_Position: 0</span><br><span class="line">         Replicate_Rewrite_DB:</span><br><span class="line">                 Channel_Name:</span><br><span class="line">           Master_TLS_Version:</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>到这里主从数据的配置就已经完成，在向主库写入数据的同时，将在从库进行自动的备份。但在实际测试中遇到了配置完成之后无法向主数据库写入的问题，初步<br>判断是由于主库加锁而未解锁的问题，所以这里采用比较暴力的方法，重启主数据库容器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># master节点</span><br><span class="line">docker restart mysql3306</span><br></pre></td></tr></table></figure>
-<h2 id="配置Atlas"><a href="#配置Atlas" class="headerlink" title="配置Atlas"></a>配置Atlas</h2><p>Atlas是有360团队优化mysqlproxy而衍生出的版本，性能更好更稳定。</p>
-<p>Atlas有两个版本，这里我选择普通版本，即不分表。</p>
-<p>在阿里云主机（centos7)上进行一下安装步骤：</p>
-<ol>
-<li>下载安装</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cd /home/</span><br><span class="line">[root@localhost home]# wget https://github.com/Qihoo360/Atlas/releases/download/2.2.1/Atlas-2.2.1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>安装</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost home]# rpm -ivh Atlas-2.2.1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure>
-<p>安装目录位于<code>/usr/local/mysql-proxy/</code></p>
-<ol start="3">
-<li>使用安装目录下的<code>bin/encrypt</code>程序加密数据库密码</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# ./encrypt hello</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>配置Atlas</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost conf]# cd /usr/local/mysql-proxy/conf/</span><br><span class="line">[root@localhost conf]# vim test.cnf</span><br></pre></td></tr></table></figure>
-<p>修改以下配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#管理接口的用户名</span><br><span class="line">admin-username = user</span><br><span class="line"></span><br><span class="line">#管理接口的密码</span><br><span class="line">admin-password = pwd</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">#Atlas后端连接的MySQL主库的IP和端口，可设置多项，用逗号分隔</span><br><span class="line">proxy-backend-addresses = 192.168.246.134:3306</span><br><span class="line"></span><br><span class="line">#Atlas后端连接的MySQL从库的IP和端口，@后面的数字代表权重，用来作负载均衡，若省略则默认为1，可设置多项，用逗号分隔</span><br><span class="line">proxy-read-only-backend-addresses = 192.168.246.135:3306@1</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">#用户名与其对应的加密过的MySQL密码，密码使用PREFIX/bin目录下的加密程序encrypt加密，下行的user1和user2为示例，将其替换为你的MySQL的用户名和加密密码！</span><br><span class="line">pwds = buck:RePBqJ+5gI4=</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">#Atlas监听的工作接口IP和端口</span><br><span class="line">proxy-address = 0.0.0.0:1234</span><br><span class="line"></span><br><span class="line">#Atlas监听的管理接口IP和端口</span><br><span class="line">admin-address = 0.0.0.0:2345</span><br></pre></td></tr></table></figure>
-<p>读者需要根据自己的实际情况修改以上配置</p>
-<ol start="5">
-<li>启动Atlas</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# /etc/init.d/mysqld status</span><br><span class="line">OK: MySQL-Proxy of test is started</span><br></pre></td></tr></table></figure>
-<ol start="6">
-<li>使用mysql命令连接数据库</li>
-</ol>
-<p>其中2345端口是管理端口，用户可以在该管理数据库中修改数据库代理服务器的相关配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# mysql -h127.0.0.1 -P2345 -uuser -ppwd</span><br></pre></td></tr></table></figure>
-<p>其中1234端口是数据库代理服务器的端口，用户可以直接访问该端口进行数据库的访问和更新</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# mysql -h127.0.0.1 -P1234 -ubuck -phello</span><br></pre></td></tr></table></figure>
-<ol start="7">
-<li>使用软件连接Atlas数据库代理服务器</li>
-</ol>
-<p>这里发现，之前使用的mysql workbench无法正常使用，更换Navicat可以正常使用。</p>
-<ol start="8">
-<li>使用jdbc连接数据库</li>
-</ol>
-<p>使用方法与普通数据库一样。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2769,7 +2854,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2796,7 +2881,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>

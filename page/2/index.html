@@ -108,25 +108,23 @@
 
 
 
-  <meta name="description" content="mysql集群最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。 目标：实">
-<meta name="keywords" content="Mysql,atlas">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MySQL主从数据库+Atlas读写分离">
-<meta property="og:url" content="http://yoursite.com/2018/09/12/MySQL主从数据库-Atlas读写分离/index.html">
+  <meta name="description" content="研究生不研究“生”，开始研究代码了！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NinWoo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="NinWoo">
-<meta property="og:description" content="mysql集群最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。 目标：实">
+<meta property="og:description" content="研究生不研究“生”，开始研究代码了！">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-14T14:06:16.732Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL主从数据库+Atlas读写分离">
-<meta name="twitter:description" content="mysql集群最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。 目标：实">
+<meta name="twitter:title" content="NinWoo">
+<meta name="twitter:description" content="研究生不研究“生”，开始研究代码了！">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/12/MySQL主从数据库-Atlas读写分离/"/>
+  <link rel="canonical" href="http://yoursite.com/page/2/"/>
 
 
 
@@ -136,7 +134,7 @@
   };
 </script>
 
-  <title>MySQL主从数据库+Atlas读写分离 | NinWoo</title>
+  <title>NinWoo</title>
   
 
 
@@ -193,7 +191,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -278,9 +277,622 @@
           
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/28/JavaApi学习记录——NIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/28/JavaApi学习记录——NIO/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-28 17:45:41" itemprop="dateCreated datePublished" datetime="2018-09-28T17:45:41+08:00">2018-09-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-09-21 13:27:27" itemprop="dateModified" datetime="2018-09-21T13:27:27+08:00">2018-09-21</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/28/JavaApi学习记录——NIO/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/28/JavaApi学习记录——NIO/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/28/JavaApi学习记录——NIO/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java1.4 NIO<br><a href="https://www.ibm.com/developerworks/cn/education/java/j-nio/j-nio.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/education/java/j-nio/j-nio.html</a></p>
+<p>Java8 流操作，数据迭代器<br><a href="https://www.jb51.net/article/138519.htm" target="_blank" rel="noopener">https://www.jb51.net/article/138519.htm</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/docker-openvswitch网络手动配置教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/14/docker-openvswitch网络手动配置教程/" itemprop="url">
+                  docker+openvswitch网络手动配置教程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-14 18:57:19 / 修改时间：18:57:59" itemprop="dateCreated datePublished" datetime="2018-09-14T18:57:19+08:00">2018-09-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/14/docker-openvswitch网络手动配置教程/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/14/docker-openvswitch网络手动配置教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/14/docker-openvswitch网络手动配置教程/" class="leancloud_visitors" data-flag-title="docker+openvswitch网络手动配置教程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Auther: joliu <a href="mailto:&#108;&#106;&#x6f;&#x30;&#x34;&#x31;&#50;&#x40;&#108;&#105;&#x76;&#x65;&#x2e;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#108;&#106;&#x6f;&#x30;&#x34;&#x31;&#50;&#x40;&#108;&#105;&#x76;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+<ul>
+<li>OpenFlow<ul>
+<li>basic knowlege</li>
+</ul>
+</li>
+<li>OVS command<ul>
+<li>how to add flow table to open vSwitch</li>
+<li>how to bind dockers to vSwitch</li>
+</ul>
+</li>
+</ul>
+<h2 id="Install-ovs-and-mininet"><a href="#Install-ovs-and-mininet" class="headerlink" title="Install ovs and mininet"></a>Install ovs and mininet</h2><p><a href="http://lukehinds.com/2016/04/21/building-openvswitch-2-50-on-centos7.html" target="_blank" rel="noopener">learn details about this</a></p>
+<h2 id="Install-Docker"><a href="#Install-Docker" class="headerlink" title="Install Docker"></a>Install Docker</h2><p>Use DaoCloud accelerator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure></p>
+<p>Change Docker registry to Aliyun</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://i0ewwmct.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h2 id="Get-Basic-Docker-Image"><a href="#Get-Basic-Docker-Image" class="headerlink" title="Get Basic Docker Image"></a>Get Basic Docker Image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull alpine</span><br></pre></td></tr></table></figure>
+<h2 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h2><p>Create Three Container</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -i --name RouterA --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterB --net=none --privileged alpine sh</span><br><span class="line">docker run -d -i --name RouterC --net=none --privileged alpine sh</span><br></pre></td></tr></table></figure>
+<p>Check Containers’ Status</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES</span><br><span class="line">37b9ca888f03        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterC</span><br><span class="line">f1604beb380f        alpine              &quot;sh&quot;                About a minute ago   Up About a minute                       RouterB</span><br><span class="line">3b3c52c5a582        alpine              &quot;sh&quot;                3 minutes ago        Up 3 minutes</span><br></pre></td></tr></table></figure>
+<p>Create Virtual Network Bridge</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl add-br vnbr</span><br></pre></td></tr></table></figure>
+<p>Set Protocols</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl set bridge br0 protocols=OpenFlow13</span><br></pre></td></tr></table></figure>
+<p>Check the brige is added</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Add Network Port</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-docker add-port vnbr eth0 RouterA --ipaddress=&quot;10.0.1.1/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterB --ipaddress=&quot;10.0.1.2/24&quot;</span><br><span class="line">sudo ovs-docker add-port vnbr eth0 RouterC --ipaddress=&quot;10.0.3.1&quot;</span><br></pre></td></tr></table></figure>
+<p>Check The Status of vnbr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[typh@localhost ~]$ sudo ovs-vsctl show</span><br><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Set OpenFlow Port ID</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set interface facad1a218c64_l ofport_request=100</span><br><span class="line">sudo ovs-vsctl set interface d48d429fe1894_l ofport_request=200</span><br><span class="line">sudo ovs-vsctl set interface 12437ccb4eab4_l ofport_request=300</span><br></pre></td></tr></table></figure>
+<p>Connect to ODL Controller</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-vsctl set-controller vnbr tcp:127.0.0.1:6633</span><br></pre></td></tr></table></figure>
+<p>Check the Connections with Controller</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">d9d42750-7b9b-4688-adf9-d07f619e9bac</span><br><span class="line">    Bridge vnbr</span><br><span class="line">        Controller &quot;tcp:127.0.0.1:6633&quot;</span><br><span class="line">            is_connected: true</span><br><span class="line">        Port vnbr</span><br><span class="line">            Interface vnbr</span><br><span class="line">                type: internal</span><br><span class="line">        Port &quot;facad1a218c64_l&quot;</span><br><span class="line">            Interface &quot;facad1a218c64_l&quot;</span><br><span class="line">        Port &quot;d48d429fe1894_l&quot;</span><br><span class="line">            Interface &quot;d48d429fe1894_l&quot;</span><br><span class="line">        Port &quot;12437ccb4eab4_l&quot;</span><br><span class="line">            Interface &quot;12437ccb4eab4_l&quot;</span><br><span class="line">    ovs_version: &quot;2.5.0&quot;</span><br></pre></td></tr></table></figure>
+<p>Test the connection between the two host By PING</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
+<p>Generally, they cannot connect with the other.</p>
+<p>Add Flows</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=1 idle_timeout=0,in_port=1,actions=output:2&quot;</span><br><span class="line">sudo ovs-ofctl add-flow vnbr &quot;priority=2 idle_timeout=0,in_port=1,actions=output:1&quot;</span><br></pre></td></tr></table></figure>
+<p>Get the Flows from vSwitch</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-ofctl -O OpenFlow13 dump-flows vnbr</span><br></pre></td></tr></table></figure>
+<p>Test Again.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it RouterA ping -c 4 10.0.1.2</span><br></pre></td></tr></table></figure>
+<p>Example of the successful result.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[master@MiWiFi-R3-srv ~]$ sudo docker exec -it RouterA ping -c 4 10.0.1.2</span><br><span class="line">PING 10.0.1.2 (10.0.1.2): 56 data bytes</span><br><span class="line">64 bytes from 10.0.1.2: seq=0 ttl=64 time=0.062 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=1 ttl=64 time=0.061 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=2 ttl=64 time=0.086 ms</span><br><span class="line">64 bytes from 10.0.1.2: seq=3 ttl=64 time=0.078 ms</span><br><span class="line"></span><br><span class="line">--- 10.0.1.2 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max = 0.061/0.071/0.086 ms</span><br></pre></td></tr></table></figure>
+<p>Start karaf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feature:install odl-restconf odl-l2switch-switch odl-mdsal-apidocs odl-dlux-all</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/使用Hexo搭建好看的博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/12/使用Hexo搭建好看的博客/" itemprop="url">
+                  使用Hexo搭建好看的博客
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-12 22:24:38" itemprop="dateCreated datePublished" datetime="2018-09-12T22:24:38+08:00">2018-09-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-14 22:07:48" itemprop="dateModified" datetime="2018-10-14T22:07:48+08:00">2018-10-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/12/使用Hexo搭建好看的博客/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/09/12/使用Hexo搭建好看的博客/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/12/使用Hexo搭建好看的博客/" class="leancloud_visitors" data-flag-title="使用Hexo搭建好看的博客">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><p>访问<a href="https://link.zhihu.com/?target=https%3A//nodejs.org/en/download/" target="_blank" rel="noopener">Node.js</a>官网下载安装包。</p>
+<p>下载完成后，点击安装。打开CMD查看是否安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\ljo04&gt;node -v</span><br><span class="line">v8.12.0</span><br><span class="line"></span><br><span class="line">C:\Users\ljo04&gt;npm -v</span><br><span class="line">6.4.1</span><br></pre></td></tr></table></figure>
+<p>如果上述命令均正常通过，则安装完成。</p>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><ol>
+<li>创建一个新的文件夹作为Hexo的开发目录，这里我命名为Hexo_project</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project&gt;mkdir Hexo_project</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用npm安装Hexo</li>
+</ol>
+<p>为了提高安装速度，先配置淘宝npm镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;npm config set registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<p>安装Hexo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>初始化hexo</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project&gt;hexo init blog</span><br><span class="line">INFO  Cloning hexo-starter to E:\project\Hexo_project\blog</span><br><span class="line">Cloning into &apos;E:\project\Hexo_project\blog&apos;...</span><br><span class="line">remote: Counting objects: 68, done.</span><br><span class="line">remote: Total 68 (delta 0), reused 0 (delta 0), pack-reused 67</span><br><span class="line">Unpacking objects: 100% (68/68), done.</span><br><span class="line">Submodule &apos;themes/landscape&apos; (https://github.com/hexojs/hexo-theme-landscape.git) registered for path &apos;themes/landscape&apos;</span><br><span class="line">Cloning into &apos;E:/project/Hexo_project/blog/themes/landscape&apos;...</span><br><span class="line">remote: Counting objects: 838, done.</span><br><span class="line">remote: Compressing objects: 100% (6/6), done.</span><br><span class="line">Receiving objects:  26% (222/838), 292.01 KiB | 88.00 KiB/s</span><br></pre></td></tr></table></figure>
+<p>这个过程可能需要等待一阵时间</p>
+<ol start="4">
+<li>测试站点是否创建成功</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 创建一篇博客test</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo n test</span><br><span class="line"></span><br><span class="line"># 生成博客</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line"></span><br><span class="line"># 启动服务器预览</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo s</span><br></pre></td></tr></table></figure>
+<p>这时，可以打开浏览器访问<a href="http://localhost:4000/，查看blog界面，发现已经创建好新的文章test。" target="_blank" rel="noopener">http://localhost:4000/，查看blog界面，发现已经创建好新的文章test。</a></p>
+<h2 id="推送至网站"><a href="#推送至网站" class="headerlink" title="推送至网站"></a>推送至网站</h2><ol>
+<li>修改blog配置文件<code>E:\project\Hexo_project\blog\_config.yml</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:Ninwoo/ninwoo.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<blockquote>
+</blockquote>
+<p>注意：这里repo要选择ssh的git库链接，否则会在部署的时候报错</p>
+<ol start="2">
+<li>安装Git部署插件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>部署博客</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;hexo clean</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo d</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>测试是否部署成功</li>
+</ol>
+<p>现在访问<a href="https://ninwoo.github.io/" target="_blank" rel="noopener">https://ninwoo.github.io/</a> ，如果出现blog界面这证明部署成功。</p>
+<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>如果觉得默认主题实在是太丑，可以更换其他<a href="https://hexo.io/themes/" target="_blank" rel="noopener">主题</a>,下面的教程中，我选择Next主题。</p>
+<ol>
+<li>下载主题</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt; git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>打开配置文件<code>E:\project\Hexo_project\blog\_config.yml</code>更换主题</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br><span class="line">plugins: hexo-generate-feed</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>重新部署blog</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E:\project\Hexo_project\blog&gt;hexo clean</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo g</span><br><span class="line">E:\project\Hexo_project\blog&gt;hexo d</span><br></pre></td></tr></table></figure>
+<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><p>到这里，高端大气上档次的Blog就创建完成了，读者可以开始编写自己的blog啦！</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
 
   
 
@@ -312,7 +924,11 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL主从数据库+Atlas读写分离
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/12/MySQL主从数据库-Atlas读写分离/" itemprop="url">
+                  MySQL主从数据库+Atlas读写分离
+                </a>
               
             
           </h1>
@@ -408,7 +1024,9 @@
       
 
       
-        <h1 id="mysql集群"><a href="#mysql集群" class="headerlink" title="mysql集群"></a>mysql集群</h1><p>最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。<br>所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。</p>
+        
+          
+            <h1 id="mysql集群"><a href="#mysql集群" class="headerlink" title="mysql集群"></a>mysql集群</h1><p>最近在参加项目开发微信小程序后台，由于用户数量巨大，且后台程序并不是很完美，所以对用户的体验很是不友好（简单说就是很卡）。赶巧最近正在翻阅《大型网站系统与Java中间件实践》。<br>所以，先是使用Docker swarm构建了负载均衡集群，然后使用Atlas做了数据库的读写分离，尽可能对用户进行分流，降低对单机服务器的负载，提高访问体验。本片随笔仅对数据库的读写分离部分进行介绍。</p>
 <p>目标：实现mysql数据库集群，一个主节点负责写入数据，多个从节点负责读取数据</p>
 <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>服务器：</p>
 <ol>
@@ -544,6 +1162,8 @@
 </ol>
 <p>使用方法与普通数据库一样。</p>
 
+          
+        
       
     </div>
 
@@ -554,14 +1174,6 @@
     
 
     
-      <div>
-        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/1.jpg" alt="Joliu wechat" style="width: 200px; max-width: 100%;"/>
-    <div>扫描二维码添加我的微信好友</div>
-</div>
-
-      </div>
-    
 
     
 
@@ -569,36 +1181,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Mysql-atlas/" rel="tag"># Mysql,atlas</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/12/使用Hexo搭建好看的博客/" rel="prev" title="使用Hexo搭建好看的博客">
-                使用Hexo搭建好看的博客 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -608,18 +1198,18 @@
   </article>
 
 
-  </div>
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-  
-
-
 
         </div>
         
@@ -640,17 +1230,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -736,22 +1317,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql集群"><span class="nav-number">1.</span> <span class="nav-text">mysql集群</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验环境"><span class="nav-number">1.1.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方案"><span class="nav-number">1.2.</span> <span class="nav-text">实现方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤："><span class="nav-number">1.3.</span> <span class="nav-text">步骤：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进入Master服务器进行配置"><span class="nav-number">1.3.1.</span> <span class="nav-text">进入Master服务器进行配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从数据库连接"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置主从数据库连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Atlas"><span class="nav-number">1.4.</span> <span class="nav-text">配置Atlas</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -882,10 +1447,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
-
-
 
   
 
@@ -945,42 +1506,43 @@
   
   <script>
     
-    function addCount(Counter) {
+    function showTime(Counter) {
+      var entries = [];
       var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
 
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url: { "$in": entries } }) })
         .done(function ({ results }) {
-          if (results.length > 0) {
-            var counter = results[0];
-            
-            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
-            
-            .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            })
-            
-            .fail(function ({ responseJSON }) {
-                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
-            })
-          } else {
-            
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
-            
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
           }
         })
-      .fail(function ({ responseJSON }) {
-        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
-      });
+        .fail(function ({ responseJSON }) {
+          console.log("LeanCloud Counter Error: " + responseJSON.code + " " + responseJSON.error);
+        });
     }
     
 
@@ -1000,7 +1562,9 @@
             });
           };
           
-          addCount(Counter);
+          if ($('.post-title-link').length >= 1) {
+            showTime(Counter);
+          }
           
         })
     });
