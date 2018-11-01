@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="linkedin.paldb接触该项目是为了参加某个比赛，结果走错了方向。不过，作为一名小白，非常好奇如此高性能的项目是如何实现的。而且由于该项目较小，非常适合初学者来进行学习，所以这一周的源码学习，我选择了该项目。 项目简介完整的项目介绍请移步：项目地址 PalDB是一个用Java编写的可嵌入一次写的键值存储。 因为PalDB是只读的，并且只关注可以保存在内存中的数据，所以它比其他可嵌入的键值存">
+<meta name="keywords" content="palDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PalDB源码分析">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/PalDB/index.html">
+<meta property="og:site_name" content="NinWoo">
+<meta property="og:description" content="linkedin.paldb接触该项目是为了参加某个比赛，结果走错了方向。不过，作为一名小白，非常好奇如此高性能的项目是如何实现的。而且由于该项目较小，非常适合初学者来进行学习，所以这一周的源码学习，我选择了该项目。 项目简介完整的项目介绍请移步：项目地址 PalDB是一个用Java编写的可嵌入一次写的键值存储。 因为PalDB是只读的，并且只关注可以保存在内存中的数据，所以它比其他可嵌入的键值存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T01:19:16.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PalDB源码分析">
+<meta name="twitter:description" content="linkedin.paldb接触该项目是为了参加某个比赛，结果走错了方向。不过，作为一名小白，非常好奇如此高性能的项目是如何实现的。而且由于该项目较小，非常适合初学者来进行学习，所以这一周的源码学习，我选择了该项目。 项目简介完整的项目介绍请移步：项目地址 PalDB是一个用Java编写的可嵌入一次写的键值存储。 因为PalDB是只读的，并且只关注可以保存在内存中的数据，所以它比其他可嵌入的键值存">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/01/PalDB/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>PalDB源码分析 | NinWoo</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bedd7f369d664ca2485e7fe79869f316";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NinWoo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">日常学习笔记</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/01/PalDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joliu">
+      <meta itemprop="description" content="研究生不研究“生”，开始研究代码了！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NinWoo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PalDB源码分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-01 09:27:55 / 修改时间：09:19:16" itemprop="dateCreated datePublished" datetime="2018-11-01T09:27:55+08:00">2018-11-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/01/PalDB/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/11/01/PalDB/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/01/PalDB/" class="leancloud_visitors" data-flag-title="PalDB源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="linkedin-paldb"><a href="#linkedin-paldb" class="headerlink" title="linkedin.paldb"></a>linkedin.paldb</h1><p>接触该项目是为了参加某个比赛，结果走错了方向。不过，作为一名小白，非常好奇如此高性能的项目是如何实现的。而且由于该项目较小，非常适合初学者来进行学习，所以这一周的源码学习，我选择了该项目。</p>
+<h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>完整的项目介绍请移步：<a href="https://github.com/linkedin/PalDB" target="_blank" rel="noopener">项目地址</a></p>
+<p>PalDB是一个用Java编写的可嵌入一次写的键值存储。</p>
+<p>因为PalDB是只读的，并且只关注可以保存在内存中的数据，所以它比其他可嵌入的键值存储要简单得多，因此支持紧凑的存储格式和非常高的吞吐量。PalDB特别针对快速读取性能和紧凑存储大小进行了优化。性能可以与内存中的数据结构进行比较，比如Java集合(例如HashMap、HashSet)或其他键值存储(例如LevelDB、RocksDB)。<br>在一台3.1Ghz的Macbook Pro笔记本电脑上，使用10M整数键索引，当前的基准测试显示，在内存使用比传统哈希集少6倍的情况下，平均性能约为1.6M的读/秒。这比LevelDB(1.8)或RocksDB(4.0)快5倍。</p>
+<p>总结下优缺点</p>
+<p>优点：</p>
+<ul>
+<li>小巧：110k</li>
+<li>读写性能优势明显</li>
+<li>内存占用小</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>使用场景受限</li>
+</ul>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>庖丁解牛第一步，咱们先来看一看整个牛长啥样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">├── api  </span><br><span class="line">├── impl  </span><br><span class="line">└── utils</span><br></pre></td></tr></table></figure>
+<p>简洁明了的项目，从字面上我们已经可以了解该项目的构成</p>
+<ul>
+<li>api ： 接口</li>
+<li>impl ： 接口的具体实现类</li>
+<li>utils ： 工具类</li>
+</ul>
+<p>接口接口，当然是给外部进行调用的，所以我们来分析下api目录下的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">├─api</span><br><span class="line">│      Configuration.java</span><br><span class="line">│      NotFoundException.java</span><br><span class="line">│      package.html</span><br><span class="line">│      PalDB.java</span><br><span class="line">│      Serializer.java</span><br><span class="line">│      StoreReader.java</span><br><span class="line">│      StoreWriter.java</span><br><span class="line">│      UnsupportedTypeException.java</span><br></pre></td></tr></table></figure>
+<p>熟悉kv数据的读者，一定大体上了解这一类数据库的使用方法。在该目录中，<code>PalDB.java</code>非常明显是创建一个数据库连接的关键。我们也可以推测该项目使用的方法大体是以下这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PalDB palDB = PalDB.create(...);</span><br></pre></td></tr></table></figure>
+<p>所以</p>
+<ul>
+<li><code>PalDB.java</code>是该数据库的核心类</li>
+<li><code>StoreReader.java</code>和<code>StoreWriter</code>看来是读写的接口。</li>
+<li><code>Serializer.java</code>是序列化的接口</li>
+<li><code>Configuration.java</code>包含了数据库的各种配置参数</li>
+<li><code>NotFoundException.java</code>和<code>UnsupportedTypedException.java</code>是异常类</li>
+</ul>
+<p>以上都是我的猜测，我现在与你一样，还没有看到真正的源码，不过这个源码看着是真的清新。</p>
+<h2 id="开始真正的阅读源码"><a href="#开始真正的阅读源码" class="headerlink" title="开始真正的阅读源码"></a>开始真正的阅读源码</h2><p>第一个阅读的源码当然要从核心入手了，核心就是<code>PalDB.java</code>.</p>
+<h3 id="com-linkedin-paldb-api-PalDB"><a href="#com-linkedin-paldb-api-PalDB" class="headerlink" title="com.linkedin.paldb.api.PalDB"></a>com.linkedin.paldb.api.PalDB</h3><p>1.整体看下这个类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public final class PalDB &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>final修饰类表明这是一个不能被继承的类。</p>
+<p>2.私有的构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">private PalDB() &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>私有的构造函数外部无法调用，而在类内部可以调用。这也就是说，这个类只能是静态的。</p>
+<p>3.createReader</p>
+<p>该方法创建了一个读数据对象并返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 从文件中读取</span><br><span class="line">public static StoreReader createReader(File file) &#123;</span><br><span class="line">    return StoreImpl.createReader(file, newConfiguration());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 指定配置，并从文件中读取</span><br><span class="line">public static StoreReader createReader(File file, Configuration config) &#123;</span><br><span class="line">    return StoreImpl.createReader(file, config);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 指定配置，并从stream中读取</span><br><span class="line">public static StoreReader createReader(InputStream stream, Configuration config) &#123;</span><br><span class="line">    return StoreImpl.createReader(stream, config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.createWriter</p>
+<p>该方法创建了一个写数据对象并返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 写入文件</span><br><span class="line">public static StoreWriter createWriter(File file) &#123;</span><br><span class="line">    return StoreImpl.createWriter(file, newConfiguration());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 指定配置并写入文件</span><br><span class="line">public static StoreWriter createWriter(File file, Configuration config) &#123;</span><br><span class="line">    return StoreImpl.createWriter(file, config);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 指定配置并写入流</span><br><span class="line">public static StoreWriter createWriter(OutputStream stream, Configuration config) &#123;</span><br><span class="line">    return StoreImpl.createWriter(stream, config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>5.newConfiguration</p>
+<p>创建一个默认的配置，并返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static Configuration newConfiguration() &#123;</span><br><span class="line">    return new Configuration();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>PalDB功能：</p>
+<ul>
+<li>只能被静态调用</li>
+<li>读</li>
+<li>写</li>
+<li>默认配置</li>
+</ul>
+<h3 id="com-linkedin-paldb-api-StoreReader"><a href="#com-linkedin-paldb-api-StoreReader" class="headerlink" title="com.linkedin.paldb.api.StoreReader"></a>com.linkedin.paldb.api.StoreReader</h3><p>功能：读接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface StoreReader &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1.close: 关闭数据库连接</p>
+<p>2.getConfiguration : 获取配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public Configuration getConfiguration();</span><br></pre></td></tr></table></figure>
+<p>3.getFile : 获取文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public File getFile();</span><br></pre></td></tr></table></figure>
+<p>4.size ： 查询库中键数目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public long size();</span><br></pre></td></tr></table></figure>
+<p>5.get ： 获取数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public &lt;K&gt; K get(Object key);</span><br><span class="line">public &lt;K&gt; K get(Object key, K defaultValue);</span><br></pre></td></tr></table></figure>
+<p>6.get… : 获取不同类型的数据</p>
+<p>以下的接口都很类似，只举getInt为范例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public int getInt(Object key)</span><br><span class="line">      throws NotFoundException;</span><br><span class="line"></span><br><span class="line">public int getInt(Object key, int defaultValue);</span><br></pre></td></tr></table></figure>
+<p>7.迭代器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 返回KV的迭代器</span><br><span class="line">public &lt;K, V&gt; Iterable&lt;Map.Entry&lt;K, V&gt;&gt; iterable();</span><br><span class="line">// 返回key的迭代器</span><br><span class="line">public &lt;K&gt; Iterable&lt;K&gt; keys();</span><br></pre></td></tr></table></figure>
+<h3 id="com-linkedin-paldb-api-StoreWriter"><a href="#com-linkedin-paldb-api-StoreWriter" class="headerlink" title="com.linkedin.paldb.api.StoreWriter"></a>com.linkedin.paldb.api.StoreWriter</h3><p>数据写接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public interface StoreWriter &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1.close ： 关闭数据库连接</p>
+<p>2.getConfiguration : 获取配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public Configuration getConfiguration();</span><br></pre></td></tr></table></figure>
+<p>3.put : 写入数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void put(Object key, Object value);</span><br><span class="line">public void putAll(Object[] keys, Object[] values);</span><br><span class="line">public void put(byte[] key, byte[] value);</span><br></pre></td></tr></table></figure>
+<h3 id="com-linkedin-paldb-api-Configuration"><a href="#com-linkedin-paldb-api-Configuration" class="headerlink" title="com.linkedin.paldb.api.Configuration"></a>com.linkedin.paldb.api.Configuration</h3><p>这里我们查看下在之前的类和对象中都出现过的配置类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class Configuration implements Serializable &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现了Serializable接口，证明该类可以被持久化在文件或者在流中进行传递。</p>
+<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// Buffer segment size</span><br><span class="line">public final static String MMAP_SEGMENT_SIZE = &quot;mmap.segment.size&quot;;</span><br><span class="line">// Enable memory mapping for data</span><br><span class="line">public final static String MMAP_DATA_ENABLED = &quot;mmap.data.enabled&quot;;</span><br><span class="line">// Load factor</span><br><span class="line">public final static String LOAD_FACTOR = &quot;load.factor&quot;;</span><br><span class="line">// Cache enabled</span><br><span class="line">public final static String CACHE_ENABLED = &quot;cache.enabled&quot;;</span><br><span class="line">// Cache limit (in bytes)</span><br><span class="line">public final static String CACHE_BYTES = &quot;cache.bytes&quot;;</span><br><span class="line">// Cache initial capacity</span><br><span class="line">public final static String CACHE_INITIAL_CAPACITY = &quot;cache.initial.capacity&quot;;</span><br><span class="line">// Cache load factor</span><br><span class="line">public final static String CACHE_LOAD_FACTOR = &quot;cache.load.factor&quot;;</span><br><span class="line">// Enable compression</span><br><span class="line">public final static String COMPRESSION_ENABLED = &quot;compression.enabled&quot;;</span><br></pre></td></tr></table></figure>
+<p>一上来定义了一堆静态成员变量，实际就是配置了一些前缀，用于做配置Map的key。</p>
+<p>创建了一个HashMap类型的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected final Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();</span><br></pre></td></tr></table></figure>
+<p>用于判断是否只读</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected final boolean readOnly;</span><br></pre></td></tr></table></figure>
+<p>这个类咱们见下一小节</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected final Serializers serializers;</span><br></pre></td></tr></table></figure>
+<h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><h5 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration()"></a>Configuration()</h5><p>设置只读false</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readOnly = false;</span><br></pre></td></tr></table></figure>
+<p>设置各项参数的具体数值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">putWithSystemPropertyDefault(MMAP_SEGMENT_SIZE, &quot;1073741824&quot;);</span><br><span class="line">putWithSystemPropertyDefault(MMAP_DATA_ENABLED, &quot;true&quot;);</span><br><span class="line">putWithSystemPropertyDefault(LOAD_FACTOR, &quot;0.75&quot;);</span><br><span class="line">putWithSystemPropertyDefault(CACHE_ENABLED, &quot;false&quot;);</span><br><span class="line">putWithSystemPropertyDefault(CACHE_INITIAL_CAPACITY, &quot;1000&quot;);</span><br><span class="line">putWithSystemPropertyDefault(CACHE_LOAD_FACTOR, &quot;0.75&quot;);</span><br><span class="line">putWithSystemPropertyDefault(COMPRESSION_ENABLED, &quot;false&quot;);</span><br><span class="line">//Default cache size: (Xmx - 100mo);</span><br><span class="line">long cacheMemory = Math.max(0, Runtime.getRuntime().maxMemory() - (100 * 1024 * 1024));</span><br><span class="line">putWithSystemPropertyDefault(CACHE_BYTES, String.valueOf(cacheMemory));</span><br></pre></td></tr></table></figure>
+<p>最后初始化了一个Serializers()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serializers = new Serializers();</span><br></pre></td></tr></table></figure>
+<h5 id="Configuration-Configuration-configuration"><a href="#Configuration-Configuration-configuration" class="headerlink" title="Configuration(Configuration configuration)"></a>Configuration(Configuration configuration)</h5><p>参数为Configuration自身，实际就是将参数的配置copy到该对象中,并设置了只读为true。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">readOnly = true;</span><br><span class="line">properties.putAll(configuration.properties);</span><br><span class="line">serializers = configuration.serializers;</span><br></pre></td></tr></table></figure>
+<h4 id="putWithSystemPropertyDefault"><a href="#putWithSystemPropertyDefault" class="headerlink" title="putWithSystemPropertyDefault"></a>putWithSystemPropertyDefault</h4><p>添加默认的配置信息到properties中，实际上就是把key和value添加到Map中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private void putWithSystemPropertyDefault(String key, String defaultValue) &#123;</span><br><span class="line">    properties.put(key, System.getProperty(&quot;paldb.&quot; + key, defaultValue));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="get"><a href="#get" class="headerlink" title="get"></a>get</h4><p>从properties中获取信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private String get(String key) &#123;</span><br><span class="line">    return properties.get(key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public String get(String key, String defaultString) &#123;</span><br><span class="line">    if (!containsKey(key)) &#123;</span><br><span class="line">      return defaultString;</span><br><span class="line">    &#125;</span><br><span class="line">    return get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="containsKey"><a href="#containsKey" class="headerlink" title="containsKey"></a>containsKey</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private boolean containsKey(String key) &#123;</span><br><span class="line">    return properties.containsKey(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>对配置文件进行针对性的配置，配置前要检查是否只读。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public Configuration set(String key, String value) &#123;</span><br><span class="line">    checkReadOnly();</span><br><span class="line"></span><br><span class="line">    properties.put(key, value);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="getBoolean"><a href="#getBoolean" class="headerlink" title="getBoolean"></a>getBoolean</h4><p>查询某一项是否是true</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public boolean getBoolean(String key, boolean defaultValue) &#123;</span><br><span class="line">  if (containsKey(key)) &#123;</span><br><span class="line">    return &quot;true&quot;.equalsIgnoreCase(get(key));</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    return defaultValue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean getBoolean(String key) &#123;</span><br><span class="line">  if (containsKey(key)) &#123;</span><br><span class="line">    return &quot;true&quot;.equalsIgnoreCase(get(key));</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    throw new IllegalArgumentException(&quot;Missing key &quot; + key + &quot;.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取其他类型的数据，形式上一致的，不再赘述。这里需要注意不同类型之间的转换用到的方法。</p>
+<h4 id="getList"><a href="#getList" class="headerlink" title="getList"></a>getList</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;String&gt; getList(String key, List&lt;String&gt; defaultValue) &#123;</span><br><span class="line">  if (!containsKey(key)) &#123;</span><br><span class="line">    return defaultValue;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  String value = get(key);</span><br><span class="line">  String[] pieces = value.split(&quot;\\s*,\\s*&quot;);</span><br><span class="line">  return Arrays.asList(pieces);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意这里的<code>\\s*,\\s*</code>正则表达式，<code>\s</code>：表示空白，包括空格，回车，换行，tab，<br>这种方式可以将<code>,</code>两边的字符串拆分开，而逗号两边的空白被忽略，不会保留两边的字符串中。</p>
+</blockquote>
+<h4 id="getClass"><a href="#getClass" class="headerlink" title="getClass"></a>getClass</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Class&lt;T&gt; getClass(String key)</span><br><span class="line">      throws ClassNotFoundException &#123;</span><br><span class="line">    if (containsKey(key)) &#123;</span><br><span class="line">      return (Class&lt;T&gt;) Class.forName(get(key));</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      throw new IllegalArgumentException(&quot;Missing key &quot; + key + &quot;.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此，还可以获取一个类。<code>Class.forName()</code>从JVM中加载一个类。</p>
+<h4 id="Serializer相关"><a href="#Serializer相关" class="headerlink" title="Serializer相关"></a>Serializer相关</h4><p>具体作用见下一章节</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void registerSerializer(Serializer serializer) &#123;</span><br><span class="line">    serializers.registerSerializer(serializer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Serializer getSerializer(Class cls) &#123;</span><br><span class="line">  return serializers.getSerializer(cls);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public Serializers getSerializers() &#123;</span><br><span class="line">  return serializers;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="equals"><a href="#equals" class="headerlink" title="equals"></a>equals</h4><p>先比较是否同一个引用，然后比较是否是同一个对象类型，最后再依次对比<code>properties</code>和<code>serializers</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public boolean equals(Object o) &#123;</span><br><span class="line">    if (this == o) &#123;</span><br><span class="line">      return true;</span><br><span class="line">    &#125;</span><br><span class="line">    if (o == null || getClass() != o.getClass()) &#123;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Configuration that = (Configuration) o;</span><br><span class="line"></span><br><span class="line">    if (!properties.equals(that.properties)) &#123;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!serializers.equals(that.serializers)) &#123;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a>hashCode</h4><p>将properties和serializers的hashCode加在了一起。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public int hashCode() &#123;</span><br><span class="line">  int result = properties != null ? properties.hashCode() : 0;</span><br><span class="line">  result = 31 * result + (serializers != null ? serializers.hashCode() : 0);</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="checkReadOnly"><a href="#checkReadOnly" class="headerlink" title="checkReadOnly"></a>checkReadOnly</h4><p>判断是否可读，如果可读，则抛出异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private void checkReadOnly() &#123;</span><br><span class="line">  if (readOnly) &#123;</span><br><span class="line">    throw new UnsupportedOperationException(</span><br><span class="line">        &quot;The configuration values can&apos;t be set once the store reader/writer have been initialized&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><p>Configuration主要构成</p>
+<ul>
+<li>HashMap properties</li>
+<li>Serializer serilizer<h3 id="com-linkedin-paldb-api-Serializer"><a href="#com-linkedin-paldb-api-Serializer" class="headerlink" title="com.linkedin.paldb.api.Serializer"></a>com.linkedin.paldb.api.Serializer</h3>注释：为任意Java类定制序列化器。</li>
+</ul>
+<p>该接口主要一下方法：</p>
+<p>输入input，写入dataOutput.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void write(DataOutput dataOutput, K input) throws IOException;</span><br></pre></td></tr></table></figure>
+<p>从DataInput读入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public K read(DataInput dataInput) throws IOException;</span><br></pre></td></tr></table></figure>
+<p>返回实例在内存中占用比特数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public int getWeight(K instance);</span><br></pre></td></tr></table></figure>
+<h3 id="api总结"><a href="#api总结" class="headerlink" title="api总结"></a>api总结</h3><p>到此，我们分析了主要的api接口，初步了解到PalDB的功能，Configuration是由一个HashMap类型配置+序列化类构成。</p>
+<p>但目前，对于Configuration中HashMap存储各项配置项我们可以理解，但对Serializers的作用以及具体工作原理比较迷惑，下一章，我们将具体分析。</p>
+<h2 id="impl"><a href="#impl" class="headerlink" title="impl"></a>impl</h2><p>在这一部分，主要讲介绍具体实现类。为了解决上一章节留下的问题，这里我们先从Serializers.java看起。</p>
+<h3 id="com-linkedin-paldb-impl-Serializers"><a href="#com-linkedin-paldb-impl-Serializers" class="headerlink" title="com.linkedin.paldb.impl.Serializers"></a>com.linkedin.paldb.impl.Serializers</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public final class Serializers implements Serializable &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，这也是一个不可被继承的类，且实现了Serializable接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private AtomicInteger COUNTER;</span><br></pre></td></tr></table></figure>
+<p>使用原子类创建了一个计数器，但使用Atomic类会消耗额外的CPU资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Map&lt;Class, SerializerWrapper&gt; serializers</span><br></pre></td></tr></table></figure>
+<p>这里创建一个序列化的字典，猜测SerializerWrapper是一个序列化装饰器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private Serializer[] serializersArray;</span><br></pre></td></tr></table></figure>
+<p>这里我们同样在使用时进行分析其作用。</p>
+<h3 id="构造函数-1"><a href="#构造函数-1" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public Serializers() &#123;</span><br><span class="line">  COUNTER = new AtomicInteger();</span><br><span class="line">  serializers = new HashMap&lt;Class, SerializerWrapper&gt;();</span><br><span class="line">  serializersArray = new Serializer[0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>初始化COUNTER,初始值为0</li>
+<li>初始化serializers</li>
+<li>初始化serializersArray包含零元素数组</li>
+</ol>
+<h3 id="registerSerializer"><a href="#registerSerializer" class="headerlink" title="registerSerializer"></a>registerSerializer</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void registerSerializer(Serializer serializer) &#123;</span><br><span class="line">  Class objClass = getSerializerType(serializer);</span><br><span class="line">  if (!serializers.containsKey(objClass)) &#123;</span><br><span class="line">    int index = COUNTER.getAndIncrement();</span><br><span class="line">    serializers.put(objClass, new SerializerWrapper(index, serializer));</span><br><span class="line">    if (serializersArray.length &lt;= index) &#123;</span><br><span class="line">      serializersArray = Arrays.copyOf(serializersArray, index + 1);</span><br><span class="line">    &#125;</span><br><span class="line">    serializersArray[index] = serializer;</span><br><span class="line"></span><br><span class="line">    LOGGER.info(String</span><br><span class="line">        .format(&quot;Registered new serializer &apos;%s&apos; %n  for &apos;%s&apos; at index %d&quot;, serializer.getClass().getName(),</span><br><span class="line">            objClass.getName(), index));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>注意该方法是一个同步方法</li>
+<li>获取序列化数据类型</li>
+<li>检查serializers是否存在该对象<ol>
+<li>如果不存在</li>
+<li>计数器+1</li>
+<li>放入serializers中</li>
+<li>如果SerializersArray长度小于index自动扩容</li>
+<li>将seriliazier存在serializersArray中</li>
+</ol>
+</li>
+</ol>
+<p>到此，我们可以基本确定计数器<code>COUNTER</code>主要是为生成唯一的索引，而serializersArray负责存储注册过的serializer。而serializers应该是<br>根据不同类型，存储相应的SerializerWrapper。接下来我们来直接看SerializerWrapper的实现。</p>
+<h3 id="SerializerWrapper"><a href="#SerializerWrapper" class="headerlink" title="SerializerWrapper"></a>SerializerWrapper</h3><p>这是一个内部类，主要用于保存索引到序列化程序。</p>
+<h4 id="成员变量-1"><a href="#成员变量-1" class="headerlink" title="成员变量"></a>成员变量</h4><ul>
+<li>index : 索引</li>
+<li>serializer : 序列化</li>
+</ul>
+<h4 id="构造函数-2"><a href="#构造函数-2" class="headerlink" title="构造函数"></a>构造函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">    public SerializerWrapper() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public SerializerWrapper(int index, Serializer serializer) &#123;</span><br><span class="line">      this.index = index;</span><br><span class="line">      this.serializer = serializer;</span><br><span class="line">    &#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">到这里我们能初步确定的是，serializers实际上根据serializer类型存储了索引`index`和`serializer`，和serializersArray功能类似。但是Map类型，serializers可以更快的获取指定类型的serializer索引。</span><br><span class="line"></span><br><span class="line">另外，在注释中标记，该内部类与反序列化有关，所以涉及到反序列化时咱们再分析该内部类功能。</span><br><span class="line"></span><br><span class="line">### getSerializer</span><br><span class="line">获取Serializer，该方法通过Class类查询Serializer，调用了getSerializerWrapper</span><br><span class="line"></span><br><span class="line">### getSerializerWrapper</span><br></pre></td></tr></table></figure>
+<p>  private SerializerWrapper getSerializerWrapper(Class cls) {<br>    SerializerWrapper w = serializers.get(cls);<br>    if (w != null) {<br>      return w;<br>    } else {<br>      // Try with interfaces implemented<br>      for (Class c : cls.getInterfaces()) {<br>        w = serializers.get(c);<br>        if (w != null) {<br>          return w;<br>        }<br>      }<br>    }<br>    return null;<br>  }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">首先，通过cls作为检索的key，找到对应的SerializerWrapper,如果找到直接返回；如果没有找到，就比较有趣。使用`cls.getInterfaces()`获取该类实现的全部接口。然后依次检索这些接口中是否存在于serializers中,如果存在则返回，并退出。否则继续检查。</span><br><span class="line"></span><br><span class="line">这里抛出几点疑惑：</span><br><span class="line"></span><br><span class="line">1. 为什么要去检查实现的接口？</span><br><span class="line">2. 为什么在查到一个实现的接口就立即返回该接口，后续的接口就不再考虑范围了吗？</span><br><span class="line"></span><br><span class="line">初步觉得这些问题会在序列化的代码中得到解决，所以接着向下看。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### writeObject</span><br></pre></td></tr></table></figure></p>
+<p>private void writeObject(ObjectOutputStream out)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">向一个ObjectOutputStream流中写对象，对象是什么？？该函数紧接着调用了serialize()函数，并把自身作为序列化的第二个参数。所以，这里的序列化，实际上就是把自身Serializers对象写入了ObjectOutputStream中。</span><br></pre></td></tr></table></figure></p>
+<p>serialize(out, this);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### serialize</span><br><span class="line">序列化这个类到data output中，通过功能我们就可以确定这是该类的一个核心方法。</span><br></pre></td></tr></table></figure></p>
+<p>static void serialize(DataOutput out, Serializers serializers)<br>      throws IOException { }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">首先这是一个静态方法。</span><br></pre></td></tr></table></figure></p>
+<p>StringBuilder msg = new StringBuilder(String.format(“Serialize %d serializer classes:”, serializers.serializers.values().size()));<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1.先是构建了一条log消息，说明我要序列化n个可序列化类。</span><br><span class="line"></span><br><span class="line">int size = serializers.serializers.values().size();</span><br><span class="line"></span><br><span class="line">紧接着，又执行了一遍获取serializers中的数据个数的命令，和上一条语句有些重复啊。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2.然后，将可序列化类的数目写入了out流中</span><br></pre></td></tr></table></figure></p>
+<p>out.writeInt(size)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3.其次依次写入每一条的可序列化类的index和可序列化类的名称</span><br></pre></td></tr></table></figure></p>
+<p>out.writeInt(index);<br>out.writeUTF(name);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4.并在log消息字符串中写入刚刚写入的index和name</span><br><span class="line"></span><br><span class="line">5.最后通过log打印。</span><br><span class="line"></span><br><span class="line">最终写入out流中的数据如下</span><br><span class="line"></span><br><span class="line">|1|2|3|4|5|</span><br><span class="line">|---|---|---|----|---|</span><br><span class="line">|size|index1|name1|index2|name2|</span><br><span class="line"></span><br><span class="line">### readObject</span><br></pre></td></tr></table></figure></p>
+<p>  private void readObject(ObjectInputStream in)<br>      throws IOException, ClassNotFoundException {<br>    // Init<br>    COUNTER = new AtomicInteger();<br>    serializers = new HashMap&lt;Class, SerializerWrapper&gt;();<br>    serializersArray = new Serializer[0];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">从流中读对象，先要做好初始化的工作，计数器归零，serializers，serializersArray分配内存</span><br><span class="line"></span><br><span class="line">然后，调用了`deserialize(in, this)`,当然，读写实际对应着序列化与反序列化。</span><br><span class="line"></span><br><span class="line">### deserialize</span><br></pre></td></tr></table></figure></p>
+<p>static void deserialize(DataInput in, Serializers serializers)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同样是一个静态方法</span><br><span class="line"></span><br><span class="line">接下来的读取顺序当然和写入的顺序相同</span><br></pre></td></tr></table></figure></p>
+<p>int size = in.readInt();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">获取可序列化类的长度</span><br></pre></td></tr></table></figure></p>
+<p>int size = in.readInt();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后循环读取in流中的类</span><br><span class="line"></span><br><span class="line">1.获取索引index</span><br></pre></td></tr></table></figure></p>
+<p>int index = in.readInt();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.读取class名称</span><br></pre></td></tr></table></figure></p>
+<p>String serializerClassName = in.readUTF();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3.有class名称获取类</span><br></pre></td></tr></table></figure></p>
+<p>Class<serializer> serializerClass = (Class<serializer>) Class.forName(serializerClassName);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4.创建class的一个实例</span><br></pre></td></tr></table></figure></serializer></serializer></p>
+<p>Serializer serializerInstance = serializerClass.newInstance();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5.根据index和实例恢复一个序列化对象,并放入serializers中</span><br></pre></td></tr></table></figure></p>
+<p>serializers.serializers<br>    .put(getSerializerType(serializerInstance), new SerializerWrapper(index, serializerInstance));<br>serializers.serializersArray[index] = serializerInstance;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6.另外这里同样构建了一些log信息，并进行了输出</span><br><span class="line"></span><br><span class="line">7.最后计数器加1</span><br></pre></td></tr></table></figure></p>
+<p>serializers.COUNTER.set(max + 1);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;这里只使用了set方法，对max+1并不是一个原子性操作，考虑可能没有并发读取的需求，具体在后续使用中继续分析。</span><br><span class="line"></span><br><span class="line">### getSerializerType</span><br><span class="line">这是剩余的最后的一个有意义一起看的方法,功能就是返回可序列化类的类型</span><br></pre></td></tr></table></figure></p>
+<p>private static Class&lt;?&gt; getSerializerType(Object instance) {}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同样一个静态方法。</span><br><span class="line"></span><br><span class="line">1.首先获取了实现的接口的类别，`[0]`表示第一个实现的[接口][1]</span><br></pre></td></tr></table></figure></p>
+<p>Type type = instance.getClass().getGenericInterfaces()[0];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.判断是否是一个泛化类型</span><br></pre></td></tr></table></figure></p>
+<p>if (type instanceof ParameterizedType)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3.获取一个[泛化类型][2]的实际第一个参数</span><br></pre></td></tr></table></figure></p>
+<p>Type clsType = ((ParameterizedType) type).getActualTypeArguments()[0];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4.判断第一个参数是否是[参数化类型或类型变量的数组类型][3],</span><br></pre></td></tr></table></figure></p>
+<p>cls = Array.newInstance((Class) ((GenericArrayType) clsType).getGenericComponentType(), 0).getClass();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5.如果是需要构建一个数组类型</span><br></pre></td></tr></table></figure></p>
+<p>cls = Array.newInstance((Class) ((GenericArrayType) clsType).getGenericComponentType(), 0).getClass();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6.如果不是，无需处理，直接将类型传递给cls即可</span><br></pre></td></tr></table></figure></p>
+<p>cls = (Class&lt;?&gt;) clsType;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7.如果类型是Object，则抛出异常</span><br></pre></td></tr></table></figure></p>
+<p>if (Object.class.equals(cls)) {<br>    throw new RuntimeException(“The serializer type can’t be object”);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">8.最后返回cls即可。</span><br><span class="line"></span><br><span class="line">### 小结</span><br><span class="line"></span><br><span class="line">Serializers这个类实现的东西比较多，这里重新回顾以下：</span><br><span class="line"></span><br><span class="line">功能：Serializers主要负责将存储一系列的Serializer，并支持将其序列化到流中，以及从流中恢复。并支持输入一个Object实例，获取其类型。</span><br><span class="line"></span><br><span class="line">关键点：这里我们主要要了解，Serializers的数据结构，以及序列化的方式。</span><br><span class="line"></span><br><span class="line">仍然存在的问题：</span><br><span class="line"></span><br><span class="line">1. SerializerWrapper的疑惑</span><br><span class="line">	1. 为什么要去检查实现的接口？</span><br><span class="line">	2. 为什么在查到一个实现的接口就立即返回该接口，后续的接口就不再考虑范围了吗？</span><br><span class="line">2. getSerializerType</span><br><span class="line">	1. 获取其Serializer Type，为什么要从接口中获取</span><br><span class="line">3. 我们现在了解Serializer的功能是对多个Serializer进行操作，但Serializer到底是什么？</span><br><span class="line"></span><br><span class="line">这些问题我们依然留着，在接下来的章节讨论。</span><br><span class="line"></span><br><span class="line">## com.linkedin.paldb.impl.StorageWriter</span><br><span class="line">上一章，我们以为能去了解Serializer的功能，但是最后发现它Serializers只是在对Serializer进行管理，这一章节，我们了解从写数据入手，希望可以发现到底什么是Serializer。</span><br><span class="line"></span><br><span class="line">### 成员变量</span><br><span class="line"></span><br><span class="line">首先一上来就是一堆的成员变量，首先根据注释进行猜测功能，如果有更正，后续会标明。</span><br></pre></td></tr></table></figure></p>
+<p>  // 配置<br>  private final Configuration config;<br>  // 满载率<br>  private final double loadFactor;</p>
+<p>  // 输出相关<br>  // 临时文件<br>  private final File tempFolder;<br>  // 输出流<br>  private final OutputStream outputStream;</p>
+<p>  // 索引流相关<br>  private File[] indexFiles;<br>  private DataOutputStream[] indexStreams;</p>
+<p>  // 数据流相关<br>  private File[] dataFiles;<br>  private DataOutputStream[] dataStreams;</p>
+<p>  // 缓存最后的值<br>  private byte[][] lastValues;<br>  private int[] lastValuesLength;</p>
+<p>  // 数据长度<br>  private long[] dataLengths;<br>  // 长度索引<br>  private long indexesLength;<br>  // 最大的偏移长度<br>  private int[] maxOffsetLengths;<br>  // 主键数目<br>  private int keyCount;<br>  private int[] keyCounts;</p>
+<p>  // 数据数目<br>  private int valueCount;<br>  // 冲突数目<br>  private int collisions;</p>
+<p>  // hash工具类<br>  private HashUtils hashUtils;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">对上边的具体含义不理解，我们一起往下看。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 构造函数</span><br></pre></td></tr></table></figure></p>
+<p>StorageWriter(Configuration configuration, OutputStream stream)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输入配置文件，和一个输出流。</span><br><span class="line"></span><br><span class="line">初始化配置，并加载loadFactor</span><br></pre></td></tr></table></figure></p>
+<pre><code>config = configuration;
+loadFactor = config.getDouble(Configuration.LOAD_FACTOR);
+if (loadFactor &lt;= 0.0 || loadFactor &gt;= 1.0) {
+  throw new IllegalArgumentException(&quot;Illegal load factor = &quot; + loadFactor + &quot;, should be between 0.0 and 1.0.&quot;);
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">创建一个临时文件夹</span><br></pre></td></tr></table></figure>
+<p>tempFolder = TempUtils.createTempDir(“paldbtempwriter”);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">设置退出时删除</span><br></pre></td></tr></table></figure></p>
+<p>tempFolder.deleteOnExit();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">构建一个[字节缓冲输出流对象][4]，减少I/O操作次数</span><br></pre></td></tr></table></figure></p>
+<p>outputStream = stream instanceof BufferedOutputStream ? stream : new BufferedOutputStream(stream);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">初始化下边这些成员变量</span><br></pre></td></tr></table></figure></p>
+<pre><code>indexStreams = new DataOutputStream[0];
+dataStreams = new DataOutputStream[0];
+indexFiles = new File[0];
+dataFiles = new File[0];
+lastValues = new byte[0][];
+lastValuesLength = new int[0];
+dataLengths = new long[0];
+maxOffsetLengths = new int[0];
+keyCounts = new int[0];
+hashUtils = new HashUtils();
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### put</span><br></pre></td></tr></table></figure>
+<p>public void put(byte[] key, byte[] value)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">作为一个KV存储的脸面，核心的方法来了。</span><br><span class="line"></span><br><span class="line">1.获取key的长度</span><br></pre></td></tr></table></figure></p>
+<p>int keyLength = key.length;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.获取数据输出流，这里凡是相同长度的key，都存放在了同一个文件。</span><br></pre></td></tr></table></figure></p>
+<p>DataOutputStream indexStream = getIndexStream(keyLength);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">为什么这么操作，分析可能有以下几点原因：</span><br><span class="line"></span><br><span class="line">* 方便进行查找 ： 相当于做了一个‘分布式存储’，读取时只需要查询部分数据。</span><br><span class="line">* 节省空间： 长度相同的数据存储在一起，更加整齐，会更加节省空间。</span><br><span class="line"></span><br><span class="line">3.写入key</span><br></pre></td></tr></table></figure></p>
+<p>indexStream.write(key);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4.检查下刚刚写入的key对应的数据和现在的数据是否相同。</span><br></pre></td></tr></table></figure></p>
+<p>byte[] lastValue = lastValues[keyLength];<br>boolean sameValue = lastValue != null &amp;&amp; Arrays.equals(value, lastValue);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5.获取数据流和长度</span><br></pre></td></tr></table></figure></p>
+<pre><code>// Get data stream and length
+long dataLength = dataLengths[keyLength];
+if (sameValue) {
+  dataLength -= lastValuesLength[keyLength];
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里可能会比较疑惑，什么时候存储的这些数据，实际上也只能在刚刚的`getIndexStream`查询过程中存储过。下一节仔细介绍该方法。</span><br><span class="line"></span><br><span class="line">另外，如果查询到刚刚插入过该数据，那么先获取整个数据的长度，然后将整体长度减去最后插入的数据长度，最后就得到了插入这个数据之前的dataLength。</span><br><span class="line"></span><br><span class="line">[插入图片]()</span><br><span class="line"></span><br><span class="line">6.写入偏移量和记录的最大偏移长度。</span><br></pre></td></tr></table></figure>
+<pre><code>// Write offset and record max offset length
+int offsetLength = LongPacker.packLong(indexStream, dataLength);
+maxOffsetLengths[keyLength] = Math.max(offsetLength, maxOffsetLengths[keyLength]);
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里我们暂且理解为只是写入数据然后返回偏移量，同时更新最大偏移量，具体什么功能，原理，我们在`LongPacker`学习。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">7.如果与最新插入的数据不一致的情况</span><br><span class="line"></span><br><span class="line">首先获取到dataStream</span><br></pre></td></tr></table></figure>
+<p>DataOutputStream dataStream = getDataStream(keyLength);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">写入长度和value</span><br></pre></td></tr></table></figure></p>
+<p>int valueSize = LongPacker.packInt(dataStream, value.length);<br>dataStream.write(value);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">更新新的数据长度</span><br></pre></td></tr></table></figure></p>
+<p>dataLengths[keyLength] += valueSize + value.length;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">更新最新的值</span><br></pre></td></tr></table></figure></p>
+<p>lastValues[keyLength] = value;<br>lastValuesLength[keyLength] = valueSize + value.length;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">统计value数目</span><br></pre></td></tr></table></figure></p>
+<p>valueCount++;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">到目前为止还不了解LongPacker的功能，不过初步可以确定，实际上如果检查到最后插入的数据不一致，获取到指向最后一个数据，dataStream可能类似指针的作用。在获取到该指针之后，就可以将新的值覆盖在原有的值之上。</span><br><span class="line"></span><br><span class="line">8.统计Key的总量+1</span><br><span class="line"></span><br><span class="line">9.统计keyLength长度key的总量+1</span><br><span class="line"></span><br><span class="line">#### put小结</span><br><span class="line">到这里，我们好像存在很多疑惑。</span><br><span class="line"></span><br><span class="line">* dataLength到底干嘛用的</span><br><span class="line">* LongPacker做了什么？</span><br><span class="line"></span><br><span class="line">所以在下一节我们将直接进入`com.linkedin.paldb.utils.LongPacker`去看一看。</span><br><span class="line"></span><br><span class="line">## com.linkedin.paldb.utils.LongPacker</span><br></pre></td></tr></table></figure></p>
+<p>public final class LongPacker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同样，这是一个不可被继承的类。</span><br><span class="line"></span><br><span class="line">### 构造方法</span><br></pre></td></tr></table></figure></p>
+<p>private LongPacker() {</p>
+<p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">只能被静态方法调用</span><br><span class="line"></span><br><span class="line">### packLong</span><br><span class="line">写入流与写入byte[]都是相同的逻辑，只是写入位置不同，这里以写入流为示范分析。</span><br><span class="line"></span><br><span class="line">将无符号长整型数据数据添加到output流中，根据value大小会占用1-10bytes空间。</span><br><span class="line"></span><br><span class="line">输入DataOutput,value，输出写入的数据比特数。</span><br></pre></td></tr></table></figure></p>
+<p>while ((value &amp; ~0x7FL) != 0) {<br>    os.write((((int) value &amp; 0x7F) | 0x80));<br>    value &gt;&gt;&gt;= 7;<br>    i++;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">涉及到位操作，欠缺的太多，《码出高效》第一节介绍的就是位运算，所以，非常值得学习。</span><br><span class="line"></span><br><span class="line">首先记得</span><br><span class="line"></span><br><span class="line">* 7f:0111 1111</span><br><span class="line">* 80:1000 0000</span><br><span class="line"></span><br><span class="line">`value &amp; ~0x7FL`:判断data的高位是否为0，如果为0，则证明全部数据已经写入os中，不再进行写入。</span><br><span class="line"></span><br><span class="line">`((int) value &amp; 0x7F) | 0x80`:首先`value &amp; 0x7F`取出低七位，然后与`0x80`进行或运算，补齐八位，最后使用</span><br><span class="line">write写入os流中。</span><br><span class="line"></span><br><span class="line">写入之后向左移动七位，并累加计数器i。</span><br></pre></td></tr></table></figure></p>
+<p>value &gt;&gt;&gt;= 7;<br>i++;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">循环完成之后，把value中剩余的value写入os流中。</span><br></pre></td></tr></table></figure></p>
+<p>os.write((byte) value);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">最后返回写入的字节数。</span><br><span class="line"></span><br><span class="line">对于该函数还有一个疑惑：</span><br><span class="line"></span><br><span class="line">1. 为什么每次取七位写入而不是八位，是为了留符号位？</span><br><span class="line">### unpackLong</span><br><span class="line">#### 从DataInput获取数据</span><br></pre></td></tr></table></figure></p>
+<p>for (int offset = 0; offset &lt; 64; offset += 7) {<br>      long b = is.readUnsignedByte();<br>      result |= (b &amp; 0x7F) &lt;&lt; offset;<br>      if ((b &amp; 0x80) == 0) {<br>        return result;<br>      }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">首先从流中读取无符号的Byte(8位),然后获取`(b &amp; 0x7F)`低七位，因为最高位无用位，并将其移向更高位，构建输出数据。</span><br><span class="line"></span><br><span class="line">#### 从byte[]中获取数据</span><br></pre></td></tr></table></figure></p>
+<p> static public long unpackLong(byte[] ba) {<br>    return unpackLong(ba, 0);<br> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里调用了下边的方法。</span><br></pre></td></tr></table></figure></p>
+<p>  static public long unpackLong(byte[] ba, int index) {<br>    long result = 0;<br>    for (int offset = 0; offset &lt; 64; offset += 7) {<br>      long b = ba[index++];<br>      result |= (b &amp; 0x7F) &lt;&lt; offset;<br>      if ((b &amp; 0x80) == 0) {<br>        return result;<br>      }<br>    }<br>    throw new Error(“Malformed long.”);<br>  }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">index，指明了从ba数组中搜索的起始位。处理方式同上述方法一样。</span><br><span class="line"></span><br><span class="line">### packInt和upackInt</span><br><span class="line">与打包和解包Long数据的方法一样，唯一区别在于解包时，offset的最大值有差异，这和long占据64个字节，而Int占据32个字节有关。</span><br><span class="line"></span><br><span class="line">### 小结</span><br><span class="line">LongPacker主要负责将数据打包、或从流或者byte[]中解包，然后返回使用的占用的比特数。这一节中，我们提出疑问：</span><br><span class="line"></span><br><span class="line">1. 为什么每次取七位写入而不是八位，是为了留符号位？</span><br><span class="line"></span><br><span class="line">在解包过程中，因为使用了is.readUnsignedByte()，所以一次取出的最长数组为8位。而最高位直接被丢弃掉没有考虑，只去有意义的七位。我认为可以直接存储8位，这里开发者并没有，或许有可能为未来拓展存储带符号long做准备，真实的原因还不得而知。</span><br><span class="line"></span><br><span class="line">## com.linkedin.paldb.impl.StorageWriter</span><br><span class="line">现在重回StorageWriter，在重新看put函数。</span><br><span class="line"></span><br><span class="line">### put</span><br><span class="line">在接下来，我们将通过图解进行描述一次put过程</span><br><span class="line"></span><br><span class="line">初始状态如下：</span><br><span class="line"></span><br><span class="line">[PalDB1.png]()</span><br><span class="line"></span><br><span class="line">DataStream负责存储value数据，而IndexStream负责存储key和以及对应在DataStream中的索引。</span><br><span class="line"></span><br><span class="line">[PalDB2.png]()</span><br><span class="line"></span><br><span class="line">首先IndexStream插入key，然后将DataStream的长度DataLength插入。通过DataLength，我们就可以找到该key对应的数据。</span><br><span class="line"></span><br><span class="line">[PalDB3.png]()</span><br><span class="line"></span><br><span class="line">最后DataStream写入value.length,然后通过该length我们可以获取接下来从DataStream读取value的长度。这样就可以实现一个快速的读取。</span><br><span class="line"></span><br><span class="line">现在看put过程还是比较简单的，虽然简单，这应该也是该项目的核心了。</span><br><span class="line"></span><br><span class="line">&gt;在这里，我试着想象如何重新读取刚刚插入的数据时发现，key的长度一致，可以读取。但是</span><br><span class="line">&gt;dataLength的长度不一，我没有办法获取，考虑到还有几个成员变量没有使用上，或许他们</span><br><span class="line">&gt;起了很重要的作用。至于起到何种功能，我们在接下来阅读中再分析。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### close</span><br><span class="line">1.关闭全部的dataStream和indexStream</span><br><span class="line"></span><br><span class="line">2.写入元数据</span><br></pre></td></tr></table></figure></p>
+<pre><code>File metadataFile = new File(tempFolder, &quot;metadata.dat&quot;);
+metadataFile.deleteOnExit();
+FileOutputStream metadataOututStream = new FileOutputStream(metadataFile);
+DataOutputStream metadataDataOutputStream = new DataOutputStream(metadataOututStream);
+writeMetadata(metadataDataOutputStream);
+metadataDataOutputStream.close();
+metadataOututStream.close();
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里如果感兴趣，可以了解下DataOutputStream的用法。</span><br><span class="line"></span><br><span class="line">写入完成后并没有关闭文件连接，而是将其存入了数组，看来在接下来还要继续写入。</span><br><span class="line"></span><br><span class="line">&gt;writeMetadata：实际是将一些配置信息写入文件中</span><br><span class="line"></span><br><span class="line">3.添加metaDataFile到merge列表中</span><br></pre></td></tr></table></figure>
+<p>filesToMerge.add(metadataFile);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4.添加索引文件到merge列表中</span><br></pre></td></tr></table></figure></p>
+<p>for (int i = 0; i &lt; indexFiles.length; i++) {<br>   if (indexFiles[i] != null) {<br>       filesToMerge.add(buildIndex(i));<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5.添加数据文件到merge列表中</span><br></pre></td></tr></table></figure></p>
+<p>for (File dataFile : dataFiles) {<br>    if (dataFile != null) {<br>        filesToMerge.add(dataFile);<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6.检查存储空间</span><br></pre></td></tr></table></figure></p>
+<p>checkFreeDiskSpace(filesToMerge);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7.合并文件</span><br></pre></td></tr></table></figure></p>
+<p>mergeFiles(filesToMerge, outputStream);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### writeMetadata</span><br></pre></td></tr></table></figure></p>
+<pre><code>//Write format version
+dataOutputStream.writeUTF(FormatVersion.getLatestVersion().name());
+
+//Write time
+dataOutputStream.writeLong(System.currentTimeMillis());
+
+//Prepare
+int keyLengthCount = getNumKeyCount();
+int maxKeyLength = keyCounts.length - 1;
+
+//Write size (number of keys)
+dataOutputStream.writeInt(keyCount);
+
+//Write the number of different key length
+dataOutputStream.writeInt(keyLengthCount);
+
+//Write the max value for keyLength
+dataOutputStream.writeInt(maxKeyLength);
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">将每一个keyLength写入文件</span><br><span class="line"></span><br><span class="line">只有在keyCount大于0时才写入</span><br></pre></td></tr></table></figure>
+<pre><code>// Write the key length
+dataOutputStream.writeInt(i);
+
+// Write key count
+dataOutputStream.writeInt(keyCounts[i]);
+
+// Write slot count
+int slots = (int) Math.round(keyCounts[i] / loadFactor);
+dataOutputStream.writeInt(slots);
+
+// Write slot size
+int offsetLength = maxOffsetLengths[i];
+dataOutputStream.writeInt(i + offsetLength);
+
+// Write index offset
+dataOutputStream.writeInt((int) indexesLength);
+
+// Increment index length
+indexesLength += (i + offsetLength) * slots;
+
+// Write data length
+dataOutputStream.writeLong(datasLength);
+
+// Increment data length
+datasLength += dataLengths[i];
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[slot][6]还需要再分析下作用</span><br><span class="line"></span><br><span class="line">写入serializers</span><br></pre></td></tr></table></figure>
+<p>Serializers.serialize(dataOutputStream, config.getSerializers());<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">写入index和data的位置</span><br></pre></td></tr></table></figure></p>
+<p>dataOutputStream.writeLong(indexOffset + indexesLength);<br>dataOutputStream.writeInt(indexOffset);<br>dataOutputStream.writeLong(indexOffset + indexesLength);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### buildIndex</span><br></pre></td></tr></table></figure></p>
+<p>// key数量<br>long count = keyCounts[keyLength];<br>//<br>int slots = (int) Math.round(count / loadFactor);<br>// 偏移量<br>int offsetLength = maxOffsetLengths[keyLength];<br>// slotSize<br>int slotSize = keyLength + offsetLength;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在这里，再一次出现了Slot，我们先继续向下看。</span><br><span class="line"></span><br><span class="line">1.这里使用index加key长度作为名称创建了一个数据文件。[`RandomAccessFile`][7]支持读取和写入随机访问文件。</span><br></pre></td></tr></table></figure></p>
+<p>File indexFile = new File(tempFolder, “index” + keyLength + “.dat”);<br>RandomAccessFile indexAccessFile = new RandomAccessFile(indexFile, “rw”);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.设置文件长度</span><br></pre></td></tr></table></figure></p>
+<p>indexAccessFile.setLength(slots * slotSize);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里文件长度设置为了`slots * slotSize`,`slotSize` = keyLength + offsetLength,在前边我们分析过indexStream的结构为`key`+`dataLength`，所以index的一个基本数据元占据的空间就是`keyLength`+`dataLength.length()`，`keyLength`长度一致，而dataLength长度不一致，为了存下全部数据，这里当然设置为offsetLength(最长的dataLength.length)。</span><br><span class="line"></span><br><span class="line">而slots*slotSize等于整个文件的大小，所以slots这里代表容量，就是能放下多少个indexStream的数据元。</span><br><span class="line"></span><br><span class="line">&gt;这里我们已经理解了maxOffsetLengths[]的作用了，</span><br><span class="line">&gt;但是slots为什么不直接等于key的数量讷，这个问题我们以后再讨论</span><br><span class="line"></span><br><span class="line">3.获取[FileChannel][8]</span><br></pre></td></tr></table></figure></p>
+<p>FileChannel indexChannel = indexAccessFile.getChannel();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">FileChannel直接将输入输出流相连接，效率更高 </span><br><span class="line"></span><br><span class="line">4.使用[MappedByteBuffer][9]将该filechannel直接映射到内存中</span><br></pre></td></tr></table></figure></p>
+<p>MappedByteBuffer byteBuffer = indexChannel.map(FileChannel.MapMode.READ_WRITE, 0, indexAccessFile.length());<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5.初始化reading stream</span><br></pre></td></tr></table></figure></p>
+<p>File tempIndexFile = indexFiles[keyLength];<br>DataInputStream tempIndexStream = new DataInputStream(new BufferedInputStream(new FileInputStream(tempIndexFile)));<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6.为keyBuffer,slotBuffer,offsetBuffer分配内存</span><br></pre></td></tr></table></figure></p>
+<p>byte[] keyBuffer = new byte[keyLength];<br>byte[] slotBuffer = new byte[slotSize];<br>byte[] offsetBuffer = new byte[offsetLength];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7.读取全部的key</span><br></pre></td></tr></table></figure></p>
+<p>tempIndexStream.readFully(keyBuffer);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">readFully将读取keyBuffer长度的字节到keyBuffer中。</span><br><span class="line"></span><br><span class="line">读取offset</span><br></pre></td></tr></table></figure></p>
+<p>long offset = LongPacker.unpackLong(tempIndexStream);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">读取Hash</span><br></pre></td></tr></table></figure></p>
+<p>long hash = (long) hashUtils.hash(keyBuffer);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;关于hash的作用我们下一节讨论。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">进行冲突检测</span><br><span class="line"></span><br><span class="line">小循环中先通过hash获取到slot值，然后将byteBuffer游标位置移动到对应的slot位置，并将slot对应的值赋给slotBuffer。</span><br></pre></td></tr></table></figure></p>
+<p>int slot = (int) ((hash + probe) % slots);<br>byteBuffer.position(slot * slotSize);<br>byteBuffer.get(slotBuffer);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">解析slotBuffer中的数据</span><br></pre></td></tr></table></figure></p>
+<p>long found = LongPacker.unpackLong(slotBuffer, keyLength);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果为零，则证明之前不存在数据，可以进行写入。</span><br></pre></td></tr></table></figure></p>
+<p>byteBuffer.position(slot*slotSize);<br>byteBuffer.put(keyBuffer);<br>int pos = LongPacker.packLong(offsetBuffer, offset);<br>byteBuffer.put(offsetBuffer, 0, pos);<br>break;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果不为零，则证明数据存在，报错。</span><br><span class="line"></span><br><span class="line">接下来是两个连续的finally,要确保关闭各种连接</span><br></pre></td></tr></table></figure></p>
+<pre><code>} finally {
+    // Close input
+    tempIndexStream.close();
+
+    // Close index and make sure resources are liberated
+    indexChannel.close();
+    indexChannel = null;
+    byteBuffer = null;
+
+    // Delete temp index file
+    if (tempIndexFile.delete()) {
+      LOGGER.log(Level.INFO, &quot;Temporary index file {0} has been deleted&quot;, tempIndexFile.getName());
+    }
+  }
+} finally{
+  indexAccessFile.close();
+  indexAccessFile = null;
+  System.gc();
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">最后这个System.gc()是告诉jvm虚拟机回收对象，但是具体回不回收还是看虚拟机。</span><br><span class="line"></span><br><span class="line">最后返回构建的indexFile。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 小小的总结</span><br><span class="line"></span><br><span class="line">![](https://i.imgur.com/IZ6BCHh.png)</span><br><span class="line"></span><br><span class="line">其中我们主要从tempIndexStream中读取刚刚添加的keyBuffer和offset(即dataLength)，byteBuffer检查是否存在key，不存在则插入keybuffer和offsetBuffer</span><br><span class="line"></span><br><span class="line">### mergeFiles</span><br></pre></td></tr></table></figure>
+<p>private void mergeFiles(List<file> inputFiles, OutputStream outputStream)<br>    throws IOException<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* inputFiles: 输入文件列表</span><br><span class="line">* outputStream： 输出流</span><br><span class="line"></span><br><span class="line">循环合并文件</span><br><span class="line"></span><br><span class="line">1.检查文件是否存在，不存在则跳过</span><br><span class="line"></span><br><span class="line">2.写入outputStream</span><br></pre></td></tr></table></figure></file></p>
+<p>FileInputStream fileInputStream = new FileInputStream(f);<br>BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);<br>try {<br>    LOGGER.log(Level.INFO, “Merging {0} size={1}”, new Object[]{f.getName(), f.length()});</p>
+<pre><code>byte[] buffer = new byte[8192];
+int length;
+while ((length = bufferedInputStream.read(buffer)) &gt; 0) {
+    outputStream.write(buffer, 0, length);
+}
+</code></pre><p>} finally {<br>    bufferedInputStream.close();<br>    fileInputStream.close();<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里我们可以看到，不同的文件间直接进行合并，所以可以确定的是文件内的内容只包含结构相同的数据。这里给我们进一步优化项目提供了很大帮助。</span><br><span class="line">### getDataStream</span><br></pre></td></tr></table></figure></p>
+<p>private DataOutputStream getDataStream(int keyLength)<br>      throws IOException;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">输入keyLength返回存储数据的DataOutputStream.</span><br><span class="line"></span><br><span class="line">1.如果dataStreams长度小于keyLength，证明没有添加过该dataLength,所以需要进行dataStreams的扩容。</span><br></pre></td></tr></table></figure></p>
+<p>if (dataStreams.length &lt;= keyLength) {<br>    dataStreams = Arrays.copyOf(dataStreams, keyLength + 1);<br>    dataFiles = Arrays.copyOf(dataFiles, keyLength + 1);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.获取dataStrams中对应的数据输出流</span><br></pre></td></tr></table></figure></p>
+<p>DataOutputStream dos = dataStreams[keyLength];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3.如果为空，则需要进行初始化</span><br></pre></td></tr></table></figure></p>
+<p>File file = new File(tempFolder, “data” + keyLength + “.dat”);<br>file.deleteOnExit();<br>dataFiles[keyLength] = file;</p>
+<p>dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));<br>dataStreams[keyLength] = dos;</p>
+<p>// Write one byte so the zero offset is reserved<br>dos.writeByte(0);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里需要注意最后，writeByte(0),写入一个字节，以便保留零偏移量。</span><br><span class="line"></span><br><span class="line">#### getIndexStream</span><br></pre></td></tr></table></figure></p>
+<p>private DataOutputStream getIndexStream(int keyLength)<br>      throws IOException;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">通过指定keyLength获取index stream</span><br><span class="line"></span><br><span class="line">1.同样，如果没有indexStream没有keyLength位数据，需要进行扩容。</span><br></pre></td></tr></table></figure></p>
+<p>indexStreams = Arrays.copyOf(indexStreams, keyLength + 1);<br>indexFiles = Arrays.copyOf(indexFiles, keyLength + 1);<br>keyCounts = Arrays.copyOf(keyCounts, keyLength + 1);<br>maxOffsetLengths = Arrays.copyOf(maxOffsetLengths, keyLength + 1);<br>lastValues = Arrays.copyOf(lastValues, keyLength + 1);<br>lastValuesLength = Arrays.copyOf(lastValuesLength, keyLength + 1);<br>dataLengths = Arrays.copyOf(dataLengths, keyLength + 1);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.获取DataOutputStream</span><br></pre></td></tr></table></figure></p>
+<p>DataOutputStream dos = indexStreams[keyLength];<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3.如果dos为空，则创建stream</span><br></pre></td></tr></table></figure></p>
+<p>File file = new File(tempFolder, “temp_index” + keyLength + “.dat”);<br>file.deleteOnExit();<br>indexFiles[keyLength] = file;</p>
+<p>dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));<br>indexStreams[keyLength] = dos;<br>dataLengths[keyLength]++;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">4.最后返回dos</span><br><span class="line"></span><br><span class="line">### 小结</span><br><span class="line"></span><br><span class="line">该类属于PalDB的核心部分，最重要需要理解PalDB的存储方式以及各种流的作用。</span><br><span class="line"></span><br><span class="line">## com.linkedin.paldb.impl.WriterImpl</span><br><span class="line">这里我们先不看数据库写，读完全部的写相关函数。该类是StoreWriter的实现类。</span><br><span class="line"></span><br><span class="line">### 成员变量</span><br></pre></td></tr></table></figure></p>
+<p>  // Logger<br>  private final static Logger LOGGER = Logger.getLogger(WriterImpl.class.getName());<br>  // Configuration<br>  private final Configuration config;<br>  // Storage<br>  private final StorageWriter storage;<br>  // Serialization<br>  private final StorageSerialization serialization;<br>  // File (can be null)<br>  private final File file;<br>  // Stream<br>  private final OutputStream outputStream;<br>  // Opened?<br>  private boolean opened;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">其中StorageSerialization我们还不理解，应该是序列化相关类。</span><br><span class="line"></span><br><span class="line">以下内容比较简单，我们只关注构造方法。</span><br><span class="line"></span><br><span class="line">### 构造方法</span><br></pre></td></tr></table></figure></p>
+<p>WriterImpl(Configuration config, File file)<br>      throws IOException {<br>  this(config, new FileOutputStream(file), file);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>WriterImpl(Configuration config, OutputStream stream) {<br>   this(config, stream, null);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>private WriterImpl(Configuration config, OutputStream stream, File file) {<br>    this.config = config;<br>    this.outputStream = stream;<br>    this.file = file;</p>
+<pre><code>// Open storage
+LOGGER.log(Level.INFO, &quot;Opening writer storage&quot;);
+serialization = new StorageSerialization(config);
+storage = new StorageWriter(config, outputStream);
+opened = true;
+</code></pre><p> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里配置`config`,`stream`,`file`,将config序列化并创建一个storageWriter，最后标记为已打开。</span><br><span class="line"></span><br><span class="line">### 小结</span><br><span class="line"></span><br><span class="line">这一部分没有难度，到此我们已经完整的了解了从底层到上层借口进行写入的全部代码。接下来我们将分析一个遗留的问题，`HashUtils`,我们代码中它是如何被调用的</span><br></pre></td></tr></table></figure></p>
+<p>long hash = (long) hashUtils.hash(keyBuffer);<br>int slot = (int) ((hash + probe) % slots);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## com.linkedin.paldb.utils.HashUtils</span><br><span class="line"></span><br><span class="line">### 成员变量</span><br></pre></td></tr></table></figure></p>
+<p>private final Murmur3A hash = new Murmur3A(42);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里使用内部类进行生产hash。</span><br><span class="line"></span><br><span class="line">### hash</span><br><span class="line">设置新的hash，主要分为一下三部</span><br><span class="line"></span><br><span class="line">1. 重置</span><br><span class="line">2. 更新</span><br><span class="line">3. 返回值</span><br><span class="line"></span><br><span class="line">具体实现与内部类`Murmur3A`有关。</span><br><span class="line"></span><br><span class="line">### Murmur3A</span><br><span class="line">主要实现了生产Hash的算法，这里与主要功能无关，不再介绍。</span><br><span class="line"></span><br><span class="line">---------------------</span><br><span class="line"></span><br><span class="line">## com.linkedin.paldb.impl.StorageReader</span><br><span class="line"></span><br><span class="line">### 成员变量</span><br><span class="line">成员变量和StorageWriter的成员变量基本一致，只有下边这个变量我们还不清楚其真正的含义。</span><br></pre></td></tr></table></figure></p>
+<p>private final boolean mMapData;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 构造函数</span><br><span class="line"></span><br><span class="line">1.首先进行了一致配置的导入，然后进行了一个参数合法化检查。</span><br></pre></td></tr></table></figure></p>
+<p>if (segmentSize &gt; Integer.MAX_VALUE) {<br>    throw new IllegalArgumentException(<br>        “The <code>&quot; + Configuration.MMAP_SEGMENT_SIZE + &quot;</code> setting can’t be larger than 2GB”);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里对MMAP_SEGMENT_SIZE长度进行了限制，不能超过2GB。</span><br><span class="line"></span><br><span class="line">2.打开文件并读取元数据</span><br></pre></td></tr></table></figure></p>
+<p>FileInputStream inputStream = new FileInputStream(path);<br>DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(inputStream));<br><code>`</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/1.jpg" alt="Joliu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描二维码添加我的微信好友</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/palDB/" rel="tag"># palDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/25/Spring_Reference(1)/" rel="next" title="Introduction to the Spring IoC Container and Beans">
+                <i class="fa fa-chevron-left"></i> Introduction to the Spring IoC Container and Beans
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Joliu</p>
+              <p class="site-description motion-element" itemprop="description">研究生不研究“生”，开始研究代码了！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Ninwoo" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:ljo0412@live.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+		  	<br>
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=433103172&auto=1&height=66"></iframe>
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linkedin-paldb"><span class="nav-number">1.</span> <span class="nav-text">linkedin.paldb</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目简介"><span class="nav-number">1.1.</span> <span class="nav-text">项目简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目结构"><span class="nav-number">1.2.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始真正的阅读源码"><span class="nav-number">1.3.</span> <span class="nav-text">开始真正的阅读源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-api-PalDB"><span class="nav-number">1.3.1.</span> <span class="nav-text">com.linkedin.paldb.api.PalDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.3.2.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-api-StoreReader"><span class="nav-number">1.3.3.</span> <span class="nav-text">com.linkedin.paldb.api.StoreReader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-api-StoreWriter"><span class="nav-number">1.3.4.</span> <span class="nav-text">com.linkedin.paldb.api.StoreWriter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-api-Configuration"><span class="nav-number">1.3.5.</span> <span class="nav-text">com.linkedin.paldb.api.Configuration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成员变量"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">成员变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Configuration"><span class="nav-number">1.3.5.2.1.</span> <span class="nav-text">Configuration()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Configuration-Configuration-configuration"><span class="nav-number">1.3.5.2.2.</span> <span class="nav-text">Configuration(Configuration configuration)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#putWithSystemPropertyDefault"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">putWithSystemPropertyDefault</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get"><span class="nav-number">1.3.5.4.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#containsKey"><span class="nav-number">1.3.5.5.</span> <span class="nav-text">containsKey</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-number">1.3.5.6.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getBoolean"><span class="nav-number">1.3.5.7.</span> <span class="nav-text">getBoolean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getList"><span class="nav-number">1.3.5.8.</span> <span class="nav-text">getList</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getClass"><span class="nav-number">1.3.5.9.</span> <span class="nav-text">getClass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Serializer相关"><span class="nav-number">1.3.5.10.</span> <span class="nav-text">Serializer相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#equals"><span class="nav-number">1.3.5.11.</span> <span class="nav-text">equals</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hashCode"><span class="nav-number">1.3.5.12.</span> <span class="nav-text">hashCode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#checkReadOnly"><span class="nav-number">1.3.5.13.</span> <span class="nav-text">checkReadOnly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结-1"><span class="nav-number">1.3.5.14.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-api-Serializer"><span class="nav-number">1.3.6.</span> <span class="nav-text">com.linkedin.paldb.api.Serializer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api总结"><span class="nav-number">1.3.7.</span> <span class="nav-text">api总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#impl"><span class="nav-number">1.4.</span> <span class="nav-text">impl</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#com-linkedin-paldb-impl-Serializers"><span class="nav-number">1.4.1.</span> <span class="nav-text">com.linkedin.paldb.impl.Serializers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registerSerializer"><span class="nav-number">1.4.3.</span> <span class="nav-text">registerSerializer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SerializerWrapper"><span class="nav-number">1.4.4.</span> <span class="nav-text">SerializerWrapper</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成员变量-1"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">成员变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数-2"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">构造函数</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joliu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz',
+        appKey: 'Fl29iwRhiNINjJwOHA613D9d',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        meta:guest,
+        pageSize:'10' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PNtkm1hqPMXTv6z3WHs2viCJ-gzGzoHsz",
+                'X-LC-Key': "Fl29iwRhiNINjJwOHA613D9d",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
